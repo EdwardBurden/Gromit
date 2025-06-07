@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "EngineLog.h"
 
 namespace Gromit {
 
@@ -11,6 +12,8 @@ namespace Gromit {
 	}
 
 	void Application::StartUp() {
+		EngineLog* loger = new EngineLog();
+		loger->LogName();
 		while (true);
 	}
 }

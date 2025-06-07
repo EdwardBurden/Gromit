@@ -3,5 +3,6 @@
 int main() {
 	ExampleApplication* app = new ExampleApplication();
 	app->StartUp();
+
 	delete app;
 }

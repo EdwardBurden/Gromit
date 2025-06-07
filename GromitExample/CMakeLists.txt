@@ -10,3 +10,4 @@ add_executable(${PROJECT_NAME} ${GROMIT_EXAMPLE_SOURCE})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Gromit)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Gromit/src)
+#target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Gromit/dependencies/spdlog/include)
