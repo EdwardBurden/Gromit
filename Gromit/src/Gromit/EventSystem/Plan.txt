@@ -1,0 +1,27 @@
+I want to be able to send an event from anywhere, by sending the arguments and specificying an enum value.
+So, if i hit a key. Somethere i want a single line like:
+SEND_EVENT(KeyDown: EventTypeEnum,Enter: keyEnum);
+SEND_EVENT(PlayerDied: EventTypeEnum, health: int, name: string);
+
+I also want any class to be able to listen to any event in one line and unregister from listening in one line.
+They may need to specificy other details in the class like inheritaing IEventListener, or sending a reference of themselves. 
+REGISTER_EVENT(KeyDown, OnKeyDown());
+UNREGISTER_EVENT(KeyDown);
+where OnKeyDown is a local method with the required parameters.
+
+I want the eventsystem to run on the engine side in the background, but my application can listen to engine events.
+
+I want the eventsystem to queue events from the current frame, then iterate over them and resolve before the frame finishes.
+if new events are added at this point they will wait for the next frame.
+
+Events will be servered based on the priority of the listeners (maybe something to do later)
+Events can be consumed and will therefore not propergate to all listeners., myabe in the futurer there will be a way that these listeners know they were blocked.
+
+I want to be able to quickly add new events, that inherit from existing through a csv and tool.
+
+I can fill out a csv like:
+
+Enum,				EnumGroup,		IsAbstract, 			arg1Type, arg1name, arg2Type, arg2Value, etc
+ButtonPressedEvent, ButtonEvents,	false					int,		button
+
+Then run a bat file to export them into c++ code.

@@ -1,0 +1,10 @@
+Enum,Inherits,IsAbstract,arg1Type,arg1name,arg2Type,arg2Value
+ButtonEvent,Event,true,,,,
+ButtonPressedEvent,ButtonEvent,false,,,,
+ButtonReleasedEvent,ButtonEvent,false,,,,
+MouseEvent,Event,tue,,,,
+LeftMousePressedEvent,MouseEvent,false,,,,
+WindowEvent,Event,true,,,,
+WindowResizeEvent,WindowEvent,false,,,,
+WindowOpenEvent,WindowEvent,false,,,,
+WindowCloseEvent,WindowEvent,false,,,,
