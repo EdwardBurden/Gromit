@@ -3,7 +3,8 @@
 
 namespace Gromit {
 
-	static bool DoSomething(Event& event);  // Declaration
+	static bool DoSomethingWindow(WindowsEvent& event);  // Declaration
+	static bool DoSomethingMouse(MouseEvent& event);  // Declaration
 
 	Application::Application() {
 
@@ -14,17 +15,12 @@ namespace Gromit {
 	}
 
 	void Application::StartUp() {
-		Event* test1 = new Event();
-		test1->eventType = EventType::WindowOpenEvent;
-
-		Event* test2 = new Event();
-		test2->eventType = EventType::WindowOpenEvent;
-
-
+	
 		EventSystem* ev = new EventSystem();
-		ev->RegisterListener(EventType::WindowOpenEvent, this, DoSomething);
-		ev->Trigger(*test1);
-		ev->Trigger(*test2);
+		ev->RegisterListener<WindowsEvent>(EventType::WindowOpenEvent, this, DoSomethingWindow);
+		ev->RegisterListener<MouseEvent>(EventType::LeftMousePressedEvent, this, DoSomethingMouse);
+		ev->Trigger<WindowsEvent>(9854, EventType::WindowOpenEvent);
+		ev->Trigger<MouseEvent>('c', EventType::LeftMousePressedEvent);
 
 		ev->PerFrame(); //update
 
@@ -36,7 +32,11 @@ namespace Gromit {
 		loger->LogName();
 		while (true);
 	}
-	static bool DoSomething(Event& event) {
+	static bool DoSomethingWindow(WindowsEvent& event) {
+		return false;
+	}
+
+	static bool DoSomethingMouse(MouseEvent& event) {
 		return false;
 	}
 }
