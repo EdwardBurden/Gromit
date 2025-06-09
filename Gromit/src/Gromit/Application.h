@@ -7,7 +7,7 @@ namespace Gromit {
 	public:
 		Application();
 		virtual ~Application();
-		void StartUp();
+		virtual void StartUp();
 		void Run();
 		void ShutDown();
 	private:
