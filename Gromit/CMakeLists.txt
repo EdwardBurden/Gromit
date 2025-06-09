@@ -4,7 +4,7 @@ project(Gromit)
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/spdlog")
 find_package(spdlog REQUIRED)
 
-file(GLOB GROMIT_SOURCE "src/Gromit/*.cpp" "src/Gromit/*.h")
+file(GLOB_RECURSE GROMIT_SOURCE "src/Gromit/*.cpp" "src/Gromit/*.h")
 message(STATUS "Gromit source files: ${GROMIT_SOURCE}")
 add_library(${PROJECT_NAME} SHARED ${GROMIT_SOURCE})
 

@@ -1,4 +1,8 @@
+#pragma once
+
 #include "EventType.h"
+#include "../Core.h"
+
 #include <iostream>
 #include <functional>
 #include <unordered_map>
@@ -6,13 +10,12 @@
 
 namespace Gromit {
 
-	class Event {
+	class  Event {
 	public:
 		enum EventType eventType;
-		//virtual EventType GetEventType() const = 0;
 	};
 
-	class WindowsEvent : public Event
+	class   WindowsEvent : public Event
 	{
 	public:
 		WindowsEvent(int thing, EventType temp)
