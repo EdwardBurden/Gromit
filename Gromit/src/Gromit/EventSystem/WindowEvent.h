@@ -6,7 +6,7 @@ public:
 	WindowsEvent(int thing, EventType temp)
 	{
 		something = thing;
-		eventType = temp;
+		//eventType = temp;
 	}
 	~WindowsEvent() {}
 	int something;

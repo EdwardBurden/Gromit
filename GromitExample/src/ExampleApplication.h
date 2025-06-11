@@ -7,5 +7,6 @@ public:
 	ExampleApplication() {}
 	~ExampleApplication() {}
 	 void StartUp() override;
-
+private:
+	bool DoSomethingMouse(MouseClickEvent& event);
 };

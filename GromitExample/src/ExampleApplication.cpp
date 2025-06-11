@@ -5,16 +5,18 @@ Gromit::Application* Gromit::CreateApplication()
 	return new ExampleApplication();
 }
 
-static bool DoSomethingMouse(MouseEvent& event);  // Declaration
 
 void ExampleApplication::StartUp()
 {
 	Application::StartUp();
+	Gromit::Logging::GetLogger()->info("App test");
 	//Gromit::EventSystem& test = Gromit::EventSystem::Get();
-	REG_EVENT(MouseEvent, EventType::LeftMousePressedEvent, this, DoSomethingMouse);
-	TRIG_EVENT(MouseEvent, 'C', EventType::LeftMousePressedEvent);
+	REG_EVENT(MouseClickEvent, this, DoSomethingMouse);
+	TRIG_EVENT(MouseClickEvent, 0);
+	//UREG_EVENT(MouseClickEvent, this);
 }
 
-static bool DoSomethingMouse(MouseEvent& event) {
+ bool ExampleApplication::DoSomethingMouse(MouseClickEvent& event) {
 	return false;
+	UREG_EVENT(MouseClickEvent, this);
 }

@@ -22,7 +22,8 @@ namespace Gromit {
 		}
 		
 		template<typename T>
-		void RegisterListener(EventType eventType, void* listener, EventFn<T> func) {
+		void RegisterListener(void* listener, EventFn<T> func) {
+			// todo have list of possible clases and do lookup?
 			// todo, check the listener isnt already added
 
 			std::function<bool(EventBase&)> wrapper = [func](EventBase& e) {
@@ -33,10 +34,13 @@ namespace Gromit {
 
 				return false; // Not the right type, don't call the function
 				};
+			auto eventType = T::GetStaticEventType();
 			m_registeredCallbacks[eventType][listener] = wrapper;
 		}
 
-		void UnregisterListener(EventType eventType, void* listener) {
+		template<typename T>
+		void UnregisterListener(void* listener) {
+			auto eventType = T::GetStaticEventType();
 			auto registered = m_registeredCallbacks[eventType];
 			registered.erase(listener);
 			if (registered.empty()) {
@@ -70,7 +74,7 @@ namespace Gromit {
 		EventSystem& operator=(const EventSystem&) = delete; // no assignment
 
 		void TriggerEvent(EventBase& event) {
-			auto registered = m_registeredCallbacks[event.eventType]; //todo check if any are avialable
+			auto registered = m_registeredCallbacks[event.GetEventType()]; //todo check if any are avialable
 			for (auto& it : registered) {
 				bool handled = it.second(event);
 			}
@@ -83,6 +87,9 @@ namespace Gromit {
 	};
 }
 
-#define REG_EVENT(ClassType, eventType, listener, func) Gromit::EventSystem::Get().RegisterListener<ClassType>(eventType, listener, func)
-//#define UREG_EVENT(eventType, listener) Gromit::EventSystem::s_eventSystem->UnregisterListener(eventType, listener)
+#define REG_EVENT(ClassType, listener, func)	Gromit::EventSystem::Get().RegisterListener<MouseClickEvent> \
+(listener, [listener](ClassType& e) { return func(e); });
+
+#define REG_EVENT_STATIC(ClassType, listener, func) Gromit::EventSystem::Get().RegisterListener<ClassType>(listener, func)
+#define UREG_EVENT(ClassType, listener) Gromit::EventSystem::Get().UnregisterListener<ClassType>(listener)
 #define TRIG_EVENT(ClassType, ...) Gromit::EventSystem::Get().Trigger<ClassType>(__VA_ARGS__)

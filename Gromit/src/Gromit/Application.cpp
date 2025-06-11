@@ -44,6 +44,7 @@ namespace Gromit {
 	}
 
 	void Application::Run() {
+		Gromit::EventSystem::Get().PerFrame();
 		while (true);
 	}
 
