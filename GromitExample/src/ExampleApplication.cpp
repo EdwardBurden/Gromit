@@ -18,5 +18,5 @@ void ExampleApplication::StartUp()
 
  bool ExampleApplication::DoSomethingMouse(MouseClickEvent& event) {
 	return false;
-	UREG_EVENT(MouseClickEvent, this);
+	//UREG_EVENT(MouseClickEvent, this); //todo add pending event list for this to work properly
 }
