@@ -1,6 +1,8 @@
 #pragma once
 #include "Application.h"
-#include "EventSystem/EventSystem.h"
+#include <GLFW/glfw3.h>
+
+
 namespace Gromit {
 
 	//static bool DoSomethingWindow(WindowsEvent& event);  // Declaration
@@ -15,6 +17,13 @@ namespace Gromit {
 	}
 
 	void Application::StartUp() {
+
+
+		if (!glfwInit()) {
+			std::cerr << "Failed to initialize GLFW\n";
+			return;
+		}
+		GLFWwindow* window = glfwCreateWindow(800, 600, "Hello GLFW", nullptr, nullptr);
 		//Gromit::EngineLog::StartUp();
 	//	GROMIT_INFO("Engine StartUp");
 		//auto m_eventSystem = new EventSystem();

@@ -3,10 +3,7 @@
 #include "MouseEvent.h"
 #include "WindowEvent.h"
 #include "../Core.h"
-#include <iostream>
-#include <functional>
-#include <unordered_map>
-#include <string>
+#include "../pch.h"
 
 namespace Gromit {
 	class GROMIT_API EventSystem {
