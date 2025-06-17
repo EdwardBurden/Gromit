@@ -1,7 +1,5 @@
 #pragma once
 #include "Application.h"
-#include <GLFW/glfw3.h>
-
 
 namespace Gromit {
 
@@ -17,37 +15,14 @@ namespace Gromit {
 	}
 
 	void Application::StartUp() {
-
-
-		if (!glfwInit()) {
-			std::cerr << "Failed to initialize GLFW\n";
-			return;
-		}
-		GLFWwindow* window = glfwCreateWindow(800, 600, "Hello GLFW", nullptr, nullptr);
-		//Gromit::EngineLog::StartUp();
-	//	GROMIT_INFO("Engine StartUp");
-		//auto m_eventSystem = new EventSystem();
-		//auto stat = m_eventSystem->s_eventSystem;
-	//REG_EVENT(MouseEvent, EventType::LeftMousePressedEvent, this, DoSomethingMouse);
-	//TRIG_EVENT(MouseEvent, 'C', EventType::LeftMousePressedEvent);	
-	//m_eventSystem->RegisterListener<WindowsEvent>(EventType::WindowOpenEvent, this, DoSomethingWindow);
-	//	m_eventSystem->RegisterListener<MouseEvent>(EventType::LeftMousePressedEvent, this, DoSomethingMouse);
-		//m_eventSystem->Trigger<WindowsEvent>(9854, EventType::WindowOpenEvent);
-		//m_eventSystem->Trigger<MouseEvent>('c', EventType::LeftMousePressedEvent);
-	//Gromit::EventSystem::Get().PerFrame();
-		//m_eventSystem->PerFrame(); //update
-
-
-	//	m_eventSystem->UnregisterListener(EventType::WindowOpenEvent, this);
-		
-		//while (true);
-	//	GROMIT_INFO("Engine Shutdown");
-	//	Gromit::EngineLog::ShutDown();
+		Logging::Init();
+		m_windowManager = WindowManager::CreateManager(); //todo have define wrap or use othe rway
+		m_windowManager->Init();
+		m_windowManager->CreateWindowGromit(100, 100, 400, 400, "DLL Test1");
+		m_windowManager->CreateWindowGromit(500, 500, 400, 400, "DLL Test2");
 	}
-	/*static bool DoSomethingWindow(WindowsEvent& event) {
-		return false;
-	}
-	*/
+
+
 	static bool DoSomethingMouse(MouseEvent& event) {
 		return false;
 	}
@@ -58,7 +33,8 @@ namespace Gromit {
 	}
 
 	void Application::ShutDown() {
-		//Gromit::Logging::Release();
+		Logging::Release();
+		m_windowManager->Release();
 	}
 
 }

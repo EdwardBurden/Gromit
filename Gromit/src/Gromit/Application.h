@@ -1,6 +1,8 @@
 #pragma once
 #include "Core.h"
 #include "EventSystem/EventSystem.h"
+#include "Logging/Logging.h"
+#include "WindowManager.h"
 
 namespace Gromit {
 
@@ -11,7 +13,8 @@ namespace Gromit {
 		virtual void StartUp();
 		void Run();
 		void ShutDown();
-	private:
+	protected:
+		WindowManager* m_windowManager;
 		//EventSystem* m_eventSystem = nullptr;
 	};
 

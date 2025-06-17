@@ -18,6 +18,8 @@ void ExampleApplication::StartUp()
 
  bool ExampleApplication::DoSomethingMouse(MouseClickEvent& event) {
 	 GL_INFO("Call Back Fired for Mouse Event");
+	 m_windowManager->CreateWindowGromit(900, 100, 300, 300, "EXE");
+
 	return false;
 	UREG_EVENT(MouseClickEvent, this);
 }

@@ -3,5 +3,7 @@
 #include "Gromit/Logging/Logging.h"
 #include "Gromit/EntryPoint.h"
 #include "Gromit/EventSystem/EventSystem.h"
+#include "Gromit/Window.h"
+#include "Gromit/WindowManager.h"
 
 
