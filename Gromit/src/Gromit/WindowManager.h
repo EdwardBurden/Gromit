@@ -12,8 +12,10 @@ namespace Gromit {
 		virtual void Release() = 0;
 		virtual Window* CreateWindowGromit(int x, int y, int width, int height, const char* title) = 0;
 		static WindowManager* CreateManager();
-	private:
-
+		virtual void UpdateWindows() = 0;
+		virtual int WindowsCount() = 0;
+	protected:
+		std::vector<Window*> m_windows;
 	};
 
 	

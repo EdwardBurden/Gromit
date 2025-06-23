@@ -3,16 +3,7 @@
 
 namespace Gromit {
 
-	//static bool DoSomethingWindow(WindowsEvent& event);  // Declaration
-	static bool DoSomethingMouse(MouseEvent& event);  // Declaration
-
-	Application::Application() {
-
-	}
-
-	Application::~Application() {
-
-	}
+  bool Application::m_running = true;
 
 	void Application::StartUp() {
 		Logging::Init();
@@ -20,21 +11,30 @@ namespace Gromit {
 		m_windowManager->Init();
 		m_windowManager->CreateWindowGromit(100, 100, 400, 400, "DLL Test1");
 		m_windowManager->CreateWindowGromit(500, 500, 400, 400, "DLL Test2");
-	}
-
-
-	static bool DoSomethingMouse(MouseEvent& event) {
-		return false;
+		m_running = true;
 	}
 
 	void Application::Run() {
-		Gromit::EventSystem::Get().PerFrame();
-		while (true);
+
+		while (m_running)
+		{
+			m_windowManager->UpdateWindows();
+			Gromit::EventSystem::Get().PerFrame();
+			if (m_windowManager->WindowsCount() < 1) {
+				Application::Stop();
+			}
+		}
 	}
 
 	void Application::ShutDown() {
 		Logging::Release();
 		m_windowManager->Release();
+		delete m_windowManager;
+	}
+
+	void Application::Stop() {
+		m_running = false;
+	
 	}
 
 }

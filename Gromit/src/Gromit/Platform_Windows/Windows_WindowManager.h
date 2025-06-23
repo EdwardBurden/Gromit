@@ -1,11 +1,6 @@
 #pragma once
 #include "../WindowManager.h"
 #include "Windows_Window.h"
-#include "../Logging/Logging.h"
-#pragma once 
-#define GLFW_INCLUDE_NONE
-#include <glad/glad.h> 
-#include <GLFW/glfw3.h>
 
 namespace Gromit
 {
@@ -16,8 +11,10 @@ namespace Gromit
 		~Windows_WindowManager() {}
 		void Init() override;
 		void Release() override;
+		void UpdateWindows() override;
 		Window* CreateWindowGromit(int x, int y, int width, int height, const char* title) override;
+		int WindowsCount()override;
 	private:
-
+		static void OnErrorCallback(int error, const char* description);
 	};
 }
