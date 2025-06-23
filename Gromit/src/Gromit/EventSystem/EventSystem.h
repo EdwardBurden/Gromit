@@ -59,9 +59,9 @@ namespace Gromit {
 		void PerFrame() {
 			while (!m_frameTriggeredEvents.empty())
 			{
-				auto event = m_frameTriggeredEvents.back();
+				auto event = m_frameTriggeredEvents.front();
 				TriggerEvent(*event);
-				m_frameTriggeredEvents.pop_back();
+				m_frameTriggeredEvents.pop_front();
 				delete event;
 			}
 		}
@@ -76,7 +76,7 @@ namespace Gromit {
 				bool handled = it.second(event);
 			}
 		}
-		std::vector<EventBase*> m_frameTriggeredEvents;
+		std::list<EventBase*> m_frameTriggeredEvents;
 
 
 		using callbacks = std::unordered_map<void*, std::function<bool(EventBase&)>>; // may change, will need them orderer by priority
@@ -84,7 +84,7 @@ namespace Gromit {
 	};
 }
 
-#define REG_EVENT(ClassType, listener, func)	Gromit::EventSystem::Get().RegisterListener<MouseClickEvent> \
+#define REG_EVENT(ClassType, listener, func)	Gromit::EventSystem::Get().RegisterListener<ClassType> \
 (listener, [listener](ClassType& e) { return func(e); });
 
 #define REG_EVENT_STATIC(ClassType, listener, func) Gromit::EventSystem::Get().RegisterListener<ClassType>(listener, func)

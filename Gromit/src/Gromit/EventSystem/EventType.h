@@ -4,5 +4,6 @@ enum class EventType {
     MouseEvent,
     MouseClickEvent,
     MouseMoveEvent,
-    MouseScrollEvent
+    MouseScrollEvent,
+    WindowsResizeEvent
 };

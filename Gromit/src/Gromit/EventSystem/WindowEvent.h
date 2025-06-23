@@ -1,13 +1,10 @@
 #pragma once
 #include "EventBase.h"
-class   WindowsEvent : public EventBase
+class   WindowsResizeEvent : public EventBase
 {
 public:
-	WindowsEvent(int thing, EventType temp)
-	{
-		something = thing;
-		//eventType = temp;
-	}
-	~WindowsEvent() {}
-	int something;
+	WindowsResizeEvent(int _height,int _width): Height(_height), Width(_width) {}
+	EVENT_TYPE_DEFINE(WindowsResizeEvent);
+	int Height;
+	int Width;
 };

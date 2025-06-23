@@ -9,4 +9,5 @@ public:
 	 void StartUp() override;
 private:
 	bool DoSomethingMouse(MouseClickEvent& event);
+	bool DoSomethingWindow(WindowsResizeEvent& event);
 };

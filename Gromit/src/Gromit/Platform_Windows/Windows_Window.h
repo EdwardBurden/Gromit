@@ -1,6 +1,7 @@
 #pragma once
 #include "../Window.h"
 #include "../Logging/Logging.h"
+#include "../EventSystem/EventSystem.h"
 
 //tod wrap in defines
 #include <glad/glad.h> 
@@ -14,6 +15,7 @@ namespace Gromit
 		Windows_Window(int x, int y, int width, int height, const char* title);
 		~Windows_Window() {}
 		void UpdateWindow() override;
+		void Close();
 	private:
 		GLFWwindow* m_window;
 	};

@@ -12,9 +12,18 @@ void ExampleApplication::StartUp()
 	GL_INFO("App test");
 	//Gromit::EventSystem& test = Gromit::EventSystem::Get();
 	REG_EVENT(MouseClickEvent, this, DoSomethingMouse);
+	REG_EVENT(WindowsResizeEvent, this, DoSomethingWindow);
 	TRIG_EVENT(MouseClickEvent, 0);
 	//UREG_EVENT(MouseClickEvent, this);
 }
+
+
+bool ExampleApplication::DoSomethingWindow(WindowsResizeEvent& event) {
+  
+	GL_INFO("Width:{0}, Height:{1}", event.Width, event.Height);
+	return false;
+}
+
 
  bool ExampleApplication::DoSomethingMouse(MouseClickEvent& event) {
 	 GL_INFO("Call Back Fired for Mouse Event");
