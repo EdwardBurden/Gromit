@@ -15,6 +15,12 @@ void ExampleApplication::StartUp()
 	REG_EVENT(WindowsResizeEvent, this, DoSomethingWindow);
 	TRIG_EVENT(MouseClickEvent, 0);
 	//UREG_EVENT(MouseClickEvent, this);
+
+#ifdef _DEBUG
+	GL_INFO("Debug build");
+#else
+	GL_INFO("Release build");
+#endif
 }
 
 
