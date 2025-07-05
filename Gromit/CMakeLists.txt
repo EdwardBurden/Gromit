@@ -21,6 +21,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 # Public headers available to users of the engine
 message(${CMAKE_CURRENT_SOURCE_DIR}/src)
 #target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/nlohmann_json)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/spdlog/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glad/include)
 target_precompile_headers(${PROJECT_NAME} PRIVATE "src/Gromit/pch.h")
@@ -30,3 +31,12 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE "src/Gromit/pch.h")
 
  # Disable PCH for glad.c
 set_source_files_properties("dependencies/glad/src/glad.c" PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+    COMMENT "Copying assets folder to output directory"
+)

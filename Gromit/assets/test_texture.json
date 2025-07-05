@@ -1,0 +1,10 @@
+{
+  "guid": 345455675675,
+  "type": "texture",
+  "name": "test256",
+  "path": "/test256.png",
+  "width": 256,
+  "height": 256,
+  "format": "RED",
+  "generateMipMaps": true
+}

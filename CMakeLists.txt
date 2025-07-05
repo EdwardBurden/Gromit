@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(GromitDevelopment VERSION 1.1)
 
+set(CMAKE_CXX_STANDARD  20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 # Output all binaries to one location
