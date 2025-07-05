@@ -7,7 +7,8 @@ namespace Gromit {
 	void ViewportResize(GLFWwindow* window, int height, int width);
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 	void window_refresh_callback(GLFWwindow* window);
-
+	void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 	Windows_Window::Windows_Window(int x, int y, int width, int height, const char* title)
 	{
@@ -38,6 +39,8 @@ namespace Gromit {
 		glfwSetWindowSizeCallback(m_window, WindowResize);
 		glfwSetWindowRefreshCallback(m_window, window_refresh_callback);
 		glfwSetFramebufferSizeCallback(m_window, ViewportResize);
+		glfwSetCursorPosCallback(m_window, cursor_position_callback);
+		glfwSetMouseButtonCallback(m_window, mouse_button_callback);
 	}
 
 	void Windows_Window::UpdateWindow()
@@ -88,5 +91,15 @@ namespace Gromit {
 			thisWindow->Close();
 			//glfwSetWindowShouldClose(window, GL_TRUE);
 		}
+	}
+
+	void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+	{
+	}
+
+	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+	{
+		if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+		TRIG_EVENT(MouseClickEvent, 1);
 	}
 }
