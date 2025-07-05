@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include "Asset.h"
+#include "../Logging/Logging.h"
 
 class  AssetManager
 {
