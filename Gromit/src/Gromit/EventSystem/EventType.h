@@ -1,9 +1,10 @@
 #pragma once
-
-enum class EventType {
-    MouseEvent,
-    MouseClickEvent,
-    MouseMoveEvent,
-    MouseScrollEvent,
-    WindowsResizeEvent
-};
+namespace Gromit {
+    enum class EventType {
+        MouseEvent,
+        MouseClickEvent,
+        MouseMoveEvent,
+        MouseScrollEvent,
+        WindowsResizeEvent
+    };
+}

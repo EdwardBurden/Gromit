@@ -8,6 +8,6 @@ public:
 	~ExampleApplication() {}
 	 void StartUp() override;
 private:
-	bool DoSomethingMouse(MouseClickEvent& event);
-	bool DoSomethingWindow(WindowsResizeEvent& event);
+	bool DoSomethingMouse(Gromit::MouseClickEvent& event);
+	bool DoSomethingWindow(Gromit::WindowsResizeEvent& event);
 };

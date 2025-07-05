@@ -13,7 +13,7 @@ file(GLOB_RECURSE GROMIT_SOURCE "src/Gromit/*.cpp" "dependencies/glad/src/glad.c
 message(STATUS "Gromit source files: ${GROMIT_SOURCE}")
 add_library(${PROJECT_NAME} SHARED ${GROMIT_SOURCE})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 
@@ -21,8 +21,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 # Public headers available to users of the engine
 message(${CMAKE_CURRENT_SOURCE_DIR}/src)
 #target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/nlohmann_json)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/spdlog/include)
+target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/nlohmann_json)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/spdlog/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glad/include)
 target_precompile_headers(${PROJECT_NAME} PRIVATE "src/Gromit/pch.h")
 # Define a symbol to control DLL exports (optional but recommended)

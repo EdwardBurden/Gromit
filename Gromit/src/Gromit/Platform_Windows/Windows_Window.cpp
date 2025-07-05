@@ -3,10 +3,10 @@
 
 namespace Gromit {
 
-	void  WindowResize(GLFWwindow* window, int height, int width);
-	void  ViewportResize(GLFWwindow* window, int height, int width);
+	void WindowResize(GLFWwindow* window, int height, int width);
+	void ViewportResize(GLFWwindow* window, int height, int width);
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-	void  window_refresh_callback(GLFWwindow* window);
+	void window_refresh_callback(GLFWwindow* window);
 
 
 	Windows_Window::Windows_Window(int x, int y, int width, int height, const char* title)
@@ -75,7 +75,7 @@ namespace Gromit {
 		glfwSwapBuffers(window);
 	}
 
-	void  ViewportResize(GLFWwindow* window, int width, int height) {
+	void ViewportResize(GLFWwindow* window, int width, int height) {
 		Windows_Window* thisWindow = static_cast<Windows_Window*>(glfwGetWindowUserPointer(window));
 		TRIG_EVENT(WindowsResizeEvent, height, width);
 	}

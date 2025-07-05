@@ -45,16 +45,11 @@ namespace Gromit {
 			}
 		}
 
-		/*void Trigger(Event* event) {
-			m_frameTriggeredEvents.push_back(event);
-		}*/
-
 		template<typename T, typename... Args>
 		void Trigger(Args&&... args) {
 			T* e = new T(std::forward<Args>(args)...);
 			m_frameTriggeredEvents.push_back(e);
 		}
-
 
 		void PerFrame() {
 			while (!m_frameTriggeredEvents.empty())
