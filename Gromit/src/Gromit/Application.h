@@ -3,6 +3,7 @@
 #include "EventSystem/EventSystem.h"
 #include "Logging/Logging.h"
 #include "WindowManager.h"
+#include "AssetManagement/AssetManager.h"
 
 namespace Gromit {
 

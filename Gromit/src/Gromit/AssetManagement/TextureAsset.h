@@ -17,5 +17,8 @@ namespace Gromit
 		bool generateMipMaps;
 	public:
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(TextureAsset, guid, type, name, path, width, height, format, generateMipMaps)
+
+		unsigned char* data;
+		//maybe have load method here later
 	};
 }

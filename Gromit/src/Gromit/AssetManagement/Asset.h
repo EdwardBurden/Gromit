@@ -3,15 +3,15 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-namespace Gromit 
+namespace Gromit
 {
-	enum class AssetType 
+	enum class AssetType
 	{
 		Texture = 0
 	};
-	NLOHMANN_JSON_SERIALIZE_ENUM(AssetType, {{AssetType::Texture, "texture"}});
+	NLOHMANN_JSON_SERIALIZE_ENUM(AssetType, { {AssetType::Texture, "texture"} });
 
-	struct  Asset
+	struct Asset
 	{
 		int guid;
 		AssetType type;
@@ -19,5 +19,9 @@ namespace Gromit
 		std::string path;
 	public:
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Asset, guid, type, name, path)
+		std::string fullPath;
+		bool isloaded;
+		int RefCount;
+
 	};
 }

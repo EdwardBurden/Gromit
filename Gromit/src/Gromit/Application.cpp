@@ -1,6 +1,5 @@
 #pragma once
 #include "Application.h"
-//#include "AssetManagement/AssetManager.h"
 
 namespace Gromit {
 
@@ -14,8 +13,9 @@ namespace Gromit {
 		m_windowManager->CreateWindowGromit(500, 500, 400, 400, "DLL Test2");
 		m_running = true;
 
-		//AssetManager assetMan;
-		//assetMan.IdentifyAssets("assets");
+		AssetManager assetMan;
+		assetMan.IdentifyAssets("assets");
+		assetMan.LoadAsset(345455675675);
 		//look in the asset folder, find and serilized files.
 		// load the .json file and keep in memory deserilized
 		// load testure when needed

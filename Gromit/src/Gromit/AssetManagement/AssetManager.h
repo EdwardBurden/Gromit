@@ -14,7 +14,7 @@ namespace Gromit
 		~AssetManager() {}
 
 		void IdentifyAssets(std::string directory);
-
+		void LoadAsset(int guid);
 
 	private:
 		std::map<int, Asset*> m_assetLookup;

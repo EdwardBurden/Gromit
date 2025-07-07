@@ -1,6 +1,9 @@
 #include "AssetManager.h"
 #include <json.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 namespace Gromit
@@ -21,6 +24,8 @@ namespace Gromit
 				if (f.good() && f.is_open() && !buffer.str().empty()) {
 					json data = json::parse(buffer);
 					Asset assetbase = data.template get<Asset>();
+					assetbase.fullPath = p.string();
+
 					switch (assetbase.type)
 					{
 					case AssetType::Texture:
@@ -43,5 +48,26 @@ namespace Gromit
 
 	}
 
-
+	void AssetManager::LoadAsset(int guid) 
+	{
+		auto asset = m_assetLookup[guid];
+		switch (asset->type)
+		{
+		case AssetType::Texture:
+		{
+			TextureAsset* derivedPtr = static_cast<TextureAsset*>(asset);
+			if (derivedPtr->isloaded) {
+				derivedPtr->RefCount++;
+				return;// derivedPtr->data;
+			}
+			int width, height, nrChannels;
+			derivedPtr->data = stbi_load(asset->path.c_str(), &width, &height, &nrChannels, 0);
+			derivedPtr->RefCount++;
+			//todo have some system to unload when refcount goes to 0
+		}
+		break;
+		default:
+			break;
+		}
+	}
 }
