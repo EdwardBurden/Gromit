@@ -1,6 +1,6 @@
 #pragma once
-#include "Core.h"
-#include "RenderAPIs/Context.h"
+#include "../Core.h"
+#include "Context.h"
 
 namespace Gromit {
 

@@ -1,6 +1,8 @@
 #pragma once
+#include "../Core.h"
+
 namespace Gromit {
-	class Context
+	class GROMIT_API Context
 	{
 	public: 
 		virtual void Init() = 0;

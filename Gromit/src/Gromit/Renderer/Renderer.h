@@ -1,5 +1,6 @@
 #pragma once
-#include "../RenderAPIs/Context.h"
+#include "../Core.h"
+#include "../RenderAPIs/RenderAPI.h"
 
 namespace Gromit {
 	enum class RenderAPIType {
@@ -9,21 +10,12 @@ namespace Gromit {
 	};
 
 
-	class Renderer
+	class GROMIT_API Renderer
 	{
 	public:
-		void Initialise(RenderAPIType renderApiType);
-		//Context* CreateContext();
-
-
-		void UpdateContexts() {
-		//for each context loop through and draw things for that context
-			// multiple context can exist in a window
-		
-		}
+		static void SetAPI(RenderAPIType renderApiType);
+		static RenderAPI* GetAPI();
 	private:
-		std::vector<Context> m_contexts;
-
-		RenderAPIType m_apiSetting;
+		static RenderAPI* m_activeRender;
 	};
 }

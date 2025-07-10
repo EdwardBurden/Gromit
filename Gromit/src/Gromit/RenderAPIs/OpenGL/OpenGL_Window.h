@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Window.h"
+#include "../Window.h"
 #include "../../Logging/Logging.h"
 #include "../../EventSystem/EventSystem.h"
 #include "../../RenderAPIs/OpenGL/OpenGL_Context.h"

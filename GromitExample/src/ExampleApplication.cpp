@@ -33,7 +33,7 @@ bool ExampleApplication::DoSomethingWindow(Gromit::WindowsResizeEvent& event) {
 
  bool ExampleApplication::DoSomethingMouse(Gromit::MouseClickEvent& event) {
 	 GL_INFO("Call Back Fired for Mouse Event");
-	 m_windowManager->CreateWindowGromit(900, 100, 300, 300, "EXE");
+	 m_windowManager->CreateWindow(900, 100, 300, 300, "EXE");
 	return false;
 	//UREG_EVENT(Gromit::MouseClickEvent, this);
 }
