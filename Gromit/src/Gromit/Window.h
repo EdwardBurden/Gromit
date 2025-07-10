@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "RenderAPIs/Context.h"
 
 namespace Gromit {
 
@@ -10,7 +11,7 @@ namespace Gromit {
 		int m_height, m_width;
 		bool m_close;
 		virtual void UpdateWindow() = 0;
-	private:
-
+	protected:
+		Context* m_context;
 	};
 }

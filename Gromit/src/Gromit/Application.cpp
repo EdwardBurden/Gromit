@@ -6,6 +6,7 @@ namespace Gromit {
   bool Application::m_running = true;
 
 	void Application::StartUp() {
+
 		Logging::Init();
 		m_windowManager = WindowManager::CreateManager(); //todo have define wrap or use othe rway
 		m_windowManager->Init();
@@ -16,6 +17,9 @@ namespace Gromit {
 		AssetManager assetMan;
 		assetMan.IdentifyAssets("assets");
 		assetMan.LoadAsset(345455675675);
+
+		m_renderer = new Renderer();
+		m_renderer->Initialise(RenderAPIType::OpenGL);
 		//look in the asset folder, find and serilized files.
 		// load the .json file and keep in memory deserilized
 		// load testure when needed
