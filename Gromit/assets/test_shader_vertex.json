@@ -1,0 +1,7 @@
+{
+  "guid": 545,
+  "type": "Shader",
+  "name": "testLitVert",
+  "path": "/testLitVert.vert",
+  "shaderType": "Vertex"
+}

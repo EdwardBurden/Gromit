@@ -7,9 +7,16 @@ namespace Gromit
 {
 	enum class AssetType
 	{
-		Texture = 0
+		Texture = 0,
+		Shader = 1,
+		Material = 2
 	};
-	NLOHMANN_JSON_SERIALIZE_ENUM(AssetType, { {AssetType::Texture, "texture"} });
+	NLOHMANN_JSON_SERIALIZE_ENUM(AssetType,
+		{
+			{AssetType::Texture, "Texture"},
+			{ AssetType::Shader, "Shader" },
+			{ AssetType::Material, "Material" }
+		});
 
 	struct Asset
 	{
@@ -19,7 +26,7 @@ namespace Gromit
 		std::string path;
 	public:
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Asset, guid, type, name, path)
-		std::string fullPath;
+			std::string fullPath;
 		bool isloaded;
 		int RefCount;
 

@@ -4,9 +4,8 @@
 class ExampleApplication : public Gromit::Application
 {
 public: 
-	ExampleApplication() {}
-	~ExampleApplication() {}
 	 void StartUp() override;
+	 void Run() override;
 private:
 	bool DoSomethingMouse(Gromit::MouseClickEvent& event);
 	bool DoSomethingWindow(Gromit::WindowsResizeEvent& event);

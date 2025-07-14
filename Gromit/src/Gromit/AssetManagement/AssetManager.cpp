@@ -14,14 +14,16 @@ namespace Gromit
 		GL_INFO(directory);
 		current /= directory;
 		std::stringstream buffer;
-		int test = 0;
-		for (const auto& entry : fs::directory_iterator(current)) {
+		//int test = 0;
+		for (const auto& entry : fs::directory_iterator(current)) 
+		{
 			fs::path p = entry.path();
 			if (p.extension() == ".json") {
 				std::ifstream f(p);
 				buffer << f.rdbuf(); // read entire file into buffer
 				GL_INFO(buffer.str());
-				if (f.good() && f.is_open() && !buffer.str().empty()) {
+				if (f.good() && f.is_open() && !buffer.str().empty()) 
+				{
 					json data = json::parse(buffer);
 					Asset assetbase = data.template get<Asset>();
 					assetbase.fullPath = p.string();
@@ -33,22 +35,41 @@ namespace Gromit
 						auto* t = new TextureAsset();
 						from_json(data, *t);
 						m_assetLookup[assetbase.guid] = t;
-						test = assetbase.guid;
+						//test = assetbase.guid;
 						GL_INFO(t->name);
+						break;
 					}
-					break;
+					case AssetType::Shader:
+					{
+						auto* s = new ShaderAsset();
+						from_json(data, *s);
+						m_assetLookup[assetbase.guid] = s;
+						//test = assetbase.guid;
+						GL_INFO(s->name);
+						break;
+					}
+					case AssetType::Material:
+					{
+						auto* m = new MaterialAsset();
+						from_json(data, *m);
+						m_assetLookup[assetbase.guid] = m;
+						//test = assetbase.guid;
+						GL_INFO(m->name);
+						break;
+					}
 					default:
 						break;
 					}
 				}
+				buffer.clear();
 			}
 		}
-		auto asset = m_assetLookup[test];
-		TextureAsset* derivedPtr = static_cast<TextureAsset*>(asset);
+		//auto asset = m_assetLookup[test];
+		//TextureAsset* derivedPtr = static_cast<TextureAsset*>(asset);
 
 	}
 
-	void AssetManager::LoadAsset(int guid) 
+	void AssetManager::LoadAsset(int guid)
 	{
 		auto asset = m_assetLookup[guid];
 		switch (asset->type)
@@ -63,9 +84,32 @@ namespace Gromit
 			int width, height, nrChannels;
 			derivedPtr->data = stbi_load(asset->path.c_str(), &width, &height, &nrChannels, 0);
 			derivedPtr->RefCount++;
+			break;
 			//todo have some system to unload when refcount goes to 0
 		}
-		break;
+		case AssetType::Shader:
+		{
+			ShaderAsset* derivedPtr = static_cast<ShaderAsset*>(asset);
+			if (derivedPtr->isloaded) {
+				derivedPtr->RefCount++;
+				return;// derivedPtr->data;
+			}
+			//TODO load shader
+			derivedPtr->RefCount++;
+			break;
+		}
+		case AssetType::Material:
+		{
+			MaterialAsset* derivedPtr = static_cast<MaterialAsset*>(asset);
+			if (derivedPtr->isloaded) {
+				derivedPtr->RefCount++;
+				return;// derivedPtr->data;
+			}
+			///TODO, check shaders aRE LOADED, IF not load each and all textures required
+			derivedPtr->RefCount++;
+			break;
+		}
+
 		default:
 			break;
 		}

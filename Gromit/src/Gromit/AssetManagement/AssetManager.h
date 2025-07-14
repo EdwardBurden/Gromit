@@ -1,6 +1,8 @@
 #pragma once
 #include "Asset.h"
 #include "TextureAsset.h"
+#include "ShaderAsset.h"
+#include "MaterialAsset.h"
 #include "../Logging/Logging.h"
 
 

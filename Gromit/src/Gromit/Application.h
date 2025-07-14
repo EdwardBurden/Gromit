@@ -18,14 +18,13 @@ namespace Gromit {
 
 	class GROMIT_API Application {
 	public:
-		Application() {};
-		virtual ~Application() {};
+		static bool IsRunning();
 		virtual void StartUp();
-		void Run();
-		void ShutDown();
+		virtual void Run();
+		virtual void ShutDown();
 		static void Stop();
 	protected:
-		static bool m_running;
+		static bool m_isRunning;
 		WindowManager* m_windowManager;
 		Renderer* m_renderer;
 		//EventSystem* m_eventSystem = nullptr;

@@ -7,7 +7,10 @@ extern Gromit::Application* Gromit::CreateApplication();
 int main(int argc, char* argv[]){
 	auto app = Gromit::CreateApplication();
 	app->StartUp();
-	app->Run(); // if we get the shutdown command then 
+	while (app->IsRunning)
+	{
+		app->Run(); // if we get the shutdown command then 
+	}
 	app->ShutDown();
 	delete app;
 }
