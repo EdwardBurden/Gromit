@@ -8,12 +8,14 @@ Gromit::Application* Gromit::CreateApplication()
 
 void ExampleApplication::StartUp()
 {
+
+	Application::StartUp();
+
 #ifdef _DEBUG
 	GL_INFO("Debug build");
 #else
 	GL_INFO("Release build");
 #endif
-	Application::StartUp();
 	GL_INFO("App test");
 	//Gromit::EventSystem& test = Gromit::EventSystem::Get();
 	REG_EVENT(Gromit::MouseClickEvent, this, DoSomethingMouse);
@@ -23,6 +25,8 @@ void ExampleApplication::StartUp()
 
 
 	//RenderTest.
+	// tell assetmanage to load the model, with dependencies
+	//m_renderer->SubmitTest(Model1);
 	//Load material using assetamanger
 	//create camera at position
 	//create square data here for now.
@@ -37,6 +41,8 @@ void ExampleApplication::StartUp()
 void ExampleApplication::Run()
 {
 	Application::Run();
+
+	//m_renderer->DrawTest();
 }
 
 

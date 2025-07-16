@@ -15,7 +15,12 @@ namespace Gromit {
 	public:
 		static void SetAPI(RenderAPIType renderApiType);
 		static RenderAPI* GetAPI();
+
+		void Update();
+		void SubmitTest(float vertices[]);
+		void DrawTest();
 	private:
 		static RenderAPI* m_activeRender;
+		static int vbo;
 	};
 }

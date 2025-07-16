@@ -14,6 +14,8 @@ namespace Gromit {
 			void InitWindows() override;
 			void TerminateWindows() override;
 			Window* CreateWindow(int x, int y, int width, int height, const char* title) override;
+
+			void Update() override;
 		};
 	}
 }

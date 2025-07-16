@@ -18,6 +18,9 @@ namespace Gromit
 		ShaderType shaderType;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ShaderAsset, guid, type, name, path, shaderType)
 
-
+		void Load() override
+		{
+			//
+		}
 	};
 }

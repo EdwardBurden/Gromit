@@ -7,6 +7,8 @@ namespace Gromit {
 
 	RenderAPI* Renderer::m_activeRender;
 
+	int Renderer::vbo = 0;
+
 	void Renderer::SetAPI(RenderAPIType renderApiType)
 	{
 		//todo clean up existing
@@ -28,5 +30,20 @@ namespace Gromit {
 	RenderAPI* Renderer::GetAPI()
 	{
 		return m_activeRender;
+	}
+
+	void Renderer::Update()
+	{
+		m_activeRender->Update();
+	}
+
+	void Renderer::SubmitTest(float vertices[])
+	{
+		//vbo = m_activeRender->BindVertexBuffer(vertices);
+	}
+
+	void Renderer::DrawTest()
+	{
+		//m_activeRender->Draw(vbo);
 	}
 }

@@ -34,6 +34,22 @@ namespace Gromit {
 			return w;
 		}
 
+		void OpenGL_RenderAPI::Update()
+		{
+			//glClearColor(0.8f, 0.1f, 0.1f, 1.0f);
+			//glEnable(GL_DEPTH_TEST);
+			//glEnable(GL_STENCIL_TEST);
+			//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			//glStencilMask(0xFF);
+			//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			//glEnable(GL_DEPTH_TEST);
+
+
+
+		}
+
 
 		void OnErrorCallback(int error, const char* description)
 		{
