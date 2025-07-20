@@ -3,46 +3,57 @@
 
 namespace Gromit {
 
-  bool Application::m_running = true;
+	bool Application::IsRunning()
+	{
+		return m_isRunning;
+	}
 
-	void Application::StartUp() {
+	bool Application::m_isRunning = true;
+
+	void Application::StartUp()
+	{
+
 		Logging::Init();
-		m_windowManager = WindowManager::CreateManager(); //todo have define wrap or use othe rway
+
+		m_renderer = new Renderer();
+		m_renderer->SetAPI(RenderAPIType::OpenGL);
+
+		m_windowManager = new WindowManager();
 		m_windowManager->Init();
-		m_windowManager->CreateWindowGromit(100, 100, 400, 400, "DLL Test1");
-		m_windowManager->CreateWindowGromit(500, 500, 400, 400, "DLL Test2");
-		m_running = true;
+		m_windowManager->CreateWindow(100, 100, 400, 400, "DLL Test1");
+		m_windowManager->CreateWindow(500, 500, 400, 400, "DLL Test2");
+		m_isRunning = true;
 
-		AssetManager assetMan;
-		assetMan.IdentifyAssets("assets");
-		assetMan.LoadAsset(345455675675);
-		//look in the asset folder, find and serilized files.
-		// load the .json file and keep in memory deserilized
-		// load testure when needed
-		//
+		m_assetManager = new AssetManager();
+		m_assetManager->IdentifyAssets("assets");
 	}
 
-	void Application::Run() {
+	void Application::Run()
+	{
+		//TODO use layer system Her
+		//Window
+		m_windowManager->UpdateWindows();
+		if (m_windowManager->WindowsCount() ==0) {
+			Application::Stop();
+			return;
+		}	
+		//Events
+		EventSystem::Get().PerFrame();
 
-		while (m_running)
-		{
-			m_windowManager->UpdateWindows();
-			Gromit::EventSystem::Get().PerFrame();
-			if (m_windowManager->WindowsCount() < 1) {
-				Application::Stop();
-			}
-		}
+		//Renderer
+		//m_renderer.Update()
 	}
 
-	void Application::ShutDown() {
+	void Application::ShutDown()
+	{
 		Logging::Release();
 		m_windowManager->Release();
 		delete m_windowManager;
 	}
 
-	void Application::Stop() {
-		m_running = false;
-	
+	void Application::Stop()
+	{
+		m_isRunning = false;
 	}
 
 }

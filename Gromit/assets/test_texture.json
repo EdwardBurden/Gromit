@@ -1,6 +1,6 @@
 {
   "guid": 345455675675,
-  "type": "texture",
+  "type": "Texture",
   "name": "test256",
   "path": "/test256.png",
   "width": 256,

@@ -21,7 +21,7 @@ namespace Gromit {
 	};
 }
 
-#define GL_TRACE(...)    Gromit::Logging::GetLogger()->trace(__VA_ARGS__)
-#define GL_INFO(...)     Gromit::Logging::GetLogger()->info(__VA_ARGS__)
-#define GL_WARN(...)     Gromit::Logging::GetLogger()->warn(__VA_ARGS__)
-#define GL_ERROR(...)    Gromit::Logging::GetLogger()->error(__VA_ARGS__)
+#define GL_TRACE(...)    Gromit::Logging::GetLogger()->trace(__VA_ARGS__);
+#define GL_INFO(...)     Gromit::Logging::GetLogger()->info(__VA_ARGS__);
+#define GL_WARN(...)     Gromit::Logging::GetLogger()->warn(__VA_ARGS__);
+#define GL_ERROR(...)    Gromit::Logging::GetLogger()->error(__VA_ARGS__);
