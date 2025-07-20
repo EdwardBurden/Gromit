@@ -10,12 +10,19 @@
 
 namespace Gromit
 {
-	class  AssetManager
+	class GROMIT_API AssetManager
 	{
 	public:
 		AssetManager() {
 		}
 		~AssetManager() {}
+
+
+
+		void IdentifyAssets(std::string directory);
+		void LoadAsset(int guid);
+
+	private:
 
 		template<typename T>
 		void IdentifyAsset(Asset& assetbase, json data)
@@ -37,11 +44,6 @@ namespace Gromit
 			}
 			derivedPtr->RefCount++;
 		}
-
-		void IdentifyAssets(std::string directory);
-		void LoadAsset(int guid);
-
-	private:
 		std::map<int, Asset*> m_assetLookup;
 	};
 }

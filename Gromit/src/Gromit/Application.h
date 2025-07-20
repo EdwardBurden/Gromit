@@ -27,7 +27,7 @@ namespace Gromit {
 		static bool m_isRunning;
 		WindowManager* m_windowManager;
 		Renderer* m_renderer;
-		//EventSystem* m_eventSystem = nullptr;
+		AssetManager* m_assetManager;
 	};
 
 	Application* CreateApplication();

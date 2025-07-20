@@ -24,7 +24,10 @@ void ExampleApplication::StartUp()
 	//UREG_EVENT(MouseClickEvent, this);
 
 
+	m_assetManager->LoadAsset(1);
+	//m_renderer->SubmitTest(Model1);
 	//RenderTest.
+	// 
 	// tell assetmanage to load the model, with dependencies
 	//m_renderer->SubmitTest(Model1);
 	//Load material using assetamanger

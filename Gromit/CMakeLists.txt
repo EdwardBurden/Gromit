@@ -25,6 +25,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/d
 target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/stb_image/include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/spdlog/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glad/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glm)
 target_precompile_headers(${PROJECT_NAME} PRIVATE "src/Gromit/pch.h")
 # Define a symbol to control DLL exports (optional but recommended)
  target_compile_definitions(${PROJECT_NAME} PRIVATE GROMIT_EXPORTS)

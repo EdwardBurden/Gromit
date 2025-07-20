@@ -29,21 +29,13 @@ namespace Gromit {
 
 	RenderAPI* Renderer::GetAPI()
 	{
+		//Vertex v;
+		//v.Position = glm::vec3(1, 1, 1);
 		return m_activeRender;
 	}
 
 	void Renderer::Update()
 	{
 		m_activeRender->Update();
-	}
-
-	void Renderer::SubmitTest(float vertices[])
-	{
-		//vbo = m_activeRender->BindVertexBuffer(vertices);
-	}
-
-	void Renderer::DrawTest()
-	{
-		//m_activeRender->Draw(vbo);
 	}
 }

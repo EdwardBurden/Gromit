@@ -24,16 +24,8 @@ namespace Gromit {
 		m_windowManager->CreateWindow(500, 500, 400, 400, "DLL Test2");
 		m_isRunning = true;
 
-		AssetManager assetMan;
-		assetMan.IdentifyAssets("assets");
-		assetMan.LoadAsset(345455675675);
-		assetMan.LoadAsset(545);
-		assetMan.LoadAsset(123434);
-		assetMan.LoadAsset(999);
-		//look in the asset folder, find and serilized files.
-		// load the .json file and keep in memory deserilized
-		// load testure when needed
-		//
+		m_assetManager = new AssetManager();
+		m_assetManager->IdentifyAssets("assets");
 	}
 
 	void Application::Run()
