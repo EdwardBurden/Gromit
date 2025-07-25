@@ -6,22 +6,24 @@
 #include "MeshAsset.h"
 #include "ModelAsset.h"
 #include "../Logging/Logging.h"
+#include "../IEngineService.h"
 
 
 namespace Gromit
 {
-	class GROMIT_API AssetManager
+	class GROMIT_API AssetManager : public IEngineService
 	{
 	public:
-		AssetManager() {
+		AssetManager()
+		{
+			std::cout << "AssetManager Constructor" << std::endl;
 		}
-		~AssetManager() {}
-
-
 
 		void IdentifyAssets(std::string directory);
 		void LoadAsset(int guid);
-
+		void OnStartUp() override;
+		void OnShutDown() override;
+		bool OnUpdate() override;
 	private:
 
 		template<typename T>

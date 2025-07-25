@@ -23,8 +23,8 @@ void ExampleApplication::StartUp()
 	//TRIG_EVENT(Gromit::MouseClickEvent, 0);
 	//UREG_EVENT(MouseClickEvent, this);
 
-
-	m_assetManager->LoadAsset(1);
+	auto a = Gromit::ServiceLocator::GetService<Gromit::AssetManager>();
+	a->LoadAsset(1);
 	//m_renderer->SubmitTest(Model1);
 	//RenderTest.
 	// 
@@ -58,7 +58,8 @@ bool ExampleApplication::DoSomethingWindow(Gromit::WindowsResizeEvent& event) {
 
 bool ExampleApplication::DoSomethingMouse(Gromit::MouseClickEvent& event) {
 	GL_INFO("Call Back Fired for Mouse Event");
-	m_windowManager->CreateWindow(900, 100, 300, 300, "EXE");
+	auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();
+	w->CreateWindow(900, 100, 300, 300, "EXE");
 	return false;
 	//UREG_EVENT(Gromit::MouseClickEvent, this);
 }

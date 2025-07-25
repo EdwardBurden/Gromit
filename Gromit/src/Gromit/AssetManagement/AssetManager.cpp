@@ -8,6 +8,23 @@ namespace fs = std::filesystem;
 using json = nlohmann::json;
 namespace Gromit
 {	
+	void AssetManager::OnStartUp()
+	{
+		IdentifyAssets("assets"); //temp
+	}
+
+	void AssetManager::OnShutDown()
+	{
+		//todo release all
+	}
+
+	bool AssetManager::OnUpdate()
+	{
+		//todo handle load queu for assets
+		return false;
+	}
+
+
 	void AssetManager::IdentifyAssets(std::string directory) // only loads json
 	{
 		fs::path current = fs::current_path();

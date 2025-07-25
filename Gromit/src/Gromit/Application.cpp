@@ -1,5 +1,6 @@
 #pragma once
 #include "Application.h"
+#include <typeinfo>
 
 namespace Gromit {
 
@@ -12,33 +13,43 @@ namespace Gromit {
 
 	void Application::StartUp()
 	{
-
-		Logging::Init();
-
-		m_renderer = new Renderer();
-		m_renderer->SetAPI(RenderAPIType::OpenGL);
-
-		m_windowManager = new WindowManager();
-		m_windowManager->Init();
-		m_windowManager->CreateWindow(100, 100, 400, 400, "DLL Test1");
-		m_windowManager->CreateWindow(500, 500, 400, 400, "DLL Test2");
 		m_isRunning = true;
+		ServiceLocator::RegisterService<Logging>();
+		ServiceLocator::RegisterService<Renderer>();
+		ServiceLocator::RegisterService<WindowManager>();
+		ServiceLocator::RegisterService<AssetManager>();
+		ServiceLocator::RegisterService<EventSystem>();
 
-		m_assetManager = new AssetManager();
-		m_assetManager->IdentifyAssets("assets");
+
+		//Logging* logPtr = ServiceLocator::GetService<Logging>();
+
+		ServiceLocator::StartUp();
+		//Logging::Init();
+
+		//m_renderer = new Renderer();
+		//const std::type_info typeID = typeid(m_renderer);
+		//m_renderer->SetAPI(RenderAPIType::OpenGL);
+
+		//m_windowManager = new WindowManager();
+		//m_windowManager->Init();
+		//auto assetManager =ServiceLocator::GetService<AssetManager>();
+		//assetManager->IdentifyAssets("assets");
+
+		//m_serviceLocator.StartUp();
 	}
 
 	void Application::Run()
 	{
 		//TODO use layer system Her
 		//Window
-		m_windowManager->UpdateWindows();
-		if (m_windowManager->WindowsCount() ==0) {
-			Application::Stop();
-			return;
-		}	
+		//m_windowManager->UpdateWindows();
+		ServiceLocator::Update();
+		//if (m_windowManager->WindowsCount() ==0) {
+		//	Application::Stop();
+		//	return;
+		//}	
 		//Events
-		EventSystem::Get().PerFrame();
+		//EventSystem::Get().PerFrame();
 
 		//Renderer
 		//m_renderer.Update()
@@ -46,9 +57,11 @@ namespace Gromit {
 
 	void Application::ShutDown()
 	{
-		Logging::Release();
-		m_windowManager->Release();
-		delete m_windowManager;
+		ServiceLocator::ShutDown();
+		//Logging::Release();
+		//m_windowManager->Release();
+		//delete m_windowManager;
+		//todo remove from register here
 	}
 
 	void Application::Stop()

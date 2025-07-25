@@ -1,13 +1,23 @@
 #include "Renderer.h"
-
-//OpenGL
 #include "../RenderAPIs/OpenGL/OpenGL_RenderAPI.h"
 
-namespace Gromit {
+namespace Gromit
+{
+	void Renderer::OnStartUp()
+	{
+		SetAPI(RenderAPIType::OpenGL);
+	}
 
-	RenderAPI* Renderer::m_activeRender;
+	void Renderer::OnShutDown()
+	{
 
-	int Renderer::vbo = 0;
+	}
+
+	bool Renderer::OnUpdate()
+	{
+		m_activeRender->Update();
+		return false;
+	}
 
 	void Renderer::SetAPI(RenderAPIType renderApiType)
 	{
@@ -26,16 +36,8 @@ namespace Gromit {
 		}
 	}
 
-
 	RenderAPI* Renderer::GetAPI()
 	{
-		//Vertex v;
-		//v.Position = glm::vec3(1, 1, 1);
 		return m_activeRender;
-	}
-
-	void Renderer::Update()
-	{
-		m_activeRender->Update();
 	}
 }

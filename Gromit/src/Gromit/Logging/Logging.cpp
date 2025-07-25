@@ -1,17 +1,22 @@
 #pragma once
 #include "Logging.h"
 
-
-namespace Gromit {
-
+namespace Gromit 
+{
 	std::shared_ptr<spdlog::logger> Logging::s_logger;
 
-	void Logging::Init() {
+	void Logging::OnStartUp()
+	{
 		s_logger = spdlog::stdout_color_mt("console");
 	}
 
-	void Logging::Release() {
-		//delete things
+	void Logging::OnShutDown()
+	{
+		s_logger.reset();
 	}
 
+	bool Logging::OnUpdate()
+	{
+		return false;
+	}
 }

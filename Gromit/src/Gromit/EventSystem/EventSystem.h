@@ -4,19 +4,25 @@
 #include "WindowEvent.h"
 #include "../Core.h"
 #include "../pch.h"
+#include "../IEngineService.h"
+#include "../ServiceLocator.h"
 
-namespace Gromit {
-	class GROMIT_API EventSystem {
+namespace Gromit 
+{
+	class GROMIT_API EventSystem : public IEngineService
+	{
 	public:
 		template<typename T>
 		using EventFn = std::function<bool(T&)>;
 	
-		EventSystem() {};
-		~EventSystem() {};
-		inline static EventSystem& Get() {
-			static EventSystem instance;
-			return instance;
+		EventSystem() 
+		{
+			std::cout << "EventSystem Constructor" << std::endl;
 		}
+
+		void OnStartUp() override;
+		void OnShutDown() override;
+		bool OnUpdate() override;
 		
 		template<typename T>
 		void RegisterListener(void* listener, EventFn<T> func) {
@@ -31,8 +37,11 @@ namespace Gromit {
 
 				return false; // Not the right type, don't call the function
 				};
-			auto eventType = T::GetStaticEventType();
-			m_registeredCallbacks[eventType][listener] = wrapper;
+			EventType eventType = T::GetStaticEventType();
+			std::unordered_map<void*, std::function<bool(EventBase&)>> temp;
+			//m_registeredCallbacks[eventType] = temp;
+			m_registeredCallbacks[eventType] = temp;
+			//m_registeredCallbacks[eventType][listener] = wrapper;
 		}
 
 		template<typename T>
@@ -51,20 +60,8 @@ namespace Gromit {
 			m_frameTriggeredEvents.push_back(e);
 		}
 
-		void PerFrame() {
-			while (!m_frameTriggeredEvents.empty())
-			{
-				auto event = m_frameTriggeredEvents.front();
-				TriggerEvent(*event);
-				m_frameTriggeredEvents.pop_front();
-				delete event;
-			}
-		}
 
 	private:
-		EventSystem(const EventSystem&) = delete;     // no copy
-		EventSystem& operator=(const EventSystem&) = delete; // no assignment
-
 		void TriggerEvent(EventBase& event) {
 			auto registered = m_registeredCallbacks[event.GetEventType()]; //todo check if any are avialable
 			for (auto& it : registered) {
@@ -73,15 +70,22 @@ namespace Gromit {
 		}
 		std::list<EventBase*> m_frameTriggeredEvents;
 
-
 		using callbacks = std::unordered_map<void*, std::function<bool(EventBase&)>>; // may change, will need them orderer by priority
 		std::unordered_map<EventType, callbacks> m_registeredCallbacks;
 	};
 }
 
-#define REG_EVENT(ClassType, listener, func)	Gromit::EventSystem::Get().RegisterListener<ClassType> \
+#define REG_EVENT(ClassType, listener, func)                                \
+    do {                                                                    \
+        auto* sys = Gromit::ServiceLocator::GetService<Gromit::EventSystem>(); \
+        assert(sys && "EventSystem not registered in ServiceLocator!");    \
+        sys->RegisterListener<ClassType>(listener, [listener](ClassType& e) { return func(e); }); \
+    } while (0)
+
+
+//#define REG_EVENT(ClassType, listener, func)	Gromit::ServiceLocator::GetService<Gromit::EventSystem>()->RegisterListener<ClassType> \
 (listener, [listener](ClassType& e) { return func(e); });
 
-#define REG_EVENT_STATIC(ClassType, listener, func) Gromit::EventSystem::Get().RegisterListener<ClassType>(listener, func)
-#define UREG_EVENT(ClassType, listener) Gromit::EventSystem::Get().UnregisterListener<ClassType>(listener)
-#define TRIG_EVENT(ClassType, ...) Gromit::EventSystem::Get().Trigger<ClassType>(__VA_ARGS__)
+#define REG_EVENT_STATIC(ClassType, listener, func) Gromit::ServiceLocator::GetService<Gromit::EventSystem>()->RegisterListener<ClassType>(listener, func)
+#define UREG_EVENT(ClassType, listener) Gromit::ServiceLocator::GetService<Gromit::EventSystem>()->UnregisterListener<ClassType>(listener)
+#define TRIG_EVENT(ClassType, ...) Gromit::ServiceLocator::GetService<Gromit::EventSystem>()->Trigger<ClassType>(__VA_ARGS__)

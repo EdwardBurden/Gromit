@@ -2,17 +2,22 @@
 #include "../Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+#include "../IEngineService.h"
 
-namespace Gromit {
-
-	class GROMIT_API Logging
+namespace Gromit 
+{
+	class GROMIT_API Logging : public IEngineService
 	{
 	public:
-		Logging();
-		~Logging();
+		Logging() 
+		{
+			std::cout << "Logging Constructor" << std::endl;
+		}
 
-		static void Init();
-		static void Release();
+
+		void OnStartUp() override;
+		void OnShutDown() override;
+		bool OnUpdate() override;
 
 		inline static std::shared_ptr<spdlog::logger>& GetLogger() { return s_logger; };
 

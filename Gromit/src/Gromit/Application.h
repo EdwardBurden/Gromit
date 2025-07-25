@@ -5,6 +5,7 @@
 #include "WindowManager.h"
 #include "AssetManagement/AssetManager.h"
 #include "Renderer/Renderer.h"
+#include "ServiceLocator.h"
 
 namespace Gromit {
 
@@ -25,9 +26,6 @@ namespace Gromit {
 		static void Stop();
 	protected:
 		static bool m_isRunning;
-		WindowManager* m_windowManager;
-		Renderer* m_renderer;
-		AssetManager* m_assetManager;
 	};
 
 	Application* CreateApplication();
