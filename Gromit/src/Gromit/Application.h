@@ -7,17 +7,10 @@
 #include "Renderer/Renderer.h"
 #include "ServiceLocator.h"
 
-namespace Gromit {
-
-	//todo make layer system with list
-	//Logging
-	//EventSystem
-	//WindowManager
-	//Assetmanager
-	//Renderer
-
-
-	class GROMIT_API Application {
+namespace Gromit 
+{
+	class GROMIT_API Application
+	{
 	public:
 		static bool IsRunning();
 		virtual void StartUp();

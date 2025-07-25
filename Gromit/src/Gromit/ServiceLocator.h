@@ -4,6 +4,7 @@
 #include <map>
 #include <typeinfo> // Required for typeid
 #include <typeindex>
+
 namespace Gromit
 {
 	class GROMIT_API ServiceLocator
@@ -13,7 +14,8 @@ namespace Gromit
 		static void RegisterService()
 		{
 			std::type_index index = typeid(T);
-			if (m_registry.contains(index)) return; // Already registered
+			if (m_registry.contains(index))
+				return;
 
 			auto ptr = new T();
 			m_registry[index] = ptr;
@@ -24,14 +26,12 @@ namespace Gromit
 		static T* GetService()
 		{
 			auto it = m_registry.find(typeid(T));
-			if (it != m_registry.end())
-				return static_cast<T*>(it->second);
+			if (it == m_registry.end())
+				return nullptr;
 
-			// Optionally log or assert here
-			return nullptr;
+			return static_cast<T*>(it->second);
 		}
 
-		//IEngineService GetService();
 		static void StartUp()
 		{
 			for (auto service : m_registerOrder)

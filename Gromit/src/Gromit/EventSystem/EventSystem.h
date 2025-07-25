@@ -38,10 +38,7 @@ namespace Gromit
 				return false; // Not the right type, don't call the function
 				};
 			EventType eventType = T::GetStaticEventType();
-			std::unordered_map<void*, std::function<bool(EventBase&)>> temp;
-			//m_registeredCallbacks[eventType] = temp;
-			m_registeredCallbacks[eventType] = temp;
-			//m_registeredCallbacks[eventType][listener] = wrapper;
+			m_registeredCallbacks[eventType][listener] = wrapper;
 		}
 
 		template<typename T>
@@ -62,14 +59,16 @@ namespace Gromit
 
 
 	private:
-		void TriggerEvent(EventBase& event) {
+		void TriggerEvent(EventBase& event)
+		{
 			auto registered = m_registeredCallbacks[event.GetEventType()]; //todo check if any are avialable
 			for (auto& it : registered) {
 				bool handled = it.second(event);
 			}
 		}
-		std::list<EventBase*> m_frameTriggeredEvents;
 
+
+		std::list<EventBase*> m_frameTriggeredEvents;
 		using callbacks = std::unordered_map<void*, std::function<bool(EventBase&)>>; // may change, will need them orderer by priority
 		std::unordered_map<EventType, callbacks> m_registeredCallbacks;
 	};

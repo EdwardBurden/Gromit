@@ -49,14 +49,16 @@ void ExampleApplication::Run()
 }
 
 
-bool ExampleApplication::DoSomethingWindow(Gromit::WindowsResizeEvent& event) {
+bool ExampleApplication::DoSomethingWindow(Gromit::WindowsResizeEvent& event)
+{
 
 	GL_INFO("Width:{0}, Height:{1}", event.Width, event.Height);
 	return false;
 }
 
 
-bool ExampleApplication::DoSomethingMouse(Gromit::MouseClickEvent& event) {
+bool ExampleApplication::DoSomethingMouse(Gromit::MouseClickEvent& event) 
+{
 	GL_INFO("Call Back Fired for Mouse Event");
 	auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();
 	w->CreateWindow(900, 100, 300, 300, "EXE");
