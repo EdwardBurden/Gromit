@@ -19,6 +19,14 @@ namespace Gromit
 		return false;
 	}
 
+	void Renderer::Temp() {
+		m_activeRender->Temp();
+	}
+
+	void Renderer::SetGlobalContext() {
+		m_activeRender->SetGlobalContext();
+	}
+
 	void Renderer::SetAPI(RenderAPIType renderApiType)
 	{
 		//todo clean up existing

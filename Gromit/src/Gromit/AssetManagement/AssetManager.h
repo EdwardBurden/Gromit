@@ -23,7 +23,7 @@ namespace Gromit
 		void LoadAsset(int guid);
 		void OnStartUp() override;
 		void OnShutDown() override;
-		bool OnUpdate() override;
+		bool OnUpdate();
 	private:
 
 		template<typename T>

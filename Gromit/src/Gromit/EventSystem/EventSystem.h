@@ -22,7 +22,7 @@ namespace Gromit
 
 		void OnStartUp() override;
 		void OnShutDown() override;
-		bool OnUpdate() override;
+		bool OnUpdate();
 		
 		template<typename T>
 		void RegisterListener(void* listener, EventFn<T> func) {

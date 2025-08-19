@@ -17,7 +17,7 @@ namespace Gromit
 
 		void OnStartUp() override;
 		void OnShutDown() override;
-		bool OnUpdate() override;
+		bool OnUpdate();
 
 		inline static std::shared_ptr<spdlog::logger>& GetLogger() { return s_logger; };
 

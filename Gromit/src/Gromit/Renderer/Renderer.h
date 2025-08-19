@@ -24,13 +24,11 @@ namespace Gromit
 		void SetAPI(RenderAPIType renderApiType);
 		RenderAPI* GetAPI();
 
-		void Update();
-		void SubmitTest(float vertices[]);
-		void DrawTest();
-
+		void Temp();
+		void SetGlobalContext();
 		void OnStartUp() override;
 		void OnShutDown() override;
-		bool OnUpdate() override;
+		bool OnUpdate();
 	private:
 		RenderAPI* m_activeRender;
 	};

@@ -7,6 +7,7 @@
 
 namespace Gromit {
 	namespace OpenGL {
+		//TODO NUKE
 		class OpenGL_Context : public Context
 		{
 		public:

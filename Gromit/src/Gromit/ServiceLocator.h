@@ -39,16 +39,7 @@ namespace Gromit
 				service->OnStartUp();
 			}
 		}
-		static void Update()
-		{
-			for (auto service : m_registerOrder)
-			{
-				auto stop = service->OnUpdate();
-				if (stop) {
-					return;
-				}
-			}
-		}
+
 		static void ShutDown()
 		{
 			for (auto it = m_registerOrder.rbegin(); it != m_registerOrder.rend(); ++it) //todo have second iterator list instead

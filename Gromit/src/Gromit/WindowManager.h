@@ -15,13 +15,13 @@ namespace Gromit
 		void Init();
 		void Release();
 		Window* CreateWindow(int x, int y, int width, int height, const char* title);
-		void UpdateWindows();
 		int WindowsCount();
 
 		void OnStartUp() override;
 		void OnShutDown() override;
-		bool OnUpdate() override;
-	protected:
+		bool OnUpdate() ;
+
+	
 		std::vector<Window*> m_windows;
 	};
 }
