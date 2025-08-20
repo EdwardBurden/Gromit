@@ -1,4 +1,5 @@
 #include "OpenGL_RenderAPI.h"
+#include "../../AssetManagement/AssetManager.h"
 
 namespace Gromit {
 	namespace OpenGL {
@@ -17,7 +18,6 @@ namespace Gromit {
 			"{\n"
 			"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 			"}\n\0";
-		unsigned int shaderProgram;
         unsigned int VBO, EBO;
 
 		void OnErrorCallback(int error, const char* description);
@@ -42,42 +42,15 @@ namespace Gromit {
 		}
 		void OpenGL_RenderAPI::Temp()
 		{
-            unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-            glCompileShader(vertexShader);
-            // check for shader compile errors
-            int success;
-            char infoLog[512];
-            glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-            if (!success)
-            {
-                glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-                std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-            }
-            // fragment shader
-            unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-            glCompileShader(fragmentShader);
-            // check for shader compile errors
-            glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-            if (!success)
-            {
-                glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-                std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-            }
-            // link shaders
-         shaderProgram = glCreateProgram();
-            glAttachShader(shaderProgram, vertexShader);
-            glAttachShader(shaderProgram, fragmentShader);
-            glLinkProgram(shaderProgram);
-            // check for linking errors
-            glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-            if (!success) {
-                glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-                std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-            }
-            glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);
+			const auto& manager = ServiceLocator::GetService<AssetManager>();
+			manager->LoadAsset(545);
+			manager->LoadAsset(123434);
+			ShaderAsset* vert = manager->GetAsset<ShaderAsset>(545);
+			ShaderAsset* frag = manager->GetAsset<ShaderAsset>(123434);
+			manager->LoadAsset(123434);
+			//fs::path current = fs::current_path();
+
+            m_tempShader = CreateShader(manager->pathTemp + vert->path , manager->pathTemp + frag->path);
 
             // set up vertex data (and buffer(s)) and configure vertex attributes
             // ------------------------------------------------------------------
@@ -141,9 +114,15 @@ namespace Gromit {
 			return w;
 		}
 
+        Shader* OpenGL_RenderAPI::CreateShader(std::string vertexPath, std::string fragmentPath)
+        {
+            Shader* s = new OpenGL_Shader(vertexPath, fragmentPath);
+            return s;
+        }
+
 		void OpenGL_RenderAPI::Update()
 		{
-			glUseProgram(shaderProgram);
+			glUseProgram(m_tempShader->ShaderProgramId);
 			glBindVertexArray(m_vertexArray);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}

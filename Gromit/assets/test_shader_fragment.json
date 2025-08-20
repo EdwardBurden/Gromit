@@ -2,6 +2,6 @@
   "guid": 123434,
   "type": "Shader",
   "name": "testLitFrag",
-  "path": "/testLit.frag",
+  "path": "/testLitFrag.frag",
   "shaderType": "Fragment"
 }

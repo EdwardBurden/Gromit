@@ -7,7 +7,7 @@
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 namespace Gromit
-{	
+{
 	void AssetManager::OnStartUp()
 	{
 		IdentifyAssets("assets"); //temp
@@ -30,8 +30,9 @@ namespace Gromit
 		fs::path current = fs::current_path();
 		GL_INFO(directory);
 		current /= directory;
-	//	std::stringstream buffer;
-		//int test = 0;
+		pathTemp = current.string();
+		//	std::stringstream buffer;
+			//int test = 0;
 		for (const auto& entry : fs::directory_iterator(current))
 		{
 			fs::path p = entry.path();
@@ -49,19 +50,19 @@ namespace Gromit
 					switch (assetbase.type)
 					{
 					case AssetType::Texture:
-						IdentifyAsset<TextureAsset>(assetbase, data);
+						IdentifyAsset<TextureAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Shader:
-						IdentifyAsset<ShaderAsset>(assetbase, data);
+						IdentifyAsset<ShaderAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Material:
-						IdentifyAsset<MaterialAsset>(assetbase, data);
+						IdentifyAsset<MaterialAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Mesh:
-						IdentifyAsset<MeshAsset>(assetbase, data);
+						IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Model:
-						IdentifyAsset<ModelAsset>(assetbase, data);
+						IdentifyAsset<ModelAsset>(assetbase.guid, p.string(), data);
 						break;
 					default:
 						break;

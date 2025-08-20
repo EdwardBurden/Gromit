@@ -24,14 +24,26 @@ namespace Gromit
 		void OnStartUp() override;
 		void OnShutDown() override;
 		bool OnUpdate();
+		std::string pathTemp;
+
+		template<typename T>
+		T* GetAsset(int guid)
+		{
+			auto asset = m_assetLookup[guid];
+			T* derivedPtr = static_cast<T*>(asset);
+			return derivedPtr;
+		}
+
+
 	private:
 
 		template<typename T>
-		void IdentifyAsset(Asset& assetbase, json data)
+		void IdentifyAsset(int guid, std::string fullPath, json data)
 		{
 			auto* m = new T();
 			from_json(data, *m);
-			m_assetLookup[assetbase.guid] = m;
+			m->fullPath = fullPath;
+			m_assetLookup[guid] = m;
 			//test = assetbase.guid;
 			GL_INFO(m->name);
 		}
@@ -46,6 +58,7 @@ namespace Gromit
 			}
 			derivedPtr->RefCount++;
 		}
+
 		std::map<int, Asset*> m_assetLookup;
 	};
 }
