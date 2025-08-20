@@ -22,12 +22,13 @@ namespace Gromit
 		ServiceLocator::StartUp();
 
 		auto renderer = ServiceLocator::GetService<Renderer>();
-		renderer->Temp();
+		//renderer->Temp();
 		const auto& windows = ServiceLocator::GetService<WindowManager>();
 		for (size_t i = 0; i < windows->WindowsCount(); i++)
 		{
 			windows->m_windows[i]->Activate();
-			renderer->SetGlobalContext();
+			renderer->Temp();
+			//renderer->SetGlobalContext();
 		}
 	}
 

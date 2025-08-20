@@ -27,7 +27,7 @@ namespace Gromit {
 			}
 			//m_context = new OpenGL_Context(m_window);
 			//m_context->Init();
-			glfwMakeContextCurrent(OpenGL_RenderAPI::SharedContext);
+			glfwMakeContextCurrent(m_window);
 			glfwSetWindowPos(m_window, x, y);
 			int version = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 			if (version != 1)

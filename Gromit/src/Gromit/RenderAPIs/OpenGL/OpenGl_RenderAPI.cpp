@@ -121,12 +121,12 @@ namespace Gromit {
 
         void OpenGL_RenderAPI::SetGlobalContext()
         {
-            glUseProgram(shaderProgram);
+           /* glUseProgram(shaderProgram);
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBindVertexArray(m_vertexArray);
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(0);*/
         }
 
 		void OpenGL_RenderAPI::TerminateWindows()
@@ -143,7 +143,7 @@ namespace Gromit {
 
 		void OpenGL_RenderAPI::Update()
 		{
-			//glUseProgram(shaderProgram);
+			glUseProgram(shaderProgram);
 			glBindVertexArray(m_vertexArray);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
