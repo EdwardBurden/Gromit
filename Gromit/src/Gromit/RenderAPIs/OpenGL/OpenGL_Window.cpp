@@ -11,14 +11,14 @@ namespace Gromit {
 
 		OpenGL_Window::OpenGL_Window(int x, int y, int width, int height, const char* title)
 		{
-			if (OpenGL_RenderAPI::SharedContext == nullptr) 
+			if (OpenGL_Window::SharedContext == nullptr)
 			{
 				m_window = glfwCreateWindow(width, height, title, NULL, NULL);
-				OpenGL_RenderAPI::SharedContext = m_window;
+				OpenGL_Window::SharedContext = m_window;
 			}
 			else 
 			{
-				m_window = glfwCreateWindow(width, height, title, NULL, OpenGL_RenderAPI::SharedContext);
+				m_window = glfwCreateWindow(width, height, title, NULL, OpenGL_Window::SharedContext);
 			}
 			if (m_window == NULL)
 			{

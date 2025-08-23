@@ -38,6 +38,16 @@ namespace Gromit::OpenGL
 			glDeleteProgram(ShaderProgramId);
 		}
 
+		void OpenGL_Shader::Bind()
+		{
+			glUseProgram(ShaderProgramId);
+		}
+
+		void OpenGL_Shader::Unbind()
+		{
+			glUseProgram(0);
+		}
+
 		void OpenGL_Shader::Construct(const char* vertexShader, const char* fragmentShader)
 		{
 			int  success;

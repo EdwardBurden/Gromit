@@ -1,7 +1,8 @@
 #pragma once
 #include "../Core.h"
 
-namespace Gromit {
+namespace Gromit 
+{
 	class GROMIT_API Context
 	{
 	public: 

@@ -43,6 +43,7 @@ namespace Gromit
 			windows->m_windows[i]->PostUpdate();
 		}
 		windows->OnUpdate();
+		ServiceLocator::GetService<EventSystem>()->OnUpdate();
 		//ServiceLocator::GetService<Renderer>()->OnUpdate();
 
 

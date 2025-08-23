@@ -2,8 +2,8 @@
 #include "../Core.h"
 #include "Context.h"
 
-namespace Gromit {
-
+namespace Gromit 
+{
 	class GROMIT_API Window
 	{
 	public:

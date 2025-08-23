@@ -2,23 +2,23 @@
 
 #include <string>
 #include "../Shader.h"
-namespace Gromit
+namespace Gromit::OpenGL
 {
-	namespace OpenGL {
-		class OpenGL_Shader : public Shader
-		{
-		public:
-			
-		private:
-			unsigned int VertexShaderId;
-			unsigned int FragmentShaderId;
+	class OpenGL_Shader : public Shader
+	{
+	public:
 
-		public:
-			OpenGL_Shader(std::string vertexPath, std::string fragmentPath);
-			~OpenGL_Shader();
+	private:
+		unsigned int ShaderProgramId;
+		unsigned int VertexShaderId;
+		unsigned int FragmentShaderId;
 
-		private:
-			void Construct(const char* vertexPath, const char* fragmentPath);
-		};
-	}
+	public:
+		OpenGL_Shader(std::string vertexPath, std::string fragmentPath);
+		~OpenGL_Shader();
+		void Bind() override;
+		void Unbind() override;
+	private:
+		void Construct(const char* vertexPath, const char* fragmentPath);
+	};
 }

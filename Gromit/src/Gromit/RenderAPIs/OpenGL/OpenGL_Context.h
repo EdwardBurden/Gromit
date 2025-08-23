@@ -5,19 +5,19 @@
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 
-namespace Gromit {
-	namespace OpenGL {
-		//TODO NUKE
-		class OpenGL_Context : public Context
-		{
-		public:
-			OpenGL_Context(GLFWwindow* m_window);
-			void Init() override;
-			void Activate() override;
-			void SwapBuffers() override;
 
-		private:
-			GLFWwindow* m_window;
-		};
-	}
+namespace Gromit::OpenGL
+{
+	//TODO NUKE
+	class OpenGL_Context : public Context
+	{
+	public:
+		OpenGL_Context(GLFWwindow* m_window);
+		void Init() override;
+		void Activate() override;
+		void SwapBuffers() override;
+
+	private:
+		GLFWwindow* m_window;
+	};
 }
