@@ -55,10 +55,10 @@ namespace Gromit {
 			// set up vertex data (and buffer(s)) and configure vertex attributes
 			// ------------------------------------------------------------------
 			float vertices[] = {
-				 0.5f,  0.5f, 0.0f,  // top right
-				 0.5f, -0.5f, 0.0f,  // bottom right
-				-0.5f, -0.5f, 0.0f,  // bottom left
-				-0.5f,  0.5f, 0.0f   // top left 
+				 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 0.2f , 0.9f,  // top right
+				 0.5f, -0.5f, 0.0f, 1.0f, 0.5f, 0.2f , 0.9f, // bottom right
+				-0.5f, -0.5f, 0.0f, 1.0f, 0.5f, 1.2f , 0.9f, // bottom left
+				-0.5f,  0.5f, 0.0f, 0.0f, 0.5f, 0.2f , 0.9f, // top left 
 			};
 			unsigned int indices[] = {  // note that we start from 0!
 				0, 1, 3,  // first Triangle
@@ -74,8 +74,16 @@ namespace Gromit {
 			m_tempIB = CreateIndexBuffer(indices, sizeof(indices));
 			m_tempIB->Bind();
 
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(0);
+			BufferLayout layout = 
+			{
+				{ShaderDataType::Float3 , "position"},
+				{ShaderDataType::Float4 , "color"}
+			};
+			layout.SetAttributes();
+			//layout.Some
+			//m_tempVB->SetLayout(layout);
+			//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+			//glEnableVertexAttribArray(0);
 
 			// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 			//glBindBuffer(GL_ARRAY_BUFFER, 0);

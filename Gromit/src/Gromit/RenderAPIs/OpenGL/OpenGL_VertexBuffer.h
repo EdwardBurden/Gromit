@@ -1,5 +1,6 @@
 #pragma once
 #include "../VertexBuffer.h"
+#include "../BufferLayout.h"
 
 namespace Gromit::OpenGL
 {
@@ -10,7 +11,6 @@ namespace Gromit::OpenGL
 		~OpenGL_VertexBuffer();
 		void Bind() override;
 		void Unbind() override;
-
 	private:
 		unsigned int VertexBufferId;
 	};

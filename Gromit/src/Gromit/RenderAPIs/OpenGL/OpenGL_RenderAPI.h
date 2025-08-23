@@ -5,6 +5,7 @@
 #include "OpenGL_Shader.h"
 #include "OpenGL_VertexBuffer.h"
 #include "OpenGL_IndexBuffer.h"
+#include "../BufferLayout.h"
 
 
 namespace Gromit::OpenGL
@@ -20,7 +21,6 @@ namespace Gromit::OpenGL
 		Shader* CreateShader(std::string vertexPath, std::string fragmentPath) override;
 		VertexBuffer* CreateVertexBuffer(float* vertices, uint32_t size) override;
 		IndexBuffer* CreateIndexBuffer(uint32_t* indices, uint32_t size) override;
-		static inline GLFWwindow* SharedContext = nullptr;
 		void Update() override;
 	private:
 		unsigned int m_vertexArray, m_indexBuffer; //temp
