@@ -16,11 +16,16 @@ namespace Gromit
 	struct ShaderAsset : public Asset
 	{
 		ShaderType shaderType;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ShaderAsset, guid, type, name, path, shaderType)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ShaderAsset, guid, type, name, path, shaderType);
+		std::string source;
 
 		void Load() override
 		{
-			//
+			std::ifstream vertexFile(assetPath);
+			std::stringstream stringStream;
+			stringStream << vertexFile.rdbuf();
+			source = stringStream.str();
+			vertexFile.close();
 		}
 	};
 }

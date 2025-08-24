@@ -11,7 +11,10 @@ namespace Gromit::OpenGL
 		~OpenGL_VertexBuffer();
 		void Bind() override;
 		void Unbind() override;
+		void SetLayout(BufferLayout* layout) override;
+		BufferLayout* GetLayout() override;
 	private:
 		unsigned int VertexBufferId;
+		BufferLayout* m_layout;
 	};
 }

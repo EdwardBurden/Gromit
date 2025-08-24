@@ -3,32 +3,12 @@
 
 namespace Gromit::OpenGL
 {
-	//namespace OpenGL
-//	{
-		OpenGL_Shader::OpenGL_Shader(std::string vertexPath, std::string fragmentPath)
+		OpenGL_Shader::OpenGL_Shader(const ShaderAsset& vert, const ShaderAsset& frag)
 		{
 			ShaderProgramId = glCreateProgram();
 			VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 			FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-
-			const char* vertexShaderSource;
-			const char* fragmentShaderSource;
-
-			std::ifstream vertexFile(vertexPath);
-			std::stringstream stringStream;
-			stringStream << vertexFile.rdbuf();
-			std::string vertexString = stringStream.str();
-			vertexShaderSource = vertexString.c_str();
-			vertexFile.close();
-
-			stringStream.str("");
-			std::ifstream fragmentFile(fragmentPath);
-			stringStream << fragmentFile.rdbuf();
-			std::string tmp = stringStream.str();
-			fragmentShaderSource = tmp.c_str();
-			fragmentFile.close();
-
-			Construct(vertexShaderSource, fragmentShaderSource);
+			Construct(vert.source.c_str(), frag.source.c_str());
 		}
 
 		OpenGL_Shader::~OpenGL_Shader()

@@ -3,7 +3,7 @@
 
 namespace Gromit 
 {
-	class GROMIT_API Shader
+	class Shader
 	{
 	public:
 		virtual void Bind() = 0;

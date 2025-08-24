@@ -24,4 +24,13 @@ namespace Gromit::OpenGL
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	}
+	void OpenGL_VertexBuffer::SetLayout(BufferLayout* layout)
+	{
+		m_layout = layout;
+	}
+
+	BufferLayout* OpenGL_VertexBuffer::GetLayout()
+	{
+		return m_layout;
+	}
 }

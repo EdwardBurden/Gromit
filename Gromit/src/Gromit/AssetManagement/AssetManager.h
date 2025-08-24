@@ -43,6 +43,7 @@ namespace Gromit
 			auto* m = new T();
 			from_json(data, *m);
 			m->fullPath = fullPath;
+			m->assetPath = pathTemp + m->path;
 			m_assetLookup[guid] = m;
 			//test = assetbase.guid;
 			GL_INFO(m->name);
@@ -55,6 +56,7 @@ namespace Gromit
 			if (!derivedPtr->isloaded)
 			{
 				derivedPtr->Load();
+				derivedPtr->isloaded = true;
 			}
 			derivedPtr->RefCount++;
 		}

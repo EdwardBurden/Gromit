@@ -3,7 +3,7 @@
 
 namespace Gromit 
 {
-	class GROMIT_API Context
+	class Context
 	{
 	public: 
 		virtual void Init() = 0;

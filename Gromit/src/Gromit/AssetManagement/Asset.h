@@ -33,6 +33,7 @@ namespace Gromit
 		
 			
 		std::string fullPath;
+		std::string assetPath;
 		bool isloaded;
 		int RefCount;
 

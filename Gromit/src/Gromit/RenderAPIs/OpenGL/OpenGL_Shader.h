@@ -2,6 +2,8 @@
 
 #include <string>
 #include "../Shader.h"
+#include "../../AssetManagement/ShaderAsset.h"
+
 namespace Gromit::OpenGL
 {
 	class OpenGL_Shader : public Shader
@@ -14,7 +16,7 @@ namespace Gromit::OpenGL
 		unsigned int FragmentShaderId;
 
 	public:
-		OpenGL_Shader(std::string vertexPath, std::string fragmentPath);
+		OpenGL_Shader(const ShaderAsset& vert, const ShaderAsset& frag);
 		~OpenGL_Shader();
 		void Bind() override;
 		void Unbind() override;

@@ -4,7 +4,7 @@
 
 namespace Gromit 
 {
-	class GROMIT_API Window
+	class Window
 	{
 	public:
 		int m_x, m_y;

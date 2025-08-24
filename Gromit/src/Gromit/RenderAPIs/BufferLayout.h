@@ -2,78 +2,36 @@
 
 #include <initializer_list>
 #include <map>
-#include <glad/glad.h> 
 
-enum class ShaderDataType
+namespace Gromit
 {
-	None = 0,
-	Float3 = sizeof(float) * 3,
-	Float4 = sizeof(float) * 4,
-};
-
-struct BufferLayoutElement
-{
-	const ShaderDataType m_shaderDataType;
-	const char* m_title;
-	BufferLayoutElement(const ShaderDataType& shaderDataType, const char* title)
-		: m_shaderDataType(shaderDataType), m_title(title)
+	enum class ShaderDataType
 	{
-	}
-};
+		None = 0,
+		Float3 = sizeof(float) * 3,
+		Float4 = sizeof(float) * 4,
+	};
 
-
-
-class BufferLayout //todo needs moving into opengl namespace with virtual base
-{
-public:
-	BufferLayout(std::initializer_list<BufferLayoutElement> init) : data(init)
+	struct BufferLayoutElement
 	{
-		stride = 0;
-		for (size_t i = 0; i < data.size(); i++)
+		const ShaderDataType m_shaderDataType;
+		const char* m_title;
+		BufferLayoutElement(const ShaderDataType& shaderDataType, const char* title)
+			: m_shaderDataType(shaderDataType), m_title(title)
 		{
-			GLsizei size = (GLsizei)data[i].m_shaderDataType;
-			stride += size;
 		}
-	}
-	~BufferLayout() {}
+	};
 
-	inline void SetAttributes()
+	class BufferLayout //todo needs moving into opengl namespace with virtual base
 	{
-		int offset = 0;
-		for (size_t i = 0; i < data.size(); i++)
-		{
-			//data
-			glEnableVertexAttribArray(i);
-			const auto& type = data[i].m_shaderDataType;
-			GLsizei size = (GLsizei)type;
-			glVertexAttribPointer(i, ShaderDataTypeToComponentSize(type), ShaderDataTypeToEnum(type), GL_FALSE, stride, (void*)offset); //todo add normalise switch
-			offset += size;
-		}
-	}
+	public:
 
-	inline GLint ShaderDataTypeToComponentSize(const ShaderDataType& type)
-	{
-		switch (type)
-		{
-		case ShaderDataType::None:   return 0;
-		case ShaderDataType::Float3: return 3;
-		case ShaderDataType::Float4: return 4;
-			return 0;
-		}
-	}
+		~BufferLayout() {}
 
-	inline GLenum ShaderDataTypeToEnum(const ShaderDataType& type)
-	{
-		switch (type)
-		{
-		case ShaderDataType::None:   return 0;
-		case ShaderDataType::Float3: return GL_FLOAT;
-		case ShaderDataType::Float4: return GL_FLOAT;
-			return 0;
-		}
-	}
+		virtual void SetStride() = 0;
+		virtual void SetAttributes() = 0;
 
-private:
-	std::vector<BufferLayoutElement> data;
-	int stride;
-};
+	protected:
+	};
+
+}
