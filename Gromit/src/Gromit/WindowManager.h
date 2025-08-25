@@ -21,7 +21,7 @@ namespace Gromit
 		void OnShutDown() override;
 		bool OnUpdate() ;
 
-	
+	private:
 		std::vector<Window*> m_windows;
 	};
 }

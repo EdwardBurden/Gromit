@@ -10,6 +10,7 @@ namespace Gromit::OpenGL
 		glGenBuffers(1, &IndexBufferId);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBufferId);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+		count = size;
 	}
 	OpenGL_IndexBuffer::~OpenGL_IndexBuffer()
 	{
@@ -22,5 +23,9 @@ namespace Gromit::OpenGL
 	void OpenGL_IndexBuffer::Unbind()
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
+	}
+	int OpenGL_IndexBuffer::Count()
+	{
+		return count;
 	}
 }

@@ -9,17 +9,9 @@ namespace Gromit {
 		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-		OpenGL_Window::OpenGL_Window(int x, int y, int width, int height, const char* title)
+		OpenGL_Window::OpenGL_Window(int x, int y, int width, int height, const char* title, GLFWwindow* shared)
 		{
-			if (OpenGL_Window::SharedContext == nullptr)
-			{
-				m_window = glfwCreateWindow(width, height, title, NULL, NULL);
-				OpenGL_Window::SharedContext = m_window;
-			}
-			else 
-			{
-				m_window = glfwCreateWindow(width, height, title, NULL, OpenGL_Window::SharedContext);
-			}
+			m_window = glfwCreateWindow(width, height, title, NULL, shared);
 			if (m_window == NULL)
 			{
 				GL_ERROR("Failed to create GLFW window");
@@ -61,14 +53,14 @@ namespace Gromit {
 		}
 
 		void OpenGL_Window::PreUpdate()
-		{	
+		{
 			if (m_window == nullptr || m_close)
 				return;
 
 			glfwGetFramebufferSize(m_window, &m_width, &m_height);
 			glfwMakeContextCurrent(m_window);
 			glViewport(0, 0, m_width, m_height);
-			glClearColor(0.002f * m_width, 0.003f* m_height, 0.3f, 1.0f);
+			glClearColor(0.002f * m_width, 0.003f * m_height, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 		}
 
@@ -109,7 +101,7 @@ namespace Gromit {
 			glfwSwapBuffers(window);
 		}
 
-		void ViewportResize(GLFWwindow* window, int width, int height) 
+		void ViewportResize(GLFWwindow* window, int width, int height)
 		{
 			OpenGL_Window* thisWindow = static_cast<OpenGL_Window*>(glfwGetWindowUserPointer(window));
 			TRIG_EVENT(WindowsResizeEvent, height, width);

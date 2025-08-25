@@ -21,15 +21,15 @@ namespace Gromit
 			std::cout << "Renderer Constructor" << std::endl;
 		}
 
-		void SetAPI(RenderAPIType renderApiType);
-		RenderAPI* GetAPI();
+		//static void PreScene();
+		//static void Submit(VertexArray* va);
+		//static void PostScene();
 
-		void Temp();
-		void SetGlobalContext();
+		void SetAPI(RenderAPIType renderApiType);
+		static  RenderAPI* GetAPI() { return m_activeRender; }
 		void OnStartUp() override;
 		void OnShutDown() override;
-		bool OnUpdate();
 	private:
-		RenderAPI* m_activeRender;
+		static RenderAPI* m_activeRender;
 	};
 }

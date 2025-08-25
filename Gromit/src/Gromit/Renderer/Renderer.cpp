@@ -3,6 +3,9 @@
 
 namespace Gromit
 {
+
+	 RenderAPI* Renderer::m_activeRender;
+
 	void Renderer::OnStartUp()
 	{
 		SetAPI(RenderAPIType::OpenGL);
@@ -11,20 +14,6 @@ namespace Gromit
 	void Renderer::OnShutDown()
 	{
 
-	}
-
-	bool Renderer::OnUpdate()
-	{
-		m_activeRender->Update();
-		return false;
-	}
-
-	void Renderer::Temp() {
-		m_activeRender->Temp();
-	}
-
-	void Renderer::SetGlobalContext() {
-		m_activeRender->SetGlobalContext();
 	}
 
 	void Renderer::SetAPI(RenderAPIType renderApiType)
@@ -39,13 +28,6 @@ namespace Gromit
 			break;
 		case Gromit::RenderAPIType::Vulkan:
 			break;
-		default:
-			break;
 		}
-	}
-
-	RenderAPI* Renderer::GetAPI()
-	{
-		return m_activeRender;
 	}
 }

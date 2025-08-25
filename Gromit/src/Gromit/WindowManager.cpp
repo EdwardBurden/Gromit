@@ -7,10 +7,6 @@ namespace Gromit
 		auto renderer = ServiceLocator::GetService<Renderer>();
 		auto api = renderer->GetAPI();
 		api->InitWindows();
-
-		CreateWindow(100, 100, 400, 400, "DLL Test1");
-		CreateWindow(800, 900, 400, 400, "DLL Test2");
-		//CreateWindow(800, 900, 400, 400, "DLL Test3");
 	}
 
 	void WindowManager::OnShutDown()
@@ -42,8 +38,6 @@ namespace Gromit
 	{
 		auto renderer = ServiceLocator::GetService<Renderer>();
 		auto api = renderer->GetAPI();
-		//maybe temp
-
 		Window* w = api->CreateWindow(x, y, width, height, title);
 		m_windows.push_back(w);
 		return w;

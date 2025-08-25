@@ -1,6 +1,4 @@
 #pragma once
-#include "../Core.h"
-#include "Context.h"
 
 namespace Gromit 
 {
@@ -14,6 +12,5 @@ namespace Gromit
 		virtual void PreUpdate() = 0;
 		virtual void PostUpdate() = 0;
 	protected:
-		//Context* m_context;
 	};
 }

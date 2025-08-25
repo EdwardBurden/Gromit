@@ -1,13 +1,13 @@
 #pragma once
-#include "../Core.h"
+#include "Window.h"
 
 namespace Gromit 
 {
 	class Context
 	{
 	public: 
-		virtual void Init() = 0;
-		virtual void Activate() = 0;
-		virtual void SwapBuffers() = 0;
+		static inline Context* SharedContext = nullptr;
+		// needs list of windows set to this context
+		virtual std::vector<Window*> GetWindows() = 0;
 	};
 }

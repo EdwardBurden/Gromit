@@ -3,7 +3,8 @@
 
 namespace Gromit::OpenGL
 {
-		OpenGL_Shader::OpenGL_Shader(const ShaderAsset& vert, const ShaderAsset& frag)
+	//todo make shaderprogram which takes list of shaderassets, and here only compile one shader
+		OpenGL_Shader::OpenGL_Shader(const ShaderAsset& vert, const ShaderAsset& frag) 
 		{
 			ShaderProgramId = glCreateProgram();
 			VertexShaderId = glCreateShader(GL_VERTEX_SHADER);

@@ -10,7 +10,9 @@ namespace Gromit::OpenGL
 		~OpenGL_IndexBuffer();
 		void Bind() override;
 		void Unbind() override;
+		 int Count() override;
 	private:
 		unsigned int IndexBufferId;
+		int count;
 	};
 }

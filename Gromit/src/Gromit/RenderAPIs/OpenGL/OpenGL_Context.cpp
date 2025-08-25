@@ -2,24 +2,29 @@
 
 namespace Gromit {
 	namespace OpenGL {
-		OpenGL_Context::OpenGL_Context(GLFWwindow* window)
+
+		std::vector<Window*> OpenGL_Context::GetWindows() //todo redo maybe
 		{
-			m_window = window;
+			std::vector<Window*> result;
+			result.reserve(m_windows.size()); // avoid reallocations
+			for (auto& win : m_windows) {
+				result.push_back(win); // take address -> Window*
+			}
+			return result;
 		}
 
-		void OpenGL_Context::Init()
+		void OpenGL_Context::AddWindow(OpenGL_Window* window)
 		{
-			glfwMakeContextCurrent(m_window);
+			m_windows.push_back(window);
 		}
 
-		void OpenGL_Context::Activate()
+		OpenGL_Window* OpenGL_Context::GetShared() 
 		{
-			glfwMakeContextCurrent(m_window);
-		}
-
-		void OpenGL_Context::SwapBuffers()
-		{
-			glfwSwapBuffers(m_window);
+			if (m_windows.size() == 0)
+			{
+				return nullptr;
+			}
+			return m_windows[0];
 		}
 
 	}

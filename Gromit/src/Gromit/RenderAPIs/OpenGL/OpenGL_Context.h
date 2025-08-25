@@ -1,23 +1,20 @@
 #pragma once
-#include "../Context.h"
-#include "../../Logging/Logging.h"
 
-#include <glad/glad.h> 
-#include <GLFW/glfw3.h>
+#include "../Context.h"
+#include "OpenGL_Window.h"
+#include "../Window.h"
 
 
 namespace Gromit::OpenGL
 {
-	//TODO NUKE
 	class OpenGL_Context : public Context
 	{
 	public:
-		OpenGL_Context(GLFWwindow* m_window);
-		void Init() override;
-		void Activate() override;
-		void SwapBuffers() override;
+		 std::vector<Window*> GetWindows() override;
+		 void AddWindow(OpenGL_Window* window);
+		 OpenGL_Window* GetShared();
 
 	private:
-		GLFWwindow* m_window;
+		std::vector<OpenGL_Window*> m_windows;
 	};
 }
