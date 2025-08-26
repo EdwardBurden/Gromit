@@ -7,6 +7,9 @@ find_package(spdlog REQUIRED)
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glfw")
 find_package(glfw3 3.3 REQUIRED)
 
+set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glm")
+find_package(glm CONFIG REQUIRED)
+
 find_package(OpenGL REQUIRED)
 
 file(GLOB_RECURSE GROMIT_SOURCE "src/Gromit/*.cpp" "dependencies/glad/src/glad.c" "src/Gromit/*.h")
@@ -16,7 +19,7 @@ add_library(${PROJECT_NAME} SHARED ${GROMIT_SOURCE})
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
-
+target_link_libraries(main PRIVATE glm::glm)
 
 # Public headers available to users of the engine
 message(${CMAKE_CURRENT_SOURCE_DIR}/src)
