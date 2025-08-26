@@ -4,3 +4,6 @@
 [submodule "Gromit/external/glfw"]
 	path = Gromit/external/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "Gromit/external/glm_fixed"]
+	path = Gromit/external/glm_fixed
+	url = https://github.com/g-truc/glm.git

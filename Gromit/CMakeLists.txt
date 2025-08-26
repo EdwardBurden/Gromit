@@ -19,7 +19,7 @@ add_library(${PROJECT_NAME} SHARED ${GROMIT_SOURCE})
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
-target_link_libraries(main PRIVATE glm::glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 
 # Public headers available to users of the engine
 message(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -28,7 +28,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/d
 target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/stb_image/include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/spdlog/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glad/include)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glm)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glm/include)
 target_precompile_headers(${PROJECT_NAME} PRIVATE "src/Gromit/pch.h")
 # Define a symbol to control DLL exports (optional but recommended)
  target_compile_definitions(${PROJECT_NAME} PRIVATE GROMIT_EXPORTS)
