@@ -17,10 +17,11 @@ namespace Gromit
 		{
 			///////////////TEMP PART
 			float vertices[] = {
-		 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 0.2f , 0.9f,  // top right
-		 0.5f, -0.5f, 0.0f, 1.0f, 0.5f, 0.2f , 0.9f, // bottom right
-		-0.5f, -0.5f, 0.0f, 1.0f, 0.5f, 1.2f , 0.9f, // bottom left
-		-0.5f,  0.5f, 0.0f, 0.0f, 0.5f, 0.2f , 0.9f, // top left 
+				// positions          // colors           // texture coords
+				 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+				 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+				-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+				-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 			};
 			unsigned int indices[] = {  // note that we start from 0!
 				0, 1, 3,  // first Triangle
@@ -29,17 +30,18 @@ namespace Gromit
 			BufferLayout* layout = Renderer::GetAPI()->CreateBufferLayout(
 				{
 					{ShaderDataType::Float3 , "position"},
-					{ShaderDataType::Float4 , "color"}
+					{ShaderDataType::Float3 , "color"},
+					{ShaderDataType::Float2 , "uvs"}
 				});
 			const auto& manager = ServiceLocator::GetService<AssetManager>();
-			manager->LoadAsset(545);
-			manager->LoadAsset(123434);
 			ShaderAsset* vert = manager->GetAsset<ShaderAsset>(545);
 			ShaderAsset* frag = manager->GetAsset<ShaderAsset>(123434);
+			TextureAsset* smileTextureAsset = manager->GetAsset<TextureAsset>(345455675675);
 			VertexArray* m_va[2];
 			//////////////
 
 			std::vector<VertexArray*> vArrays;
+			auto smileTexture = Renderer::GetAPI()->CreateTexture(*smileTextureAsset);
 			auto shader = Renderer::GetAPI()->CreateShader(*vert, *frag);
 			auto m_tempVB = Renderer::GetAPI()->CreateVertexBuffer(vertices, sizeof(vertices));
 			m_tempVB->SetLayout(layout);
@@ -54,7 +56,7 @@ namespace Gromit
 				va->Unbind();
 				vArrays.push_back(va);
 			}
-			RenderObject* robj = new RenderObject(shader, vArrays, m_tempVB, m_tempIB, context);
+			RenderObject* robj = new RenderObject(shader, smileTexture, vArrays, m_tempVB, m_tempIB, context);
 			return robj;
 		}
 
@@ -64,9 +66,11 @@ namespace Gromit
 			for (auto window : obj->m_context->GetWindows())
 			{
 				window->PreUpdate();
-				obj->m_shader->Bind();
+				obj->m_shader->Bind();	
+				obj->m_texture->Bind();
 				obj->m_contextbaseVA[index]->Bind();
 				Renderer::GetAPI()->DrawIndexes(obj->m_indexBuffer->Count());	//DRAW HERE
+				obj->m_texture->Unbind();
 				obj->m_shader->Unbind();
 				obj->m_contextbaseVA[index]->Unbind();
 				window->PostUpdate();

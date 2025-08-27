@@ -21,6 +21,10 @@ namespace Gromit
 		ServiceLocator::RegisterService<EventSystem>();
 		ServiceLocator::StartUp();
 
+		//temp load test
+		ServiceLocator::GetService<AssetManager>()->LoadIdentifiedAsset();
+		//
+
 		//temp
 		Context::SharedContext = Renderer::GetAPI()->CreateContext(); //temp
 		auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();

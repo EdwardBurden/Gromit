@@ -75,6 +75,11 @@ namespace Gromit::OpenGL
 		return new OpenGL_Context();
 	}
 
+	Texture* OpenGL_RenderAPI::CreateTexture(const TextureAsset& texture)
+	{
+		return new OpenGL_Texture(texture);
+	}
+
 	void OpenGL_RenderAPI::DrawIndexes(int count)
 	{
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);

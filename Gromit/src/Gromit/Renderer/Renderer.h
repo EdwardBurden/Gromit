@@ -2,7 +2,6 @@
 #include "../Core.h"
 #include "../RenderAPIs/RenderAPI.h"
 #include "../AssetManagement/AssetManager.h"
-#include "../Math/Math.h"
 
 namespace Gromit 
 {

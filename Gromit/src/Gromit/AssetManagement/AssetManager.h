@@ -18,7 +18,7 @@ namespace Gromit
 		{
 			std::cout << "AssetManager Constructor" << std::endl;
 		}
-
+		void LoadIdentifiedAsset();
 		void IdentifyAssets(std::string directory);
 		void LoadAsset(int guid);
 		void OnStartUp() override;

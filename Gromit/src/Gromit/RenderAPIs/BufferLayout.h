@@ -8,6 +8,7 @@ namespace Gromit
 	enum class ShaderDataType
 	{
 		None = 0,
+		Float2 = sizeof(float) * 2,
 		Float3 = sizeof(float) * 3,
 		Float4 = sizeof(float) * 4,
 	};

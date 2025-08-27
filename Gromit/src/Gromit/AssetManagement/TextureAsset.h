@@ -16,16 +16,19 @@ namespace Gromit
 	{
 		int width;
 		int height;
+		int nrChannels;
 		TextureFormat format;
 		bool generateMipMaps;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(TextureAsset, guid, type, name, path, width, height, format, generateMipMaps)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(TextureAsset, guid, type, name, path, width, height, format, generateMipMaps);
 
 		unsigned char* data;
+
 		//maybe have load method here later
 		void Load() override
 		{
-			int width, height, nrChannels;
-			data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+			stbi_set_flip_vertically_on_load(true); //add bool for this later
+			data = stbi_load(assetPath.c_str(), &width, &height, &nrChannels, 0);
+			//data = reinterpret_cast<char*>(loaded);
 		}
 	};
 }

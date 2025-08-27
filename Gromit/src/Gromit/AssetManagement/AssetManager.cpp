@@ -24,6 +24,13 @@ namespace Gromit
 		return false;
 	}
 
+	void AssetManager::LoadIdentifiedAsset()
+	{
+		for (auto& asset : m_assetLookup)
+		{
+			LoadAsset(asset.first);
+		}
+	}
 
 	void AssetManager::IdentifyAssets(std::string directory) // only loads json
 	{

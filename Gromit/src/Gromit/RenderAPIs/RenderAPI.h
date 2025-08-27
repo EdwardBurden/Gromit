@@ -6,9 +6,11 @@
 #include "VertexBuffer.h"
 #include "BufferLayout.h"
 #include "VertexArray.h"
+#include "Texture.h"
 
 #include "Context.h"
 #include "../AssetManagement/ShaderAsset.h"
+#include "../AssetManagement/TextureAsset.h"
 
 namespace Gromit
 {
@@ -25,6 +27,7 @@ namespace Gromit
 		virtual VertexArray* CreateVertexArray() = 0;
 		virtual BufferLayout* CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) = 0;
 		virtual Context* CreateContext() = 0;
+		virtual Texture* CreateTexture(const TextureAsset& texture) = 0;
 		virtual void DrawIndexes(int count) =0;
 	};
 }
