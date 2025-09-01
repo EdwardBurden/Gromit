@@ -26,7 +26,9 @@ namespace Gromit
 		VertexArray* m_va[2];
 		RenderObject* test;
 		Context* testContext;
+		Camera* camera;
 	};
 
 	Application* CreateApplication();
+
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "BufferLayout.h"
+#include "../Math/Math.h"
 
 namespace Gromit
 {

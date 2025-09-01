@@ -6,7 +6,7 @@ namespace Gromit::OpenGL
 	class OpenGL_IndexBuffer : public IndexBuffer
 	{
 	public:
-		OpenGL_IndexBuffer(uint32_t* indices, uint32_t size);
+		OpenGL_IndexBuffer(const std::vector<unsigned int>& indices);
 		~OpenGL_IndexBuffer();
 		void Bind() override;
 		void Unbind() override;

@@ -29,6 +29,12 @@ namespace Gromit::OpenGL
 			glUseProgram(0);
 		}
 
+		void OpenGL_Shader::SetUniform(std::string name, glm::mat4 matrix)
+		{
+			int vertexColorLocation = glGetUniformLocation(ShaderProgramId, name.c_str());
+			glUniformMatrix4fv(vertexColorLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+		}
+
 		void OpenGL_Shader::Construct(const char* vertexShader, const char* fragmentShader)
 		{
 			int  success;

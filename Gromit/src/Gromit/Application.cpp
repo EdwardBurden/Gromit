@@ -26,7 +26,9 @@ namespace Gromit
 		//
 
 		//temp
+
 		Context::SharedContext = Renderer::GetAPI()->CreateContext(); //temp
+		camera = new Camera(90, 1);
 		auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();
 		w->CreateWindow(100, 100, 400, 400, "DLL Test1");
 		w->CreateWindow(100, 100, 400, 400, "DLL Test2");
@@ -35,7 +37,8 @@ namespace Gromit
 
 	void Application::Run()
 	{
-		RenderCommands::DrawRenderObject(test);
+
+		RenderCommands::DrawRenderObject(test, camera);
 
 		ServiceLocator::GetService<WindowManager>()->OnUpdate();
 		ServiceLocator::GetService<EventSystem>()->OnUpdate();

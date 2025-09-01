@@ -59,7 +59,7 @@ endif()
 add_library(assimp::zlibstatic STATIC IMPORTED)
 
 # Create imported target assimp::assimp
-add_library(assimp::assimp SHARED IMPORTED)
+add_library(assimp::assimp STATIC IMPORTED)
 
 set_target_properties(assimp::assimp PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include;${_IMPORT_PREFIX}/include"
