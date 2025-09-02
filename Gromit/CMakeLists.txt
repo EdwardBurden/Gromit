@@ -23,7 +23,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 target_link_libraries(${PROJECT_NAME} PUBLIC glm::glm)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${ASSIMP_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC assimp::assimp)
 
 # Public headers available to users of the engine
 message(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -50,3 +50,18 @@ add_custom_command(
             "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
     COMMENT "Copying assets folder to output directory"
 )
+
+if (WIN32)
+
+
+
+    # Assimp’s DLL should be in the same dir as the import library
+    get_target_property(ASSIMP_IMPORTED_LOCATION  assimp::assimp IMPORTED_LOCATION_RELEASE)
+ get_filename_component(ASSIMP_DIR "${ASSIMP_IMPORTED_LOCATION}" DIRECTORY)
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+           "${CMAKE_SOURCE_DIR}/Gromit/dependencies/assimp/bin/assimp-vc143-mtd.dll"   # <- adjust depending on your toolchain
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    )
+endif()
