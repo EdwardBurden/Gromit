@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../RenderAPIs/RenderAPI.h"
-#include "../RenderAPIs/Context.h"
+#include "Math/Math.h"
+#include "RenderAPIs/RenderAPIs.h"
 
 namespace Gromit
 {

@@ -1,8 +1,9 @@
 #include "AssetManager.h"
-#include <json.hpp>
+#include "AssetManagement/AssetManagement.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
@@ -68,8 +69,8 @@ namespace Gromit
 					case AssetType::Mesh:
 						IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
 						break;
-					case AssetType::Model:
-						IdentifyAsset<ModelAsset>(assetbase.guid, p.string(), data);
+					case AssetType::Entity:
+						IdentifyAsset<EntityAsset>(assetbase.guid, p.string(), data);
 						break;
 					default:
 						break;
@@ -99,8 +100,8 @@ namespace Gromit
 		case AssetType::Mesh:
 			TryLoadAsset<MeshAsset>(asset);
 			break;
-		case AssetType::Model:
-			TryLoadAsset<ModelAsset>(asset);
+		case AssetType::Entity:
+			TryLoadAsset<EntityAsset>(asset);
 			break;
 		default:
 			break;

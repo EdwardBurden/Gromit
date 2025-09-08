@@ -1,5 +1,5 @@
 #pragma once
-#include "../IndexBuffer.h"
+#include "RenderAPIs/IndexBuffer.h"
 
 namespace Gromit::OpenGL
 {

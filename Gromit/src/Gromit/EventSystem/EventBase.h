@@ -1,5 +1,5 @@
 #pragma once
-#include "EventType.h"
+#include "EventSystem/EventType.h"
 
 namespace Gromit {
 	class EventBase {

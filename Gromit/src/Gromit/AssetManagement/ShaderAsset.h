@@ -1,5 +1,8 @@
 #pragma once
 #include "Asset.h"
+#include <sstream>
+#include <iostream>     // std::cout
+#include <fstream>      // std::ifstream
 namespace Gromit
 {
 	enum class ShaderType {

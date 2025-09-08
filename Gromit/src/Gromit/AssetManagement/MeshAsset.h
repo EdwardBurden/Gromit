@@ -5,8 +5,8 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "../Logging/Logging.h"
-#include "../Math/Math.h"
+#include "Logging/Logging.h"
+#include "Math/Math.h"
 
 namespace Gromit
 {

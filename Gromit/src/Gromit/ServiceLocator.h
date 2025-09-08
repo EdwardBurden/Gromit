@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Core.h"
 #include "IEngineService.h"
 #include <map>
-#include <typeinfo> // Required for typeid
+#include <typeinfo>
 #include <typeindex>
+#include  <vector>
 
 namespace Gromit
 {

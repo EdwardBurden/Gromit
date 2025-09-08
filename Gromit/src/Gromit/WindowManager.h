@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
-#include "Renderer/Renderer.h"
+#include "ServiceLocator.h"
+#include "Render/Render.h"
 #include "Application.h"
 
 namespace Gromit 

@@ -1,10 +1,8 @@
 #pragma once
-
-#include <string>
-#include "../Shader.h"
+#include "RenderAPIs/Shader.h"
 #include "../../AssetManagement/ShaderAsset.h"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "Math/Math.h"
+
 namespace Gromit::OpenGL
 {
 	class OpenGL_Shader : public Shader

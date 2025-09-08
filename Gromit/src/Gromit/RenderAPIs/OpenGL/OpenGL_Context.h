@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../Context.h"
-#include "OpenGL_Window.h"
-#include "../Window.h"
-
+#include "RenderAPIs/Context.h"
+#include "RenderAPIs/OpenGL/OpenGL_Window.h"
 
 namespace Gromit::OpenGL
 {

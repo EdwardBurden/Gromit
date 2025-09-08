@@ -1,0 +1,28 @@
+{
+  "guid": 1,
+  "type": "Entity",
+  "name": "TestEntity",
+  "path": "",
+  "mesh": 32422333,
+  "material": 999,
+  "components": [
+    {
+      "componentType": "Transform",
+      "position": {
+        "x": 1,
+        "y": 2,
+        "z": 23
+      },
+      "rotation": {
+        "x": 90,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "componentType": "MeshRenderer",
+      "mesh": 32422333,
+      "material": 999
+    }
+  ]
+}

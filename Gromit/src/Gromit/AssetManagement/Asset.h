@@ -1,7 +1,6 @@
 #pragma once;
 
 #include <json.hpp>
-using json = nlohmann::json;
 
 namespace Gromit
 {
@@ -11,7 +10,7 @@ namespace Gromit
 		Shader = 1,
 		Material = 2,
 		Mesh = 3,
-		Model = 4
+		Entity = 4
 	};
 	NLOHMANN_JSON_SERIALIZE_ENUM(AssetType,
 		{
@@ -19,7 +18,7 @@ namespace Gromit
 			{ AssetType::Shader, "Shader" },
 			{ AssetType::Material, "Material" },
 			{ AssetType::Mesh, "Mesh" },
-			{ AssetType::Model, "Model" }
+			{ AssetType::Entity, "Entity" }
 		});
 
 	struct Asset

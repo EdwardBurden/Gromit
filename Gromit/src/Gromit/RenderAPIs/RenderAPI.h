@@ -1,16 +1,16 @@
 #pragma once
-#include "../Core.h"
-#include "Window.h"
-#include "Shader.h"
-#include "IndexBuffer.h"
-#include "VertexBuffer.h"
-#include "BufferLayout.h"
-#include "VertexArray.h"
-#include "Texture.h"
-
-#include "Context.h"
+#include "RenderAPIs/BufferLayout.h"
+#include "RenderAPIs/Context.h"
+#include "RenderAPIs/IndexBuffer.h"
+#include "RenderAPIs/RenderAPI.h"
+#include "RenderAPIs/Shader.h"
+#include "RenderAPIs/Texture.h"
+#include "RenderAPIs/VertexArray.h"
+#include "RenderAPIs/VertexBuffer.h"
+#include "RenderAPIs/Window.h"
+#include "Math/Math.h"
 #include "../AssetManagement/ShaderAsset.h"
-#include "../AssetManagement/TextureAsset.h"
+#include "../AssetManagement/TextureAsset.h" //todo
 
 namespace Gromit
 {

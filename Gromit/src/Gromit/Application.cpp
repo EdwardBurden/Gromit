@@ -28,21 +28,20 @@ namespace Gromit
 		//temp
 
 		Context::SharedContext = Renderer::GetAPI()->CreateContext(); //temp
-		camera = new Camera(90, 1);
 		auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();
 		w->CreateWindow(100, 100, 400, 400, "DLL Test1");
 		w->CreateWindow(100, 100, 400, 400, "DLL Test2");
-		test = 	RenderCommands::CreateRenderObject(Context::SharedContext); //would pass in mesh and shaer assets here
+		RenderCommands::CreateRenderObject(Context::SharedContext); //would pass in mesh and shaer assets here
 	}
 
 	void Application::Run()
 	{
 
-		RenderCommands::DrawRenderObject(test, camera);
+		//RenderCommands::DrawRenderObject(test, camera);
 
 		ServiceLocator::GetService<WindowManager>()->OnUpdate();
 		ServiceLocator::GetService<EventSystem>()->OnUpdate();
-		//ServiceLocator::GetService<Renderer>()->OnUpdate();
+		ServiceLocator::GetService<Renderer>()->OnUpdate();
 		//ServiceLocator::Update();
 	}
 

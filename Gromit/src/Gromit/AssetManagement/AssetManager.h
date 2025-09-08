@@ -1,13 +1,8 @@
 #pragma once
-#include "Asset.h"
-#include "TextureAsset.h"
-#include "ShaderAsset.h"
-#include "MaterialAsset.h"
-#include "MeshAsset.h"
-#include "ModelAsset.h"
-#include "../Logging/Logging.h"
-#include "../IEngineService.h"
-
+#include "AssetManagement/Asset.h"
+#include "Logging/Logging.h"
+#include "IEngineService.h"
+#include <json.hpp>
 
 namespace Gromit
 {
@@ -38,7 +33,7 @@ namespace Gromit
 	private:
 
 		template<typename T>
-		void IdentifyAsset(int guid, std::string fullPath, json data)
+		void IdentifyAsset(int guid, std::string fullPath, nlohmann::json data)
 		{
 			auto* m = new T();
 			from_json(data, *m);

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../BufferLayout.h"
-#include <glad/glad.h> 
+#include "RenderAPIs/BufferLayout.h"
+#include "RenderAPIs/OpenGL/OpenGL.h"
 
 namespace Gromit::OpenGL
 {

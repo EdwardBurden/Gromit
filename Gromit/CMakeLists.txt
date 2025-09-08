@@ -27,7 +27,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC assimp::assimp)
 
 # Public headers available to users of the engine
 message(${CMAKE_CURRENT_SOURCE_DIR}/src)
-#target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/Gromit)
 target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/nlohmann_json)
 target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/stb_image/include)
 target_include_directories(${PROJECT_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/spdlog/include)
@@ -52,9 +52,6 @@ add_custom_command(
 )
 
 if (WIN32)
-
-
-
     # Assimp’s DLL should be in the same dir as the import library
     get_target_property(ASSIMP_IMPORTED_LOCATION  assimp::assimp IMPORTED_LOCATION_RELEASE)
  get_filename_component(ASSIMP_DIR "${ASSIMP_IMPORTED_LOCATION}" DIRECTORY)

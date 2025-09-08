@@ -1,5 +1,5 @@
 #pragma once
-#include "EventBase.h"
+#include "EventSystem/EventBase.h"
 
 namespace Gromit {
 	class WindowsResizeEvent : public EventBase

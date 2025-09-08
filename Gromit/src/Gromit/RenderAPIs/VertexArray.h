@@ -1,7 +1,7 @@
 #pragma once
 
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
+#include "RenderAPIs/VertexBuffer.h"
+#include "RenderAPIs/IndexBuffer.h"
 
 namespace Gromit
 {

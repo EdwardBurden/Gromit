@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../VertexArray.h"
+#include "RenderAPIs/VertexArray.h"
 
 namespace Gromit::OpenGL
 {

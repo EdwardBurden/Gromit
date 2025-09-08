@@ -1,7 +1,10 @@
 #pragma once
-#include "../Core.h"
-#include "../RenderAPIs/RenderAPI.h"
-#include "../AssetManagement/AssetManager.h"
+#include "Core.h"
+#include "RenderAPIs/RenderAPI.h"
+#include "AssetManagement/AssetManager.h"
+#include "RenderObject.h"
+#include "Camera.h"
+#include "Math/Math.h"
 
 namespace Gromit 
 {
@@ -23,12 +26,16 @@ namespace Gromit
 		//static void PreScene();
 		//static void Submit(VertexArray* va);
 		//static void PostScene();
-
+		void OnUpdate();
+		void DrawRenderObject(RenderObject* obj, Camera* camera, float update);
 		void SetAPI(RenderAPIType renderApiType);
 		static  RenderAPI* GetAPI() { return m_activeRender; }
 		void OnStartUp() override;
 		void OnShutDown() override;
 	private:
 		static RenderAPI* m_activeRender;
+		RenderObject* test;
+		Camera* camera;
+		float update;
 	};
 }

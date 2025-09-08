@@ -1,7 +1,5 @@
 #pragma once
-#include "../Core.h"
-#include <glm/glm.hpp>
-#include <string>
+#include "Math/Math.h"
 
 namespace Gromit 
 {

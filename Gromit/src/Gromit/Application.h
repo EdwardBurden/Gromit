@@ -4,10 +4,8 @@
 #include "Logging/Logging.h"
 #include "WindowManager.h"
 #include "AssetManagement/AssetManager.h"
-#include "Renderer/Renderer.h"
+#include "Render/Render.h"
 #include "ServiceLocator.h"
-#include "Renderer/RenderObject.h"
-#include "Renderer/RenderCommands.h"
 
 namespace Gromit 
 {
@@ -22,11 +20,7 @@ namespace Gromit
 	protected:
 		static bool m_isRunning;
 		//temp
-		Shader* m_tempShader;
-		VertexArray* m_va[2];
-		RenderObject* test;
 		Context* testContext;
-		Camera* camera;
 	};
 
 	Application* CreateApplication();

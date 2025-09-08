@@ -1,10 +1,8 @@
 #pragma once
-#include "../Window.h"
+#include "RenderAPIs/Window.h"
 #include "../../Logging/Logging.h"
 #include "../../EventSystem/EventSystem.h"
-#include <glad/glad.h> 
-#include <GLFW/glfw3.h>
-
+#include "RenderAPIs/OpenGL/OpenGL.h"
 
 namespace Gromit::OpenGL
 {
