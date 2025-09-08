@@ -27,6 +27,7 @@ namespace Gromit
 		//static void Submit(VertexArray* va);
 		//static void PostScene();
 		void OnUpdate();
+		void AddDrawObject(RenderObject* obj);
 		void DrawRenderObject(RenderObject* obj, Camera* camera, float update);
 		void SetAPI(RenderAPIType renderApiType);
 		static  RenderAPI* GetAPI() { return m_activeRender; }
@@ -34,8 +35,8 @@ namespace Gromit
 		void OnShutDown() override;
 	private:
 		static RenderAPI* m_activeRender;
-		RenderObject* test;
 		Camera* camera;
 		float update;
+		std::vector<RenderObject*> tempRenderList;
 	};
 }

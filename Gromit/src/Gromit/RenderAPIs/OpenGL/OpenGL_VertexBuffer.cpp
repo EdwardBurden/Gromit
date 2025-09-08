@@ -15,7 +15,7 @@ namespace Gromit::OpenGL
 	{
 		glGenBuffers(1, &VertexBufferId);
 		glBindBuffer(GL_ARRAY_BUFFER, VertexBufferId);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 	}
 
 	OpenGL_VertexBuffer::~OpenGL_VertexBuffer()

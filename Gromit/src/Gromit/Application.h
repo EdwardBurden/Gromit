@@ -21,6 +21,7 @@ namespace Gromit
 		static bool m_isRunning;
 		//temp
 		Context* testContext;
+		RenderObject* testRender;
 	};
 
 	Application* CreateApplication();

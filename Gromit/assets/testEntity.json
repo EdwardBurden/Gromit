@@ -3,8 +3,6 @@
   "type": "Entity",
   "name": "TestEntity",
   "path": "",
-  "mesh": 32422333,
-  "material": 999,
   "components": [
     {
       "componentType": "Transform",

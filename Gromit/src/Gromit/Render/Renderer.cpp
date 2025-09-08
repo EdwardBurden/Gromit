@@ -34,30 +34,20 @@ namespace Gromit
 		}
 	}
 
-	void Renderer::OnUpdate() 
+	void Renderer::AddDrawObject(RenderObject* obj)
 	{
-		DrawRenderObject(RenderCommands::test, camera, update);
-		update += 0.0005f;
+		tempRenderList.push_back(obj);
 	}
 
-
-	void Renderer::DrawRenderObject(RenderObject* obj, Camera* camera, float update)
+	void Renderer::OnUpdate()
 	{
-		int index = 0;
-		for (auto window : obj->m_context->GetWindows())
+		// begin scene
+		for (auto obj : tempRenderList)
 		{
-			window->PreUpdate();
-			obj->m_shader->Bind();
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, obj->m_position);
-			model *= glm::rotate(model, update, glm::vec3(0.05f, 0.2f, 0.05f));
-			obj->m_shader->SetUniform("modelViewProjection", camera->GetViewPrrojection() * model);
-			obj->m_contextbaseVA[index]->Bind();
-			Renderer::GetAPI()->DrawIndexes(obj->m_indexBuffer->Count());	//DRAW HERE
-			obj->m_shader->Unbind();
-			obj->m_contextbaseVA[index]->Unbind();
-			window->PostUpdate();
-			index++;
+			RenderCommands::DrawRenderObject(obj, camera, update);
 		}
+		//end scene
+		update += 0.0005f;
+		tempRenderList.clear();
 	}
 }

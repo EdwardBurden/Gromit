@@ -2,27 +2,10 @@
 
 namespace Gromit
 {
-	RenderObject* RenderCommands::test = nullptr;
-
-	RenderObject* RenderCommands::CreateRenderObject(Context* context)
+	RenderObject* RenderCommands::CreateRenderObject(Context* context, TextureAsset* texture, ShaderAsset* vert, ShaderAsset* frag, MeshAsset* mesh, BufferLayout* layout)
 	{
-		///////////////TEMP PART
-
-		BufferLayout* layout = Renderer::GetAPI()->CreateBufferLayout(
-			{
-				{ShaderDataType::Float3 , "position"},
-				{ShaderDataType::Float3 , "normal"},
-				{ShaderDataType::Float2 , "texCoords"}
-			});
-		const auto& manager = ServiceLocator::GetService<AssetManager>();
-		MeshAsset* mesh = manager->GetAsset<MeshAsset>(32422333);
-		ShaderAsset* vert = manager->GetAsset<ShaderAsset>(545);
-		ShaderAsset* frag = manager->GetAsset<ShaderAsset>(123434);
-		TextureAsset* smileTextureAsset = manager->GetAsset<TextureAsset>(345455675675);
-		//////////////
-
 		std::vector<VertexArray*> vArrays;
-		auto smileTexture = Renderer::GetAPI()->CreateTexture(*smileTextureAsset);
+		auto smileTexture = Renderer::GetAPI()->CreateTexture(*texture);
 		auto shader = Renderer::GetAPI()->CreateShader(*vert, *frag);
 		auto m_tempVB = Renderer::GetAPI()->CreateVertexBuffer(mesh->vertices);
 		m_tempVB->SetLayout(layout);
@@ -39,7 +22,26 @@ namespace Gromit
 			va->Unbind();
 			vArrays.push_back(va);
 		}
-		test = new RenderObject(shader, smileTexture, vArrays, m_tempVB, m_tempIB, context);
-		return test;
+		return new RenderObject(shader, smileTexture, vArrays, m_tempVB, m_tempIB, context);
+	}
+
+	void RenderCommands::DrawRenderObject(RenderObject* obj, Camera* camera, float update) //todo pass in time plus other render params
+	{
+		int index = 0;
+		for (auto window : obj->m_context->GetWindows())
+		{
+			window->PreUpdate();
+			obj->m_shader->Bind();
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, obj->m_position);
+			model *= glm::rotate(model, update, glm::vec3(59.50f, 2.9f, 0.0045f));
+			obj->m_shader->SetUniform("modelViewProjection", camera->GetViewPrrojection() * model);
+			obj->m_contextbaseVA[index]->Bind();
+			Renderer::GetAPI()->DrawIndexes(obj->m_indexBuffer->Count());	//DRAW HERE
+			obj->m_shader->Unbind();
+			obj->m_contextbaseVA[index]->Unbind();
+			window->PostUpdate();
+			index++;
+		}
 	}
 }
