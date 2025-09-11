@@ -12,3 +12,22 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 add_subdirectory(Gromit)
 add_subdirectory(GromitExample)
+
+install(TARGETS Gromit
+    RUNTIME DESTINATION .      # .exe, .dll on Windows
+    LIBRARY DESTINATION .      # .so (Linux shared libs)
+    ARCHIVE DESTINATION .      # .lib (Windows static libs)
+)
+
+install(TARGETS GromitExample
+    RUNTIME DESTINATION .
+)
+
+#include(InstallRequiredSystemLibraries)
+set(CPACK_PACKAGE_NAME "MyGame")
+set(CPACK_PACKAGE_VENDOR "Edward Burden")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My cool game built with CMake + CPack")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
+set(CPACK_GENERATOR "ZIP")
+include(CPack)
