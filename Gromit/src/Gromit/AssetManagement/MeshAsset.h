@@ -1,28 +1,36 @@
-#pragma once
-#include "Asset.h"
-
-
+﻿#pragma once
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "Logging/Logging.h"
 #include "Math/Math.h"
+#include "MeshMetaData.h"
+#include "AssetManagement/Asset.h"
 
 namespace Gromit
 {
+	struct AssetNew {};
 
-	struct MeshAsset : public Asset
+	struct MeshAsset : public AssetNew
 	{
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(MeshAsset, guid, type, name, path);
+		using MetaType = MeshMetaData;
+		static constexpr size_t PoolCapacity = 50; //declared once
 
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+		static constexpr size_t MAX_VERTICES = 100; //todo look into pool here too?
+		static constexpr size_t MAX_INDICES = 500;
+
+		Vertex vertices[MAX_VERTICES]; //todo be stack
+		unsigned int indices[MAX_INDICES];
 		glm::mat4 transformMatrix;
 
-		void Load() override
+		unsigned int verticesSize;
+		unsigned int indicesSize;
+
+		MeshAsset(MeshMetaData* metaData)
 		{
+			//can move some into cuistom import
 			Assimp::Importer importer;
-			const aiScene* scene = importer.ReadFile(assetPath, aiProcess_Triangulate);
+			const aiScene* scene = importer.ReadFile(metaData->m_assetPath, metaData->m_importSetting);
 
 			if (nullptr == scene) {
 				const char* errorString = importer.GetErrorString();
@@ -53,8 +61,10 @@ namespace Gromit
 			}
 		}
 
-		 inline void ProcessMesh(aiMesh* mesh)
+		void ProcessMesh(aiMesh* mesh)
 		{
+			int vertIndex = 0;
+			int indicesIndex = 0;
 			for (size_t i = 0; i < mesh->mNumVertices; i++)
 			{
 				Vertex vertex;
@@ -78,18 +88,23 @@ namespace Gromit
 				else
 					vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 
-				vertices.push_back(vertex);
+				vertices[vertIndex] = vertex;
+				vertIndex++;
 			}
 
-			//indices
+
 			for (size_t i = 0; i < mesh->mNumFaces; i++)
 			{
 				aiFace face = mesh->mFaces[i];
 				for (size_t j = 0; j < face.mNumIndices; j++)
 				{
-					indices.push_back(face.mIndices[j]);
+					indices[indicesIndex] = face.mIndices[j];
+					indicesIndex++;
 				}
 			}
+
+			verticesSize = vertIndex;
+			indicesSize = indicesIndex;
 		}
 
 		static inline glm::mat4 ConvertMatrixToGLMFormat(const aiMatrix4x4& from)

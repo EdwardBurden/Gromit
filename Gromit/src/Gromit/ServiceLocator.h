@@ -48,6 +48,13 @@ namespace Gromit
 			{
 				(*it)->OnShutDown();
 			}
+
+			for (auto reg : m_registry)
+			{
+				delete reg.second;
+			}
+			m_registry.clear();
+			m_registerOrder.clear();
 		}
 
 	private:

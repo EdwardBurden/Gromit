@@ -5,12 +5,12 @@
 namespace Gromit::OpenGL
 {
 
-	OpenGL_IndexBuffer::OpenGL_IndexBuffer(const std::vector<unsigned int>& indices)
+	OpenGL_IndexBuffer::OpenGL_IndexBuffer(const unsigned int* indices, unsigned int size)
 	{
 		glGenBuffers(1, &IndexBufferId);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBufferId);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-		count = indices.size();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+		count = size;
 	}
 	OpenGL_IndexBuffer::~OpenGL_IndexBuffer()
 	{

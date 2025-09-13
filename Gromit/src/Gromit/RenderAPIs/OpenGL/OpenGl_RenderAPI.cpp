@@ -50,14 +50,14 @@ namespace Gromit::OpenGL
 		return new OpenGL_Shader(vert, frag);
 	}
 
-	VertexBuffer* OpenGL_RenderAPI::CreateVertexBuffer(const std::vector<Vertex>& vertices)
+	VertexBuffer* OpenGL_RenderAPI::CreateVertexBuffer(const Vertex* vertices, unsigned int size)
 	{
-		return new OpenGL_VertexBuffer(vertices);
+		return new OpenGL_VertexBuffer(vertices, size);
 	}
 
-	IndexBuffer* OpenGL_RenderAPI::CreateIndexBuffer(const std::vector<unsigned int>& indices)
+	IndexBuffer* OpenGL_RenderAPI::CreateIndexBuffer(const unsigned int* indices, unsigned int size)
 	{
-		return new OpenGL_IndexBuffer(indices);
+		return new OpenGL_IndexBuffer(indices, size);
 	}
 
 	VertexArray* OpenGL_RenderAPI::CreateVertexArray()

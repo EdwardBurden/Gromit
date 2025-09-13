@@ -8,7 +8,7 @@ namespace Gromit::OpenGL
 	class OpenGL_VertexBuffer : public VertexBuffer
 	{
 	public:
-		OpenGL_VertexBuffer(const std::vector<Vertex>& vertices);
+		OpenGL_VertexBuffer(const Vertex* vertices, unsigned int size);
 		~OpenGL_VertexBuffer();
 		void Bind() override;
 		void Unbind() override;

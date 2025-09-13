@@ -22,8 +22,8 @@ namespace Gromit
 
 		virtual Window* CreateWindow(int x, int y, int width, int height, const char* title) = 0;
 		virtual Shader* CreateShader(const ShaderAsset& vert, const ShaderAsset& frag) = 0;
-		virtual VertexBuffer* CreateVertexBuffer(const std::vector<Vertex>& vertices) = 0;;
-		virtual IndexBuffer* CreateIndexBuffer(const std::vector<unsigned int>& indices) = 0;
+		virtual VertexBuffer* CreateVertexBuffer(const Vertex* vertices, unsigned int size) = 0;;
+		virtual IndexBuffer* CreateIndexBuffer(const unsigned int* indices, unsigned int size) = 0;
 		virtual VertexArray* CreateVertexArray() = 0;
 		virtual BufferLayout* CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) = 0;
 		virtual Context* CreateContext() = 0;

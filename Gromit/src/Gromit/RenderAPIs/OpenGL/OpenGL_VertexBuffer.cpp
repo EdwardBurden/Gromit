@@ -11,11 +11,11 @@ namespace Gromit::OpenGL
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
 	*/
-	OpenGL_VertexBuffer::OpenGL_VertexBuffer(const std::vector<Vertex>& vertices)
+	OpenGL_VertexBuffer::OpenGL_VertexBuffer(const Vertex* vertices, unsigned int size)
 	{
 		glGenBuffers(1, &VertexBufferId);
 		glBindBuffer(GL_ARRAY_BUFFER, VertexBufferId);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 	}
 
 	OpenGL_VertexBuffer::~OpenGL_VertexBuffer()

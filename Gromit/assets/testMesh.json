@@ -2,5 +2,6 @@
   "guid": 32422333,
   "type": "Mesh",
   "name": "testMesh1",
-  "path": "/untitled.obj"
+  "path": "/untitled.obj",
+  "importSetting": 8
 }

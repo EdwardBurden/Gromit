@@ -21,8 +21,8 @@ namespace Gromit::OpenGL
 
 		Window* CreateWindow(int x, int y, int width, int height, const char* title) override;
 		Shader* CreateShader(const ShaderAsset& vert, const ShaderAsset& frag) override;
-		VertexBuffer* CreateVertexBuffer(const std::vector<Vertex>& vertices) override;
-		IndexBuffer* CreateIndexBuffer(const std::vector<unsigned int>& indices) override;
+		VertexBuffer* CreateVertexBuffer(const Vertex* vertices, unsigned int size) override;
+		IndexBuffer* CreateIndexBuffer(const unsigned int* indices, unsigned int size) override;
 		VertexArray* CreateVertexArray() override;
 		BufferLayout* CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) override;
 		Context* CreateContext() override;

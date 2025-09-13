@@ -7,9 +7,9 @@ namespace Gromit
 		std::vector<VertexArray*> vArrays;
 		auto smileTexture = Renderer::GetAPI()->CreateTexture(*texture);
 		auto shader = Renderer::GetAPI()->CreateShader(*vert, *frag);
-		auto m_tempVB = Renderer::GetAPI()->CreateVertexBuffer(mesh->vertices);
+		auto m_tempVB = Renderer::GetAPI()->CreateVertexBuffer(mesh->vertices , mesh->verticesSize);
 		m_tempVB->SetLayout(layout);
-		auto m_tempIB = Renderer::GetAPI()->CreateIndexBuffer(mesh->indices);
+		auto m_tempIB = Renderer::GetAPI()->CreateIndexBuffer(mesh->indices, mesh->indicesSize);
 		for (Window* window : context->GetWindows())
 		{
 			window->Activate();
@@ -30,6 +30,8 @@ namespace Gromit
 		int index = 0;
 		for (auto window : obj->m_context->GetWindows())
 		{
+			if (window == nullptr)
+				continue;
 			window->PreUpdate();
 			obj->m_shader->Bind();
 			glm::mat4 model = glm::mat4(1.0f);

@@ -25,14 +25,6 @@ namespace Gromit
 		return false;
 	}
 
-	void AssetManager::LoadIdentifiedAsset()
-	{
-		for (auto& asset : m_assetLookup)
-		{
-			LoadAsset(asset.first);
-		}
-	}
-
 	void AssetManager::IdentifyAssets(std::string directory) // only loads json
 	{
 		fs::path current = fs::current_path();
@@ -58,19 +50,20 @@ namespace Gromit
 					switch (assetbase.type)
 					{
 					case AssetType::Texture:
-						IdentifyAsset<TextureAsset>(assetbase.guid, p.string(), data);
+						//IdentifyAsset<TextureAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Shader:
-						IdentifyAsset<ShaderAsset>(assetbase.guid, p.string(), data);
+						//IdentifyAsset<ShaderAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Material:
-						IdentifyAsset<MaterialAsset>(assetbase.guid, p.string(), data);
+						//IdentifyAsset<MaterialAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Mesh:
-						IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
+						db.GetOrLoadMetadata<MeshAsset>(assetbase.guid, pathTemp, data);
+					//	IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Entity:
-						IdentifyAsset<EntityAsset>(assetbase.guid, p.string(), data);
+						//IdentifyAsset<EntityAsset>(assetbase.guid, p.string(), data);
 						break;
 					default:
 						break;
@@ -83,8 +76,10 @@ namespace Gromit
 
 	}
 
-	void AssetManager::LoadAsset(int guid)
+	//todo will be need ot be template
+	/*void AssetManager::LoadAsset(int guid)
 	{
+		db.GetOrLoadAsset<MeshAsset>(guid);
 		auto asset = m_assetLookup[guid];
 		switch (asset->type)
 		{
@@ -98,7 +93,8 @@ namespace Gromit
 			TryLoadAsset<MaterialAsset>(asset);
 			break;
 		case AssetType::Mesh:
-			TryLoadAsset<MeshAsset>(asset);
+			
+		//	TryLoadAsset<MeshAsset>(asset);
 			break;
 		case AssetType::Entity:
 			TryLoadAsset<EntityAsset>(asset);
@@ -106,5 +102,5 @@ namespace Gromit
 		default:
 			break;
 		}
-	}
+	}*/
 }
