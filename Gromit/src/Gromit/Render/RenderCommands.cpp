@@ -25,7 +25,7 @@ namespace Gromit
 		return new RenderObject(shader, smileTexture, vArrays, m_tempVB, m_tempIB, context);
 	}
 
-	void RenderCommands::DrawRenderObject(RenderObject* obj, Camera* camera, float update) //todo pass in time plus other render params
+	void RenderCommands::DrawRenderObject(RenderObject* obj, Camera* camera) //todo pass in time plus other render params
 	{
 		int index = 0;
 		for (auto window : obj->m_context->GetWindows())
@@ -34,7 +34,7 @@ namespace Gromit
 			obj->m_shader->Bind();
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, obj->m_position);
-			model *= glm::rotate(model, update, glm::vec3(59.50f, 2.9f, 0.0045f));
+			model *= glm::rotate(model, FrameTime::DeltaTime, glm::vec3(59.50f, 2.9f, 0.0045f));
 			obj->m_shader->SetUniform("modelViewProjection", camera->GetViewPrrojection() * model);
 			obj->m_contextbaseVA[index]->Bind();
 			Renderer::GetAPI()->DrawIndexes(obj->m_indexBuffer->Count());	//DRAW HERE

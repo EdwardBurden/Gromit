@@ -6,6 +6,7 @@
 #include "AssetManagement/AssetManager.h"
 #include "Render/Render.h"
 #include "ServiceLocator.h"
+#include "FrameTime.h"
 
 namespace Gromit 
 {

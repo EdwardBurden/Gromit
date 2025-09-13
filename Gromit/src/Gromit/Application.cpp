@@ -40,7 +40,7 @@ namespace Gromit
 		ShaderAsset* frag = manager->GetAsset<ShaderAsset>(123434);
 		TextureAsset* smileTextureAsset = manager->GetAsset<TextureAsset>(345455675675);
 		//////////////
-
+		 
 
 		Context::SharedContext = Renderer::GetAPI()->CreateContext(); //temp
 		auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();
@@ -52,7 +52,9 @@ namespace Gromit
 	void Application::Run()
 	{
 		auto renderer = ServiceLocator::GetService<Renderer>();
-		renderer->AddDrawObject(testRender);
+		renderer->AddDrawObject(testRender); //temp will be set from the scene/world manager
+
+		FrameTime::SetDelta();
 		ServiceLocator::GetService<WindowManager>()->OnUpdate();
 		ServiceLocator::GetService<EventSystem>()->OnUpdate();
 		ServiceLocator::GetService<Renderer>()->OnUpdate();

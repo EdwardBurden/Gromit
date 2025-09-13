@@ -6,6 +6,7 @@
 #include "Render/Render.h"
 #include "ServiceLocator.h"
 #include "Render/RenderObject.h"
+#include "FrameTime.h"
 
 namespace Gromit
 {
@@ -13,6 +14,6 @@ namespace Gromit
 	{
 	public:
 		static RenderObject* CreateRenderObject(Context* context, TextureAsset* texture, ShaderAsset* vert, ShaderAsset* frag, MeshAsset* mesh, BufferLayout* layout);
-		static void DrawRenderObject(RenderObject* obj, Camera* camera, float update);
+		static void DrawRenderObject(RenderObject* obj, Camera* camera);
 	};
 }

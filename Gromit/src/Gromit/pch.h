@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ctime>
 #include <memory>
 #include <iostream>
 #include <functional>

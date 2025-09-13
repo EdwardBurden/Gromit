@@ -44,7 +44,7 @@ namespace Gromit
 		// begin scene
 		for (auto obj : tempRenderList)
 		{
-			RenderCommands::DrawRenderObject(obj, camera, update);
+			RenderCommands::DrawRenderObject(obj, camera);
 		}
 		//end scene
 		update += 0.0005f;
