@@ -1,34 +1,29 @@
 #pragma once
 #include "Asset.h"
+#include "AssetManagement/ShaderMetaData.h"
+
 #include <sstream>
 #include <iostream>     // std::cout
 #include <fstream>      // std::ifstream
 namespace Gromit
 {
-	enum class ShaderType {
-		Fragment = 0,
-		Vertex = 1
-	};
-
-	NLOHMANN_JSON_SERIALIZE_ENUM(ShaderType,
-		{
-				{ShaderType::Fragment, "Fragment"},
-				{ShaderType::Vertex , "Vertex"}
-		});
-
-	struct ShaderAsset : public Asset
+	struct ShaderAsset : public AssetNew
 	{
-		ShaderType shaderType;
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(ShaderAsset, guid, type, name, path, shaderType);
-		std::string source;
+		using MetaType = ShaderMetaData;
+		static constexpr size_t MAX_SHADER_SIZE = 1024; //temporary
+		static constexpr size_t PoolCapacity = 50; //declared once
 
-		void Load() override
+		char m_source[MAX_SHADER_SIZE];
+
+		ShaderAsset(ShaderMetaData* metaData)
 		{
-			std::ifstream vertexFile(assetPath);
+			std::ifstream vertexFile(metaData->m_assetPath);
 			std::stringstream stringStream;
 			stringStream << vertexFile.rdbuf();
-			source = stringStream.str();
+			size_t len = stringStream.str().size();
+			std::strcpy(m_source, stringStream.str().c_str());
 			vertexFile.close();
+			stringStream.clear();
 		}
 	};
 }

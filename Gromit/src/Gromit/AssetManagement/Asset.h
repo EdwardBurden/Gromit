@@ -4,6 +4,8 @@
 
 namespace Gromit
 {
+	struct AssetNew {};
+
 	enum class AssetType
 	{
 		Texture = 0,

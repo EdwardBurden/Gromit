@@ -4,13 +4,11 @@
 #include <assimp/postprocess.h>
 #include "Logging/Logging.h"
 #include "Math/Math.h"
-#include "MeshMetaData.h"
+#include "AssetManagement/MeshMetaData.h"
 #include "AssetManagement/Asset.h"
 
 namespace Gromit
 {
-	struct AssetNew {};
-
 	struct MeshAsset : public AssetNew
 	{
 		using MetaType = MeshMetaData;

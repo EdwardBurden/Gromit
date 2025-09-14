@@ -9,6 +9,10 @@
 #include "AssetManagement/PoolAllocator.h"
 #include "AssetManagement/MeshAsset.h"
 #include "AssetManagement/MeshMetaData.h"
+#include "AssetManagement/TextureAsset.h"
+#include "AssetManagement/TextureMetaData.h"
+#include "AssetManagement/ShaderAsset.h"
+#include "AssetManagement/ShaderMetaData.h"
 #include <json.hpp>
 
 namespace Gromit
@@ -34,15 +38,13 @@ namespace Gromit
 		template<typename T>
 		AssetRecord* GetOrLoadMetadata(int guid, std::string name, nlohmann::json data)
 		{
-			if (m_assetRegistry.contains(guid))
+			if (!m_assetRegistry.contains(guid))
 			{
-				return m_assetRegistry[guid];
+				using Meta = typename T::MetaType;
+				Meta* metaData = GetPool<Meta>().Allocate(guid, name, data);
+				AssetRecord* record = new AssetRecord(metaData);
+				m_assetRegistry[guid] = record;
 			}
-
-			using Meta = typename T::MetaType;
-			Meta* metaData = GetPool<Meta>().Allocate(guid, name, data);
-			AssetRecord* record = new AssetRecord(metaData);
-			m_assetRegistry[guid] = record;
 			return m_assetRegistry[guid];
 		}
 
@@ -106,6 +108,10 @@ namespace Gromit
 		using PoolFor = PoolAllocator<T, T::PoolCapacity>;
 		PoolFor<MeshMetaData> m_meshMetaDataPool;
 		PoolFor<MeshAsset> m_meshAssetPool;
+		PoolFor<TextureMetaData> m_textureMetaDataPool;
+		PoolFor<TextureAsset> m_textureAssetPool;
+		PoolFor<ShaderMetaData> m_shaderMetaDataPool;
+		PoolFor<ShaderAsset> m_shaderAssetPool;
 
 		template<typename T>
 		PoolFor<T>& GetPool();
@@ -114,5 +120,13 @@ namespace Gromit
 		PoolFor<MeshMetaData>& GetPool<MeshMetaData>() { return m_meshMetaDataPool; }
 		template<> 
 		PoolFor<MeshAsset>& GetPool<MeshAsset>() { return m_meshAssetPool; }
+		template<>
+		PoolFor<TextureMetaData>& GetPool<TextureMetaData>() { return m_textureMetaDataPool; }
+		template<>
+		PoolFor<TextureAsset>& GetPool<TextureAsset>() { return m_textureAssetPool; }
+		template<>
+		PoolFor<ShaderMetaData>& GetPool<ShaderMetaData>() { return m_shaderMetaDataPool; }
+		template<>
+		PoolFor<ShaderAsset>& GetPool<ShaderAsset>() { return m_shaderAssetPool; }
 	};
 }

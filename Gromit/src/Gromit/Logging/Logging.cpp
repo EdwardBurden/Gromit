@@ -7,7 +7,7 @@ namespace Gromit
 
 	void Logging::OnStartUp()
 	{
-		s_logger = spdlog::stdout_color_mt("console");
+		//s_logger = spdlog::stdout_color_mt("console");
 	}
 
 	void Logging::OnShutDown()

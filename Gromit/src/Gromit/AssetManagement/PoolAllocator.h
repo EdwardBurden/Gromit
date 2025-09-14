@@ -1,10 +1,13 @@
 //maybe move later
-
 #pragma once
+
+#include "Logging/Logging.h"
+
+#include <iostream>
+#include <typeinfo>
 
 namespace Gromit
 {
-
 	template<typename T>
 	struct Chunk
 	{
@@ -18,6 +21,7 @@ namespace Gromit
 	public:
 		PoolAllocator()
 		{
+			GL_INFO("Pool created for Type:{0}, Size:{1}, Capacity {2}", typeid(T).name(), sizeof(T), Capacity);
 			for (size_t i = 0; i < Capacity - 1; i++)
 			{
 				m_pool[i].nextChunk = &m_pool[i + 1];
@@ -28,19 +32,17 @@ namespace Gromit
 
 		~PoolAllocator()
 		{
-			for (size_t i = 0; i < Capacity - 1; i++)
+			for (size_t i = 0; i < Capacity; i++)
 			{
 				T* asset = reinterpret_cast<T*>(&m_pool[i]);
-				delete m_pool[i].nextChunk;
-				asset->~T();
+				//asset->~T(); todo
 			}
-			delete m_freePointer;
 		}
 
 		template<typename... Args>
 		T* Allocate(Args&&... args)
 		{
-			if (m_freePointer == nullptr) 
+			if (m_freePointer == nullptr)
 			{
 				//Log Error, used all the free slots
 				return nullptr;
@@ -58,8 +60,6 @@ namespace Gromit
 			chunk->nextChunk = m_freePointer; // push to head of free list
 			m_freePointer = chunk;
 		}
-
-
 
 
 	private:

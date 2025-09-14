@@ -11,7 +11,7 @@ namespace Gromit
 {
 	void AssetManager::OnStartUp()
 	{
-		IdentifyAssets("assets"); //temp
+		//IdentifyAssets("assets"); //temp
 	}
 
 	void AssetManager::OnShutDown()
@@ -44,22 +44,23 @@ namespace Gromit
 				if (f.good() && f.is_open() && !buffer.str().empty())
 				{
 					json data = json::parse(buffer);
-					Asset assetbase = data.template get<Asset>(); //todo could just get the one variable out instead
-					assetbase.fullPath = p.string();
-
-					switch (assetbase.type)
+					AssetType type = data["type"].template get<AssetType>();
+					auto guid = data["guid"].template get<int>();
+					switch (type)
 					{
 					case AssetType::Texture:
+						db.GetOrLoadMetadata<TextureAsset>(guid, pathTemp, data);
 						//IdentifyAsset<TextureAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Shader:
+						db.GetOrLoadMetadata<ShaderAsset>(guid, pathTemp, data);
 						//IdentifyAsset<ShaderAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Material:
 						//IdentifyAsset<MaterialAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Mesh:
-						db.GetOrLoadMetadata<MeshAsset>(assetbase.guid, pathTemp, data);
+						db.GetOrLoadMetadata<MeshAsset>(guid, pathTemp, data);
 					//	IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Entity:

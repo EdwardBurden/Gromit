@@ -9,7 +9,7 @@ namespace Gromit::OpenGL
 			ShaderProgramId = glCreateProgram();
 			VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 			FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-			Construct(vert.source.c_str(), frag.source.c_str());
+			Construct(vert.m_source, frag.m_source); //todo this will be handled in the material grphics class, using dependant metadata
 		}
 
 		OpenGL_Shader::~OpenGL_Shader()

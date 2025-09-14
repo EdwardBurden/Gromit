@@ -22,7 +22,7 @@ namespace Gromit
 		}
 
 		void IdentifyAssets(std::string directory);
-		void LoadAsset(int guid);
+		//void LoadAsset(int guid);
 		void OnStartUp() override;
 		void OnShutDown() override;
 		bool OnUpdate();

@@ -12,6 +12,7 @@ namespace Gromit
 		Logging() 
 		{
 			std::cout << "Logging Constructor" << std::endl;
+			s_logger = spdlog::stdout_color_mt("console");
 		}
 
 
