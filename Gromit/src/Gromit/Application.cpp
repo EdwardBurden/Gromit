@@ -37,9 +37,9 @@ namespace Gromit
 		const auto& manager = ServiceLocator::GetService<AssetManager>();
 		manager->IdentifyAssets("assets"); // would be core or example folders in future
 		MeshAsset* mesh = manager->LoadAsset<MeshAsset>(32422333);
-		ShaderAsset* vert = manager->LoadAsset<ShaderAsset>(545);
-		ShaderAsset* frag = manager->LoadAsset<ShaderAsset>(123434);
-		TextureAsset* smileTextureAsset = manager->LoadAsset<TextureAsset>(345455675675);
+		MaterialAsset* material = manager->LoadAsset<MaterialAsset>(999);
+	//	ShaderAsset* frag = manager->LoadAsset<ShaderAsset>(123434);
+	//	TextureAsset* smileTextureAsset = manager->LoadAsset<TextureAsset>(345455675675);
 		//////////////
 
 		 
@@ -48,13 +48,13 @@ namespace Gromit
 		auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();
 		w->CreateWindow(100, 100, 400, 400, "DLL Test1");
 		//w->CreateWindow(100, 100, 400, 400, "DLL Test2");
-		testRender = RenderCommands::CreateRenderObject(Context::SharedContext, smileTextureAsset, vert, frag, mesh, layout); //would pass in mesh and shaer assets here
+		//testRender = RenderCommands::CreateRenderObject(Context::SharedContext, smileTextureAsset, vert, frag, mesh, layout); //would pass in mesh and shaer assets here
 	}
 
 	void Application::Run()
 	{
 		auto renderer = ServiceLocator::GetService<Renderer>();
-		renderer->AddDrawObject(testRender); //temp will be set from the scene/world manager
+		//renderer->AddDrawObject(testRender); //temp will be set from the scene/world manager
 
 		FrameTime::SetDelta();
 		ServiceLocator::GetService<WindowManager>()->OnUpdate();

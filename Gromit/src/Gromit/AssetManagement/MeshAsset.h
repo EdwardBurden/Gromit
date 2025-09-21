@@ -9,10 +9,9 @@
 
 namespace Gromit
 {
-	struct MeshAsset : public AssetNew
+	struct MeshAsset : public Asset
 	{
 		using MetaType = MeshMetaData;
-		static constexpr size_t PoolCapacity = 50; //declared once
 
 		static constexpr size_t MAX_VERTICES = 100; //todo look into pool here too?
 		static constexpr size_t MAX_INDICES = 500;

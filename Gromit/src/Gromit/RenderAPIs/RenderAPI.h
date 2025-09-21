@@ -8,9 +8,11 @@
 #include "RenderAPIs/VertexArray.h"
 #include "RenderAPIs/VertexBuffer.h"
 #include "RenderAPIs/Window.h"
+#include "RenderAPIs/Material.h"
 #include "Math/Math.h"
 #include "../AssetManagement/ShaderAsset.h"
 #include "../AssetManagement/TextureAsset.h" //todo
+#include "../AssetManagement/MaterialAsset.h" //todo
 
 namespace Gromit
 {
@@ -21,7 +23,8 @@ namespace Gromit
 		virtual void TerminateWindows() = 0;
 
 		virtual Window* CreateWindow(int x, int y, int width, int height, const char* title) = 0;
-		virtual Shader* CreateShader(const ShaderAsset& vert, const ShaderAsset& frag) = 0;
+		virtual Material* CreateMaterial(MaterialAsset* material) = 0;
+		virtual Shader* CreateShader(ShaderAsset* shader) = 0;
 		virtual VertexBuffer* CreateVertexBuffer(const Vertex* vertices, unsigned int size) = 0;;
 		virtual IndexBuffer* CreateIndexBuffer(const unsigned int* indices, unsigned int size) = 0;
 		virtual VertexArray* CreateVertexArray() = 0;

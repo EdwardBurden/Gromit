@@ -19,7 +19,6 @@ namespace Gromit
 	struct ShaderMetaData : public MetaData
 	{
 	public:
-		static constexpr size_t PoolCapacity = 50; //declared once
 		std::string m_assetPath;
 		ShaderType m_shaderType;
 

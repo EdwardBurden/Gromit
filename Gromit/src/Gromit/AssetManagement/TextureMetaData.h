@@ -14,7 +14,6 @@ namespace Gromit
 	struct TextureMetaData : public MetaData
 	{
 	public:
-		static constexpr size_t PoolCapacity = 50; //declared once
 		std::string m_assetPath;
 		int m_width;
 		int m_height;

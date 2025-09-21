@@ -10,17 +10,12 @@ namespace Gromit::OpenGL
 	public:
 
 	private:
-		unsigned int ShaderProgramId;
-		unsigned int VertexShaderId;
-		unsigned int FragmentShaderId;
+		unsigned int ShaderProgramId; //public get
 
 	public:
-		OpenGL_Shader(const ShaderAsset& vert, const ShaderAsset& frag);
+		OpenGL_Shader(ShaderAsset* vert);
 		~OpenGL_Shader();
-		void Bind() override;
-		void Unbind() override;
-		 void SetUniform(std::string name, glm::mat4 matrix) override;
 	private:
-		void Construct(const char* vertexPath, const char* fragmentPath);
+		void Construct(char vertexShader[]);
 	};
 }

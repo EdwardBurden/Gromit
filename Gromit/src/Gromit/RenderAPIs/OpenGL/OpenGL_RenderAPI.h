@@ -9,6 +9,7 @@
 #include "OpenGL_VertexArray.h"
 #include "OpenGL_Context.h"
 #include "OpenGL_Texture.h"
+#include "OpenGL_Material.h"
 
 
 namespace Gromit::OpenGL
@@ -20,7 +21,8 @@ namespace Gromit::OpenGL
 		void TerminateWindows() override;
 
 		Window* CreateWindow(int x, int y, int width, int height, const char* title) override;
-		Shader* CreateShader(const ShaderAsset& vert, const ShaderAsset& frag) override;
+		Material* CreateMaterial(MaterialAsset* material) override;
+		Shader* CreateShader(ShaderAsset* shader) override;
 		VertexBuffer* CreateVertexBuffer(const Vertex* vertices, unsigned int size) override;
 		IndexBuffer* CreateIndexBuffer(const unsigned int* indices, unsigned int size) override;
 		VertexArray* CreateVertexArray() override;

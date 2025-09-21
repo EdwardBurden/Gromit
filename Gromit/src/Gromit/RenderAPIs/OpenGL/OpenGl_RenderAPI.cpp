@@ -45,9 +45,26 @@ namespace Gromit::OpenGL
 		return newWindow;
 	}
 
-	Shader* OpenGL_RenderAPI::CreateShader(const ShaderAsset& vert, const ShaderAsset& frag)
+	Material* OpenGL_RenderAPI::CreateMaterial(MaterialAsset* asset)
 	{
-		return new OpenGL_Shader(vert, frag);
+		//todo here
+		/*const auto& manager = ServiceLocator::GetService<AssetManager>();
+		MeshAsset* mesh = manager->LoadAsset<MeshAsset>(32422333);
+		std::vector<Shader*> shaders ;
+		for (size_t i = 0; i < asset->m_shaders.length(); i++)
+		{
+			ShaderAsset* shader = manager->LoadAsset<ShaderAsset>(asset->m_shaders[i]);
+			shaders.push_back(	CreateShader(shader));
+		}
+		//AND ALSO MAKE THE CreateTexture too
+		return new OpenGL_Material(asset , shaders);*/
+		return nullptr;
+
+	}
+
+	Shader* OpenGL_RenderAPI::CreateShader(ShaderAsset* shader)
+	{
+		return new OpenGL_Shader(shader);
 	}
 
 	VertexBuffer* OpenGL_RenderAPI::CreateVertexBuffer(const Vertex* vertices, unsigned int size)

@@ -48,23 +48,15 @@ namespace Gromit
 	{
 	public:
 		std::vector<ComponentAsset*> components;
-
-		//NLOHMANN_DEFINE_TYPE_INTRUSIVE(EntityAsset, guid, type, name, path, components);
-
-		void Load() override
-		{
-			//
-		}
-
 	private:
 	};
 
 
 	void from_json(const nlohmann::json& j, EntityAsset& entity) {
-		j.at("guid").get_to(entity.guid);
-		j.at("type").get_to(entity.type);
-		j.at("name").get_to(entity.name);
-		j.at("path").get_to(entity.path);
+		//j.at("guid").get_to(entity.guid);
+		//j.at("type").get_to(entity.type);
+		//j.at("name").get_to(entity.name);
+		//j.at("path").get_to(entity.path);
 		entity.components.clear();
 
 		auto c = j["components"];

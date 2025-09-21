@@ -27,14 +27,19 @@ namespace Gromit
 		void OnShutDown() override;
 		bool OnUpdate();
 
+
+
 		template<typename T>
 		T* LoadAsset(int guid)
 		{
-			return db.GetOrLoadAsset<T>(guid);
+			Asset* ptr = LoadAsset(guid);
+			return 	static_cast<T*>(ptr); //todo add checks
 		}
 
 
 	private:
+		Asset* LoadAsset(int guid);
+
 		AssetDatabase db;
 		std::string pathTemp;
 	};

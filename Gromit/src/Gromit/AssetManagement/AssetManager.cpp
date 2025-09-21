@@ -57,11 +57,12 @@ namespace Gromit
 						//IdentifyAsset<ShaderAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Material:
+						db.GetOrLoadMetadata<MaterialAsset>(guid, pathTemp, data);
 						//IdentifyAsset<MaterialAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Mesh:
 						db.GetOrLoadMetadata<MeshAsset>(guid, pathTemp, data);
-					//	IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
+						//	IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Entity:
 						//IdentifyAsset<EntityAsset>(assetbase.guid, p.string(), data);
@@ -78,30 +79,27 @@ namespace Gromit
 	}
 
 	//todo will be need ot be template
-	/*void AssetManager::LoadAsset(int guid)
+	Asset* AssetManager::LoadAsset(int guid)
 	{
-		db.GetOrLoadAsset<MeshAsset>(guid);
-		auto asset = m_assetLookup[guid];
-		switch (asset->type)
+		AssetType type = db.FindAssetType(guid);
+		std::vector<AssetDependency> dependencies = db.GetDependencies(guid);
+
+		for (auto& depencency : dependencies)
+		{
+			LoadAsset(depencency.guid);
+		}
+
+		switch (type)
 		{
 		case AssetType::Texture:
-			TryLoadAsset<TextureAsset>(asset);
-			break;
+			return db.GetOrLoadAsset<TextureAsset>(guid);
 		case AssetType::Shader:
-			TryLoadAsset<ShaderAsset>(asset);
-			break;
-		case AssetType::Material:
-			TryLoadAsset<MaterialAsset>(asset);
-			break;
+			return db.GetOrLoadAsset<ShaderAsset>(guid);
 		case AssetType::Mesh:
-			
-		//	TryLoadAsset<MeshAsset>(asset);
-			break;
-		case AssetType::Entity:
-			TryLoadAsset<EntityAsset>(asset);
-			break;
-		default:
-			break;
+			return db.GetOrLoadAsset<MeshAsset>(guid);
+		case AssetType::Material:
+			return db.GetOrLoadAsset<MaterialAsset>(guid);
+
 		}
-	}*/
+	}
 }

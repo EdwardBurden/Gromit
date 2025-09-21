@@ -13,6 +13,9 @@
 #include "AssetManagement/TextureMetaData.h"
 #include "AssetManagement/ShaderAsset.h"
 #include "AssetManagement/ShaderMetaData.h"
+#include "AssetManagement/MaterialAsset.h"
+#include "AssetManagement/MaterialMetaData.h"
+
 #include <json.hpp>
 
 namespace Gromit
@@ -23,7 +26,7 @@ namespace Gromit
 		struct AssetRecord
 		{
 			MetaData* metaData;
-			AssetNew* asset = nullptr;
+			Asset* asset = nullptr;
 			int refCount = 0; //actual asset uses not metadata
 			bool permanent = false;
 
@@ -34,6 +37,28 @@ namespace Gromit
 		};
 
 		AssetDatabase() {};
+
+		AssetType FindAssetType(int guid)
+		{
+			if (!m_assetRegistry.contains(guid))
+			{
+				//error 
+				return AssetType::None;
+			}
+			return m_assetRegistry[guid]->metaData->GetAssetType();
+		}
+
+		std::vector<AssetDependency> GetDependencies(int guid)
+		{
+			return m_assetRegistry[guid]->metaData->GetDependencies();
+		}
+
+
+		template<typename T>
+		AssetRecord* GetMetadata(int guid)
+		{
+			return m_assetRegistry[guid];
+		}
 
 		template<typename T>
 		AssetRecord* GetOrLoadMetadata(int guid, std::string name, nlohmann::json data)
@@ -100,33 +125,53 @@ namespace Gromit
 				GetPool<T>().Free(m_assetRegistry[guid]->asset);
 			}
 		}
-		
+
 	private:
 		std::unordered_map<int, AssetRecord*> m_assetRegistry;
 
 		template<typename T>
-		using PoolFor = PoolAllocator<T, T::PoolCapacity>;
+		struct PoolTraits;
+
+		// Specializations
+		template<> struct PoolTraits<MeshMetaData> { static constexpr size_t Capacity = 8; };
+		template<> struct PoolTraits<MeshAsset> { static constexpr size_t Capacity = 8; };
+
+		template<> struct PoolTraits<TextureMetaData> { static constexpr size_t Capacity = 8; };
+		template<> struct PoolTraits<TextureAsset> { static constexpr size_t Capacity = 8; };
+
+		template<> struct PoolTraits<ShaderMetaData> { static constexpr size_t Capacity = 8; };
+		template<> struct PoolTraits<ShaderAsset> { static constexpr size_t Capacity = 8; };
+
+
+		template<> struct PoolTraits<MaterialMetaData> { static constexpr size_t Capacity = 8; };
+		template<> struct PoolTraits<MaterialAsset> { static constexpr size_t Capacity = 8; };
+
+		template<typename T>
+		using PoolFor = PoolAllocator<T, PoolTraits<T>::Capacity>;
 		PoolFor<MeshMetaData> m_meshMetaDataPool;
 		PoolFor<MeshAsset> m_meshAssetPool;
+
 		PoolFor<TextureMetaData> m_textureMetaDataPool;
 		PoolFor<TextureAsset> m_textureAssetPool;
+
 		PoolFor<ShaderMetaData> m_shaderMetaDataPool;
 		PoolFor<ShaderAsset> m_shaderAssetPool;
 
+		PoolFor<MaterialMetaData> m_materialMetaDataPool;
+		PoolFor<MaterialAsset> m_materialAssetPool;
+
 		template<typename T>
 		PoolFor<T>& GetPool();
+		template<>PoolFor<MeshMetaData>& GetPool<MeshMetaData>() { return m_meshMetaDataPool; }
+		template<>PoolFor<MeshAsset>& GetPool<MeshAsset>() { return m_meshAssetPool; }
 
-		template<> 
-		PoolFor<MeshMetaData>& GetPool<MeshMetaData>() { return m_meshMetaDataPool; }
-		template<> 
-		PoolFor<MeshAsset>& GetPool<MeshAsset>() { return m_meshAssetPool; }
-		template<>
-		PoolFor<TextureMetaData>& GetPool<TextureMetaData>() { return m_textureMetaDataPool; }
-		template<>
-		PoolFor<TextureAsset>& GetPool<TextureAsset>() { return m_textureAssetPool; }
-		template<>
-		PoolFor<ShaderMetaData>& GetPool<ShaderMetaData>() { return m_shaderMetaDataPool; }
-		template<>
-		PoolFor<ShaderAsset>& GetPool<ShaderAsset>() { return m_shaderAssetPool; }
+		template<>PoolFor<TextureMetaData>& GetPool<TextureMetaData>() { return m_textureMetaDataPool; }
+		template<>PoolFor<TextureAsset>& GetPool<TextureAsset>() { return m_textureAssetPool; }
+
+		template<>PoolFor<ShaderMetaData>& GetPool<ShaderMetaData>() { return m_shaderMetaDataPool; }
+		template<>PoolFor<ShaderAsset>& GetPool<ShaderAsset>() { return m_shaderAssetPool; }
+
+		template<>PoolFor<MaterialMetaData>& GetPool<MaterialMetaData>() { return m_materialMetaDataPool; }
+		template<>PoolFor<MaterialAsset>& GetPool<MaterialAsset>() { return m_materialAssetPool; }
 	};
 }

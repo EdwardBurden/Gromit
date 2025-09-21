@@ -2,8 +2,12 @@
   "guid": 999,
   "type": "Material",
   "name": "testMat1",
-  "path" :  "",
-  "vertex": 545,
-  "fragment": 123434,
-  "mainTex": 345455675675
+  "path": "",
+  "shaders": [
+    { "guid": 545 },
+    { "guid": 123434 }
+  ],
+  "textures": [
+    { "guid": 345455675675 }
+  ]
 }
