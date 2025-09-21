@@ -28,7 +28,7 @@ namespace Gromit::OpenGL
 		VertexArray* CreateVertexArray() override;
 		BufferLayout* CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) override;
 		Context* CreateContext() override;
-		Texture* CreateTexture(const TextureAsset& texture) override;
+		Texture* CreateTexture(TextureAsset* textureAsset) override;
 		void DrawIndexes(int count) override;
 	private:
 

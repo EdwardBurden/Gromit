@@ -15,6 +15,7 @@ namespace Gromit::OpenGL
 	public:
 		OpenGL_Shader(ShaderAsset* vert);
 		~OpenGL_Shader();
+		unsigned int GetShaderId() const { return ShaderProgramId; }
 	private:
 		void Construct(char vertexShader[]);
 	};

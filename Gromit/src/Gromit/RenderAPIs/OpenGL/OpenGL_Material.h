@@ -21,5 +21,8 @@ namespace Gromit::OpenGL
 		void SetUniform(std::string name, glm::mat4 matrix) override;
 	private:
 		void Construct(MaterialAsset* materialAsset);
+
+		std::vector<int> shaders;
+		std::vector<int> textures;
 	};
 }

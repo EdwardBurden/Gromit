@@ -23,7 +23,7 @@ namespace Gromit
 		unsigned int verticesSize;
 		unsigned int indicesSize;
 
-		MeshAsset(MeshMetaData* metaData)
+		MeshAsset(MeshMetaData* metaData) : Asset(metaData->m_guid)
 		{
 			//can move some into cuistom import
 			Assimp::Importer importer;

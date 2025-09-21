@@ -1,4 +1,6 @@
 #include "OpenGL_Material.h"
+#include "ResourceRegistry.h"
+
 #include <glad/glad.h>
 
 namespace Gromit::OpenGL
@@ -16,7 +18,16 @@ namespace Gromit::OpenGL
 
 	void OpenGL_Material::Bind()
 	{
+		for (size_t i = 0; i < textures.size(); i++)
+		{
+			auto texture = ResourceRegistry::Textures[textures[i]];
+			texture->Bind();
+		}
+
+
+
 		glUseProgram(ShaderProgramId);
+
 	}
 
 	void OpenGL_Material::Unbind()
@@ -37,8 +48,14 @@ namespace Gromit::OpenGL
 		int  success;
 		char infoLog[512];
 		//we will need the shaders here 
-	//	glAttachShader(ShaderProgramId, VertexShaderId);
-	//	glAttachShader(ShaderProgramId, FragmentShaderId);
+		 shaders = materialAsset->GetShaderIds();
+		for (size_t i = 0; i < shaders.size(); i++)
+		{
+			auto shader = ResourceRegistry::Shaders[shaders[i]];
+			glAttachShader(ShaderProgramId, shader->GetShaderId());
+		}
+		//	glAttachShader(ShaderProgramId, VertexShaderId);
+		//	glAttachShader(ShaderProgramId, FragmentShaderId);
 		glLinkProgram(ShaderProgramId);
 		glGetProgramiv(ShaderProgramId, GL_LINK_STATUS, &success);
 
@@ -46,6 +63,8 @@ namespace Gromit::OpenGL
 			glGetProgramInfoLog(ShaderProgramId, 512, NULL, infoLog);
 			std::cout << "ERROR::SHADER::linker::COMPILATION_FAILED\n" << infoLog << std::endl;
 		}
+		textures = materialAsset->GetTextureIds();
+
 
 		//	}
 	}

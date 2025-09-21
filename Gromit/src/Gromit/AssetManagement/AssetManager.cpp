@@ -40,7 +40,7 @@ namespace Gromit
 				std::ifstream f(p);
 				std::stringstream buffer;
 				buffer << f.rdbuf(); // read entire file into buffer
-				GL_INFO(buffer.str());
+				//GL_INFO(buffer.str());
 				if (f.good() && f.is_open() && !buffer.str().empty())
 				{
 					json data = json::parse(buffer);

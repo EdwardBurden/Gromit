@@ -30,7 +30,7 @@ namespace Gromit
 		virtual VertexArray* CreateVertexArray() = 0;
 		virtual BufferLayout* CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) = 0;
 		virtual Context* CreateContext() = 0;
-		virtual Texture* CreateTexture(const TextureAsset& texture) = 0;
+		virtual Texture* CreateTexture(TextureAsset* textureAsset) = 0;
 		virtual void DrawIndexes(int count) =0;
 	};
 }

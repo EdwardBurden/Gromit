@@ -17,19 +17,20 @@ namespace Gromit
 
 	public:
 
-		MaterialAsset(MaterialMetaData* metaData)
+		MaterialAsset(MaterialMetaData* metaData) : Asset(metaData->m_guid)
 		{
-			m_shaders = metaData->m_shaderIds; //then load if not already
-			for (size_t i = 0; i < m_shaders.size(); i++)
-			{
-				//ServiceLocator::GetService<AssetManager>()->LoadAsset<ShaderAsset>(m_shaders[i]); //load so its already available
-			}
-			m_textures = metaData->m_textureIds; //then load
+			m_shaders = metaData->m_shaderIds;
+			m_textures = metaData->m_textureIds;
 		}
 
 		std::vector<int> GetShaderIds() 
 		{
 			return m_shaders;
+		}
+
+		std::vector<int> GetTextureIds()
+		{
+			return m_textures;
 		}
 
 

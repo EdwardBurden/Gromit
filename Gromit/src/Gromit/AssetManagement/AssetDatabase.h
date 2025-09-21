@@ -15,7 +15,7 @@
 #include "AssetManagement/ShaderMetaData.h"
 #include "AssetManagement/MaterialAsset.h"
 #include "AssetManagement/MaterialMetaData.h"
-
+#include "Logging/Logging.h"
 #include <json.hpp>
 
 namespace Gromit
@@ -69,6 +69,7 @@ namespace Gromit
 				Meta* metaData = GetPool<Meta>().Allocate(guid, name, data);
 				AssetRecord* record = new AssetRecord(metaData);
 				m_assetRegistry[guid] = record;
+				GL_INFO("Loaded metaData: " + metaData->GetName());
 			}
 			return m_assetRegistry[guid];
 		}
@@ -104,9 +105,10 @@ namespace Gromit
 				record->asset = mesh;
 			}
 
+
 			record->refCount++;
 			T* derivedPtr = static_cast<T*>(record->asset);
-
+			GL_INFO("Loaded Asset: " + record->metaData->GetName() + " Ref: " + std::to_string( record->refCount));
 			return derivedPtr;
 		}
 

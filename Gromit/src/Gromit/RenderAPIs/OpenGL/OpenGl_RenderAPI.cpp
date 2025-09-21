@@ -1,5 +1,6 @@
 #include "OpenGL_RenderAPI.h"
 #include "../../AssetManagement/AssetManager.h"
+#include "ResourceRegistry.h"
 
 namespace Gromit::OpenGL
 {
@@ -47,24 +48,51 @@ namespace Gromit::OpenGL
 
 	Material* OpenGL_RenderAPI::CreateMaterial(MaterialAsset* asset)
 	{
-		//todo here
-		/*const auto& manager = ServiceLocator::GetService<AssetManager>();
-		MeshAsset* mesh = manager->LoadAsset<MeshAsset>(32422333);
-		std::vector<Shader*> shaders ;
-		for (size_t i = 0; i < asset->m_shaders.length(); i++)
+		const auto& manager = ServiceLocator::GetService<AssetManager>();
+		auto shaderIds = asset->GetShaderIds();
+		std::vector<Shader*> shaders;
+		for (size_t i = 0; i < shaderIds.size(); i++)
 		{
-			ShaderAsset* shader = manager->LoadAsset<ShaderAsset>(asset->m_shaders[i]);
-			shaders.push_back(	CreateShader(shader));
+			ShaderAsset* shader = manager->LoadAsset<ShaderAsset>(shaderIds[i]);
+			CreateShader(shader);
 		}
-		//AND ALSO MAKE THE CreateTexture too
-		return new OpenGL_Material(asset , shaders);*/
-		return nullptr;
 
+		auto textureIds = asset->GetTextureIds();
+		std::vector<Texture*> textures;
+		for (size_t i = 0; i < textureIds.size(); i++)
+		{
+			TextureAsset* texture = manager->LoadAsset<TextureAsset>(textureIds[i]);
+			CreateTexture(texture);
+		}
+
+		//AND ALSO MAKE THE CreateTexture too
+		return new OpenGL_Material(asset);
 	}
 
-	Shader* OpenGL_RenderAPI::CreateShader(ShaderAsset* shader)
+	Shader* OpenGL_RenderAPI::CreateShader(ShaderAsset* shaderAsset)
 	{
-		return new OpenGL_Shader(shader);
+		int guid = shaderAsset->GetGuid();
+		if (ResourceRegistry::Shaders.contains(guid))
+		{
+			return ResourceRegistry::Shaders[guid];
+		}
+
+		OpenGL_Shader* shader = new OpenGL_Shader(shaderAsset);
+		ResourceRegistry::Shaders[guid] = shader;
+		return shader;
+	}
+
+	Texture* OpenGL_RenderAPI::CreateTexture(TextureAsset* textureAsset)
+	{
+		int guid = textureAsset->GetGuid();
+		if (ResourceRegistry::Shaders.contains(guid))
+		{
+			return ResourceRegistry::Textures[guid];
+		}
+
+		OpenGL_Texture* texture = new OpenGL_Texture(*textureAsset);
+		ResourceRegistry::Textures[guid] = texture;
+		return texture;
 	}
 
 	VertexBuffer* OpenGL_RenderAPI::CreateVertexBuffer(const Vertex* vertices, unsigned int size)
@@ -90,11 +118,6 @@ namespace Gromit::OpenGL
 	Context* OpenGL_RenderAPI::CreateContext()
 	{
 		return new OpenGL_Context();
-	}
-
-	Texture* OpenGL_RenderAPI::CreateTexture(const TextureAsset& texture)
-	{
-		return new OpenGL_Texture(texture);
 	}
 
 	void OpenGL_RenderAPI::DrawIndexes(int count)

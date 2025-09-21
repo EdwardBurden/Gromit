@@ -16,7 +16,7 @@ namespace Gromit
 		ShaderType m_shaderType ;
 		
 
-		ShaderAsset(ShaderMetaData* metaData)
+		ShaderAsset(ShaderMetaData* metaData) : Asset(metaData->m_guid)
 		{
 			std::ifstream vertexFile(metaData->m_assetPath);
 			std::stringstream stringStream;

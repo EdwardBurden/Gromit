@@ -32,7 +32,8 @@ namespace Gromit
 
 	struct MetaData
 	{
-	public:
+	public:	
+		int m_guid;
 		MetaData(int guid, nlohmann::json data)
 		{
 			data.at("guid").get_to(m_guid);
@@ -41,11 +42,13 @@ namespace Gromit
 			data.at("type").get_to(m_assetType);
 		}
 
+		std::string GetName() const { return m_name; }
 		AssetType GetAssetType() const { return m_assetType; }
+
 
 		std::vector<AssetDependency> GetDependencies() const { return m_dependencies; }
 	protected:
-		int m_guid;
+	
 		std::string m_name;
 		std::string m_path;
 		AssetType m_assetType;

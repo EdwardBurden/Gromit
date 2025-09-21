@@ -15,7 +15,7 @@ namespace Gromit
 		//std::unique_ptr<unsigned char[]> m_data; // heap for image data
 		unsigned char* m_data; //to improve
 
-		TextureAsset(TextureMetaData* metaData)
+		TextureAsset(TextureMetaData* metaData) : Asset(metaData->m_guid)
 		{
 			stbi_set_flip_vertically_on_load(true);
 
