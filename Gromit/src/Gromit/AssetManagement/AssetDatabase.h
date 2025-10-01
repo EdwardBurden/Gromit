@@ -15,6 +15,8 @@
 #include "AssetManagement/ShaderMetaData.h"
 #include "AssetManagement/MaterialAsset.h"
 #include "AssetManagement/MaterialMetaData.h"
+#include "AssetManagement/EntityAsset.h"
+#include "AssetManagement/EntityMetaData.h"
 #include "Logging/Logging.h"
 #include <json.hpp>
 
@@ -108,7 +110,7 @@ namespace Gromit
 
 			record->refCount++;
 			T* derivedPtr = static_cast<T*>(record->asset);
-			GL_INFO("Loaded Asset: " + record->metaData->GetName() + " Ref: " + std::to_string( record->refCount));
+			GL_INFO("Loaded Asset: " + record->metaData->GetName() + " Ref: " + std::to_string(record->refCount));
 			return derivedPtr;
 		}
 
@@ -148,6 +150,9 @@ namespace Gromit
 		template<> struct PoolTraits<MaterialMetaData> { static constexpr size_t Capacity = 8; };
 		template<> struct PoolTraits<MaterialAsset> { static constexpr size_t Capacity = 8; };
 
+		template<> struct PoolTraits<EntityMetaData> { static constexpr size_t Capacity = 8; };
+		template<> struct PoolTraits<EntityAsset> { static constexpr size_t Capacity = 8; };
+
 		template<typename T>
 		using PoolFor = PoolAllocator<T, PoolTraits<T>::Capacity>;
 		PoolFor<MeshMetaData> m_meshMetaDataPool;
@@ -162,6 +167,9 @@ namespace Gromit
 		PoolFor<MaterialMetaData> m_materialMetaDataPool;
 		PoolFor<MaterialAsset> m_materialAssetPool;
 
+		PoolFor<EntityMetaData> m_entityMetaDataPool;
+		PoolFor<EntityAsset> m_entityAssetPool;
+
 		template<typename T>
 		PoolFor<T>& GetPool();
 		template<>PoolFor<MeshMetaData>& GetPool<MeshMetaData>() { return m_meshMetaDataPool; }
@@ -175,5 +183,8 @@ namespace Gromit
 
 		template<>PoolFor<MaterialMetaData>& GetPool<MaterialMetaData>() { return m_materialMetaDataPool; }
 		template<>PoolFor<MaterialAsset>& GetPool<MaterialAsset>() { return m_materialAssetPool; }
+
+		template<>PoolFor<EntityMetaData>& GetPool<EntityMetaData>() { return m_entityMetaDataPool; }
+		template<>PoolFor<EntityAsset>& GetPool<EntityAsset>() { return m_entityAssetPool; }
 	};
 }

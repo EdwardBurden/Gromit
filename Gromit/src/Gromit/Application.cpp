@@ -41,8 +41,18 @@ namespace Gromit
 		//ShaderAsset* frag = manager->LoadAsset<ShaderAsset>(123434);
 	//	TextureAsset* smileTextureAsset = manager->LoadAsset<TextureAsset>(345455675675);
 		//////////////
+		EntityAsset* test = manager->LoadAsset<EntityAsset>(1);
+		// 
 
-		 
+
+
+
+
+
+
+
+
+
 
 		Context::SharedContext = Renderer::GetAPI()->CreateContext(); //temp
 		auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();

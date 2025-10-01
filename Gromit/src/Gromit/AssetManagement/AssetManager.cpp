@@ -65,6 +65,7 @@ namespace Gromit
 						//	IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
 						break;
 					case AssetType::Entity:
+						db.GetOrLoadMetadata<EntityAsset>(guid, pathTemp, data);
 						//IdentifyAsset<EntityAsset>(assetbase.guid, p.string(), data);
 						break;
 					default:
@@ -92,13 +93,15 @@ namespace Gromit
 		switch (type)
 		{
 		case AssetType::Texture:
-			return db.GetOrLoadAsset<TextureAsset>(guid);
+			return db.GetOrLoadAsset<TextureAsset>(guid); // todo fix ref problem this makes
 		case AssetType::Shader:
 			return db.GetOrLoadAsset<ShaderAsset>(guid);
 		case AssetType::Mesh:
 			return db.GetOrLoadAsset<MeshAsset>(guid);
 		case AssetType::Material:
 			return db.GetOrLoadAsset<MaterialAsset>(guid);
+		case AssetType::Entity:
+			return db.GetOrLoadAsset<EntityAsset>(guid);
 
 		}
 	}

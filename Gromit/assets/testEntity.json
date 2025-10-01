@@ -5,6 +5,7 @@
   "path": "",
   "components": [
     {
+      "componentID":  0,
       "componentType": "Transform",
       "position": {
         "x": 1,
@@ -18,6 +19,7 @@
       }
     },
     {
+      "componentID": 1,
       "componentType": "MeshRenderer",
       "mesh": 32422333,
       "material": 999

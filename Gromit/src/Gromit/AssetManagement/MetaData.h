@@ -47,16 +47,16 @@ namespace Gromit
 
 
 		std::vector<AssetDependency> GetDependencies() const { return m_dependencies; }
-	protected:
-	
-		std::string m_name;
-		std::string m_path;
-		AssetType m_assetType;
 
 		void AddDependency(AssetType type, int guid)
 		{
 			m_dependencies.push_back(AssetDependency(type, guid));
 		}
+	protected:
+	
+		std::string m_name;
+		std::string m_path;
+		AssetType m_assetType;
 
 	private:
 		std::vector<AssetDependency> m_dependencies;

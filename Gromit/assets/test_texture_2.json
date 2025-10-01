@@ -1,0 +1,10 @@
+{
+	"guid": 5095384,
+	"type": "Texture",
+	"name": "Test1",
+	"path": "/Test1.png",
+	"width": 128,
+	"height": 128,
+	"format": "RED",
+	"generateMipMaps": true
+}

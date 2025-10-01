@@ -1,0 +1,13 @@
+{
+  "guid": 123332,
+  "type": "Material",
+  "name": "testMat1",
+  "path": "",
+  "shaders": [
+    { "guid": 545 },
+    { "guid": 123434 }
+  ],
+  "textures": [
+    { "guid": 5095384 }
+  ]
+}
