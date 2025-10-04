@@ -1,7 +1,5 @@
 #pragma once
 
-#include "EntityManagement/Scene.h"
-
 namespace Gromit
 {
 	struct SceneInstance

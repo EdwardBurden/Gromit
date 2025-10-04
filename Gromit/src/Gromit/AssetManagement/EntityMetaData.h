@@ -20,7 +20,6 @@ namespace Gromit
 	{
 		ComponentAsset(int id, ComponentType type) : m_id(id), m_componentType(type) {}
 		virtual ~ComponentAsset() = default;
-		virtual void SetOverride(nlohmann::json data) = 0;
 		int GetID() const { return m_id; }
 		virtual std::vector<AssetDependency> GetDependencies() const { return {}; }
 	private:

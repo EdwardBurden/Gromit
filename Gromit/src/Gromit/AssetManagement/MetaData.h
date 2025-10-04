@@ -5,21 +5,24 @@ namespace Gromit
 {
 	enum class AssetType
 	{
-		None = -1,
-		Texture = 0,
-		Shader = 1,
-		Material = 2,
-		Mesh = 3,
-		Entity = 4
+		None,
+		Texture,
+		Shader,
+		Material,
+		Mesh,
+		Entity,
+		Scene
 	};
 
 	NLOHMANN_JSON_SERIALIZE_ENUM(AssetType,
 		{
+			{ AssetType::None, "None"},
 			{ AssetType::Texture, "Texture"},
 			{ AssetType::Shader, "Shader" },
 			{ AssetType::Material, "Material" },
 			{ AssetType::Mesh, "Mesh" },
-			{ AssetType::Entity, "Entity" }
+			{ AssetType::Entity, "Entity" },
+			{ AssetType::Scene, "Scene"},
 		});
 
 
@@ -32,7 +35,7 @@ namespace Gromit
 
 	struct MetaData
 	{
-	public:	
+	public:
 		int m_guid;
 		MetaData(int guid, nlohmann::json data)
 		{
@@ -53,7 +56,7 @@ namespace Gromit
 			m_dependencies.push_back(AssetDependency(type, guid));
 		}
 	protected:
-	
+
 		std::string m_name;
 		std::string m_path;
 		AssetType m_assetType;
