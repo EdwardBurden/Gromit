@@ -1,5 +1,5 @@
 #pragma once
-#include "../../AssetManagement/TextureAsset.h"
+#include "AssetManagement/Texture/TextureAsset.h"
 #include "RenderAPIs/Texture.h"
 
 namespace Gromit::OpenGL

@@ -7,9 +7,9 @@ namespace Gromit
 		std::vector<VertexArray*> vArrays;
 		auto materialGPU = Renderer::GetAPI()->CreateMaterial(material);
 		//auto shader = Renderer::GetAPI()->CreateShader(*vert, *frag);
-		auto m_tempVB = Renderer::GetAPI()->CreateVertexBuffer(mesh->vertices , mesh->verticesSize);
+		auto m_tempVB = Renderer::GetAPI()->CreateVertexBuffer(mesh->GetVertices(), mesh->GetVertexCount());
 		m_tempVB->SetLayout(layout);
-		auto m_tempIB = Renderer::GetAPI()->CreateIndexBuffer(mesh->indices, mesh->indicesSize);
+		auto m_tempIB = Renderer::GetAPI()->CreateIndexBuffer(mesh->GetIndices(), mesh->GetIndexCount());
 		for (Window* window : context->GetWindows())
 		{
 			window->Activate();

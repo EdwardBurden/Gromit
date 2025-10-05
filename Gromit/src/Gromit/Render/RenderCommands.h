@@ -1,7 +1,7 @@
 #pragma once
 
-#include "AssetManagement/MeshAsset.h"
-#include "AssetManagement/MaterialAsset.h"
+#include "AssetManagement/Mesh/MeshAsset.h"
+#include "AssetManagement/Material/MaterialAsset.h"
 #include "RenderAPIs/RenderAPIs.h"
 #include "Render/Render.h"
 #include "ServiceLocator.h"

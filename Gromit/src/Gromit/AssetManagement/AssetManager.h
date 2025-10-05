@@ -8,7 +8,7 @@
 
 namespace Gromit
 {
-	class GROMIT_API AssetManager : public IEngineService
+	class AssetManager : public IEngineService
 	{
 	public:
 		AssetManager() : db()

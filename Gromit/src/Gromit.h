@@ -4,5 +4,6 @@
 #include "Gromit/EntryPoint.h"
 #include "Gromit/EventSystem/EventSystem.h"
 #include "Gromit/WindowManager.h"
+#include "Gromit/EntityManagement/SceneManager.h"
 
 

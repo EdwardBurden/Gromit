@@ -1,5 +1,5 @@
 #pragma once
-#include "AssetManagement/MetaData.h"
+#include "AssetManagement/Asset.h"
 
 namespace Gromit
 {
@@ -20,14 +20,16 @@ namespace Gromit
 		TextureFormat m_format;
 		bool m_generateMipMaps;
 
-		TextureMetaData(int guid, std::string assetPath, nlohmann::json data) : MetaData(guid, data)
-		{
-			data.at("width").get_to(m_width);
-			data.at("height").get_to(m_height);
-			data.at("format").get_to(m_format);
-			data.at("generateMipMaps").get_to(m_generateMipMaps);
-			m_assetPath = assetPath + m_path;
-		}
+		TextureMetaData(int guid, std::string assetPath, nlohmann::json data);// : MetaData(guid, assetPath, data);
 	};
 
+	struct TextureAsset : public Asset
+	{
+		int m_width;
+		int m_height;
+		int m_nrChannels;
+		unsigned char* m_data; // todo improve
+
+		TextureAsset(TextureMetaData* metaData);
+	};
 }

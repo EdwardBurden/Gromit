@@ -46,31 +46,8 @@ namespace Gromit
 					json data = json::parse(buffer);
 					AssetType type = data["type"].template get<AssetType>();
 					auto guid = data["guid"].template get<int>();
-					switch (type)
-					{
-					case AssetType::Texture:
-						db.GetOrLoadMetadata<TextureAsset>(guid, pathTemp, data);
-						//IdentifyAsset<TextureAsset>(assetbase.guid, p.string(), data);
-						break;
-					case AssetType::Shader:
-						db.GetOrLoadMetadata<ShaderAsset>(guid, pathTemp, data);
-						//IdentifyAsset<ShaderAsset>(assetbase.guid, p.string(), data);
-						break;
-					case AssetType::Material:
-						db.GetOrLoadMetadata<MaterialAsset>(guid, pathTemp, data);
-						//IdentifyAsset<MaterialAsset>(assetbase.guid, p.string(), data);
-						break;
-					case AssetType::Mesh:
-						db.GetOrLoadMetadata<MeshAsset>(guid, pathTemp, data);
-						//	IdentifyAsset<MeshAsset>(assetbase.guid, p.string(), data);
-						break;
-					case AssetType::Entity:
-						db.GetOrLoadMetadata<EntityAsset>(guid, pathTemp, data);
-						//IdentifyAsset<EntityAsset>(assetbase.guid, p.string(), data);
-						break;
-					default:
-						break;
-					}
+
+					db.LoadMetadata(guid, type, pathTemp, data);
 				}
 			}
 		}
@@ -90,19 +67,6 @@ namespace Gromit
 			LoadAsset(depencency.guid);
 		}
 
-		switch (type)
-		{
-		case AssetType::Texture:
-			return db.GetOrLoadAsset<TextureAsset>(guid); // todo fix ref problem this makes
-		case AssetType::Shader:
-			return db.GetOrLoadAsset<ShaderAsset>(guid);
-		case AssetType::Mesh:
-			return db.GetOrLoadAsset<MeshAsset>(guid);
-		case AssetType::Material:
-			return db.GetOrLoadAsset<MaterialAsset>(guid);
-		case AssetType::Entity:
-			return db.GetOrLoadAsset<EntityAsset>(guid);
-
-		}
+	return 	db.LoadAsset(guid, type);
 	}
 }

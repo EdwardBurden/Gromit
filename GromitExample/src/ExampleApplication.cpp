@@ -19,7 +19,7 @@ void ExampleApplication::StartUp()
 	REG_EVENT(Gromit::MouseClickEvent, this, DoSomethingMouse);
 	REG_EVENT(Gromit::WindowsResizeEvent, this, DoSomethingWindow);
 
-	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene("test") -> will also load the asset,camera etc and handle rendering
+	Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene("test"); //-> will also load the asset,camera etc and handle rendering
 	//REG_EVENT(Gromit::KeyPress, this, Close/Open different scene);
 }
 

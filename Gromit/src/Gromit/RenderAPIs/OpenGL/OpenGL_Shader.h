@@ -1,6 +1,6 @@
 #pragma once
 #include "RenderAPIs/Shader.h"
-#include "../../AssetManagement/ShaderAsset.h"
+#include "AssetManagement/Shader/ShaderAsset.h"
 #include "Math/Math.h"
 
 namespace Gromit::OpenGL
@@ -17,6 +17,6 @@ namespace Gromit::OpenGL
 		~OpenGL_Shader();
 		unsigned int GetShaderId() const { return ShaderProgramId; }
 	private:
-		void Construct(char vertexShader[]);
+		void Construct(const char vertexShader[]);
 	};
 }

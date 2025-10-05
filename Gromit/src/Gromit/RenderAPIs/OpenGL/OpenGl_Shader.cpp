@@ -7,7 +7,7 @@ namespace Gromit::OpenGL
 	OpenGL_Shader::OpenGL_Shader(ShaderAsset* shader)
 	{
 		GLenum type = NULL;
-		switch (shader->m_shaderType)
+		switch (shader->GetShaderType())
 		{
 		case ShaderType::Vertex:
 			type = GL_VERTEX_SHADER;
@@ -20,7 +20,7 @@ namespace Gromit::OpenGL
 		}
 
 		ShaderProgramId = glCreateShader(type);
-		Construct(shader->m_source); //todo this will be handled in the material grphics class, using dependant metadata
+		Construct(shader->GetSource()); //todo this will be handled in the material grphics class, using dependant metadata
 	}
 
 	OpenGL_Shader::~OpenGL_Shader()
@@ -28,7 +28,7 @@ namespace Gromit::OpenGL
 		glDeleteShader(ShaderProgramId); // may be okay doing this in construct tbh.
 	}
 
-	void OpenGL_Shader::Construct(char vertexShader[])
+	void OpenGL_Shader::Construct(const char vertexShader[])
 	{
 		int  success;
 		char infoLog[512];

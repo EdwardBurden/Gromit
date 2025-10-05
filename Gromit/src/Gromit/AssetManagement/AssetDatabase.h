@@ -6,37 +6,81 @@
 
 
 #pragma once
+#include "AssetManagement/AssetRecord.h"
 #include "AssetManagement/PoolAllocator.h"
-#include "AssetManagement/MeshAsset.h"
-#include "AssetManagement/MeshMetaData.h"
-#include "AssetManagement/TextureAsset.h"
-#include "AssetManagement/TextureMetaData.h"
-#include "AssetManagement/ShaderAsset.h"
-#include "AssetManagement/ShaderMetaData.h"
-#include "AssetManagement/MaterialAsset.h"
-#include "AssetManagement/MaterialMetaData.h"
-#include "AssetManagement/EntityAsset.h"
-#include "AssetManagement/EntityMetaData.h"
 #include "Logging/Logging.h"
 #include <json.hpp>
+#include <memory>
 
 namespace Gromit
 {
+	class  IAssetHandler
+	{
+	public:
+		virtual ~IAssetHandler() = default;
+		virtual void LoadMetadata(std::unordered_map<int, AssetRecord*>&, int guid, const std::string&, const nlohmann::json&) = 0;
+		virtual Asset* LoadAsset(std::unordered_map<int, AssetRecord*>&, int guid) = 0;
+	};
+
+
+	template<typename TAsset, typename TMeta, size_t Poolsize = 64>
+	class AssetHandler : public IAssetHandler
+	{
+	public:
+		void LoadMetadata(std::unordered_map<int, AssetRecord*>& registry, int guid, const std::string& name, const nlohmann::json& data) override
+		{
+			if (!registry.contains(guid))
+			{
+				TMeta* meta = m_metaPool.Allocate(guid, name, data);	
+				AssetRecord* record = new AssetRecord(meta);
+				registry[guid] = record;
+				std::cout << "Loaded metadata: " << meta->GetName() << "\n";
+			}
+		}
+
+		Asset* LoadAsset(std::unordered_map<int, AssetRecord*>& registry, int guid) override
+		{
+			auto it = registry.find(guid);
+			if (it == registry.end())
+				return nullptr;
+
+			AssetRecord* record = it->second;
+			if (!record->asset)
+			{
+				TMeta* meta = static_cast<TMeta*>(record->metaData);
+				TAsset* asset = m_assetPool.Allocate(meta);
+				record->asset = asset;
+			}
+
+			record->refCount++;
+			return record->asset;
+		}
+
+	private:
+
+		PoolAllocator<TMeta, Poolsize> m_metaPool;
+		PoolAllocator<TAsset, Poolsize> m_assetPool;
+	};
+
+
+#define REGISTER_ASSET_HANDLER(HANDLER_CLASS, TYPE, ASSET, META, POOL_SIZE) \
+class HANDLER_CLASS : public AssetHandler<ASSET, META, POOL_SIZE> \
+{ \
+public: \
+    HANDLER_CLASS() { AssetDatabase::RegisterHandler(TYPE,this); } \
+}; \
+static HANDLER_CLASS s_##HANDLER_CLASS
+
+
 	class AssetDatabase
 	{
 	public:
-		struct AssetRecord
-		{
-			MetaData* metaData;
-			Asset* asset = nullptr;
-			int refCount = 0; //actual asset uses not metadata
-			bool permanent = false;
 
-			AssetRecord(MetaData* meta)
-			{
-				metaData = meta;
-			}
-		};
+		static void RegisterHandler(AssetType type, IAssetHandler* handler)
+		{
+			s_handlerMap[type] = handler; //todo check already exists before adding
+		}
+
 
 		AssetDatabase() {};
 
@@ -55,136 +99,24 @@ namespace Gromit
 			return m_assetRegistry[guid]->metaData->GetDependencies();
 		}
 
-
-		template<typename T>
-		AssetRecord* GetMetadata(int guid)
+		Asset* LoadAsset(int guid, AssetType type)
 		{
-			return m_assetRegistry[guid];
+			auto it = s_handlerMap.find(type);
+			if (it != s_handlerMap.end())
+				return it->second->LoadAsset(m_assetRegistry, guid);
+			return nullptr;
 		}
 
-		template<typename T>
-		AssetRecord* GetOrLoadMetadata(int guid, std::string name, nlohmann::json data)
+		void LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data)
 		{
-			if (!m_assetRegistry.contains(guid))
-			{
-				using Meta = typename T::MetaType;
-				Meta* metaData = GetPool<Meta>().Allocate(guid, name, data);
-				AssetRecord* record = new AssetRecord(metaData);
-				m_assetRegistry[guid] = record;
-				GL_INFO("Loaded metaData: " + metaData->GetName());
-			}
-			return m_assetRegistry[guid];
+			auto it = s_handlerMap.find(type);
+			if (it != s_handlerMap.end())
+				it->second->LoadMetadata(m_assetRegistry, guid, name, data);
 		}
 
-		template<typename T>
-		void UnloadMetaData(int guid)
-		{
-			if (m_assetRegistry.contains(guid))
-			{
-				using Meta = typename T::MetaType;
-				GetPool<Meta>().Free(m_assetRegistry[guid]->metaData);
-				delete m_assetRegistry[guid];
-				m_assetRegistry.erase(guid);
-			}
-		}
-
-		template<typename T>
-		T* GetOrLoadAsset(int guid)
-		{
-			if (!m_assetRegistry.contains(guid))
-			{
-				//erro for now
-				return nullptr;
-			}
-
-			// new load example
-			AssetRecord* record = m_assetRegistry[guid];
-			if (record->asset == nullptr || record->refCount == 0)
-			{
-
-				auto thing = static_cast<typename T::MetaType*>(record->metaData);
-				T* mesh = GetPool<T>().Allocate(thing);
-				record->asset = mesh;
-			}
-
-
-			record->refCount++;
-			T* derivedPtr = static_cast<T*>(record->asset);
-			GL_INFO("Loaded Asset: " + record->metaData->GetName() + " Ref: " + std::to_string(record->refCount));
-			return derivedPtr;
-		}
-
-		template<typename T>
-		void UnloadAsset(int guid)
-		{
-			if (!m_assetRegistry.contains(guid))
-			{
-				return;
-			}
-			AssetRecord* record = m_assetRegistry[guid];
-			record->refCount--;
-
-			if (!record->permanent && record->refCount <= 0)
-			{
-				GetPool<T>().Free(m_assetRegistry[guid]->asset);
-			}
-		}
 
 	private:
 		std::unordered_map<int, AssetRecord*> m_assetRegistry;
-
-		template<typename T>
-		struct PoolTraits;
-
-		// Specializations
-		template<> struct PoolTraits<MeshMetaData> { static constexpr size_t Capacity = 8; };
-		template<> struct PoolTraits<MeshAsset> { static constexpr size_t Capacity = 8; };
-
-		template<> struct PoolTraits<TextureMetaData> { static constexpr size_t Capacity = 8; };
-		template<> struct PoolTraits<TextureAsset> { static constexpr size_t Capacity = 8; };
-
-		template<> struct PoolTraits<ShaderMetaData> { static constexpr size_t Capacity = 8; };
-		template<> struct PoolTraits<ShaderAsset> { static constexpr size_t Capacity = 8; };
-
-
-		template<> struct PoolTraits<MaterialMetaData> { static constexpr size_t Capacity = 8; };
-		template<> struct PoolTraits<MaterialAsset> { static constexpr size_t Capacity = 8; };
-
-		template<> struct PoolTraits<EntityMetaData> { static constexpr size_t Capacity = 8; };
-		template<> struct PoolTraits<EntityAsset> { static constexpr size_t Capacity = 8; };
-
-		template<typename T>
-		using PoolFor = PoolAllocator<T, PoolTraits<T>::Capacity>;
-		PoolFor<MeshMetaData> m_meshMetaDataPool;
-		PoolFor<MeshAsset> m_meshAssetPool;
-
-		PoolFor<TextureMetaData> m_textureMetaDataPool;
-		PoolFor<TextureAsset> m_textureAssetPool;
-
-		PoolFor<ShaderMetaData> m_shaderMetaDataPool;
-		PoolFor<ShaderAsset> m_shaderAssetPool;
-
-		PoolFor<MaterialMetaData> m_materialMetaDataPool;
-		PoolFor<MaterialAsset> m_materialAssetPool;
-
-		PoolFor<EntityMetaData> m_entityMetaDataPool;
-		PoolFor<EntityAsset> m_entityAssetPool;
-
-		template<typename T>
-		PoolFor<T>& GetPool();
-		template<>PoolFor<MeshMetaData>& GetPool<MeshMetaData>() { return m_meshMetaDataPool; }
-		template<>PoolFor<MeshAsset>& GetPool<MeshAsset>() { return m_meshAssetPool; }
-
-		template<>PoolFor<TextureMetaData>& GetPool<TextureMetaData>() { return m_textureMetaDataPool; }
-		template<>PoolFor<TextureAsset>& GetPool<TextureAsset>() { return m_textureAssetPool; }
-
-		template<>PoolFor<ShaderMetaData>& GetPool<ShaderMetaData>() { return m_shaderMetaDataPool; }
-		template<>PoolFor<ShaderAsset>& GetPool<ShaderAsset>() { return m_shaderAssetPool; }
-
-		template<>PoolFor<MaterialMetaData>& GetPool<MaterialMetaData>() { return m_materialMetaDataPool; }
-		template<>PoolFor<MaterialAsset>& GetPool<MaterialAsset>() { return m_materialAssetPool; }
-
-		template<>PoolFor<EntityMetaData>& GetPool<EntityMetaData>() { return m_entityMetaDataPool; }
-		template<>PoolFor<EntityAsset>& GetPool<EntityAsset>() { return m_entityAssetPool; }
+		static inline std::unordered_map<AssetType, IAssetHandler*> s_handlerMap;
 	};
 }

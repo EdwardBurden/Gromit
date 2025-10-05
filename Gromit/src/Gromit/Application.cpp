@@ -36,12 +36,12 @@ namespace Gromit
 			});
 		const auto& manager = ServiceLocator::GetService<AssetManager>();
 		manager->IdentifyAssets("assets"); // would be core or example folders in future
-		MeshAsset* mesh = manager->LoadAsset<MeshAsset>(32422333);
-		MaterialAsset* material = manager->LoadAsset<MaterialAsset>(999);
+		//MeshAsset* mesh = manager->LoadAsset<MeshAsset>(32422333);
+		//MaterialAsset* material = manager->LoadAsset<MaterialAsset>(999);
 		//ShaderAsset* frag = manager->LoadAsset<ShaderAsset>(123434);
 	//	TextureAsset* smileTextureAsset = manager->LoadAsset<TextureAsset>(345455675675);
 		//////////////
-		EntityAsset* test = manager->LoadAsset<EntityAsset>(1);
+		//EntityAsset* test = manager->LoadAsset<EntityAsset>(1);
 		// 
 
 
@@ -58,7 +58,7 @@ namespace Gromit
 		auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>();
 		w->CreateWindow(100, 100, 400, 400, "DLL Test1");
 		//w->CreateWindow(100, 100, 400, 400, "DLL Test2");
-		testRender = RenderCommands::CreateRenderObject(Context::SharedContext, material, mesh, layout); //would pass in mesh and shaer assets here
+		//testRender = RenderCommands::CreateRenderObject(Context::SharedContext, material, mesh, layout); //would pass in mesh and shaer assets here
 	}
 
 	void Application::Run()

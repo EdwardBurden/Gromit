@@ -36,31 +36,27 @@ namespace Gromit
 	struct MetaData
 	{
 	public:
-		int m_guid;
-		MetaData(int guid, nlohmann::json data)
+		MetaData(int guid, std::string assetPath, nlohmann::json data)
 		{
-			data.at("guid").get_to(m_guid);
+			m_guid = guid;
 			data.at("name").get_to(m_name);
 			data.at("path").get_to(m_path);
 			data.at("type").get_to(m_assetType);
+			m_assetPath = assetPath + m_path;
 		}
 
+		int GetGUID() const { return m_guid; }
+		std::string GetAssetPath() const { return m_assetPath; }
 		std::string GetName() const { return m_name; }
 		AssetType GetAssetType() const { return m_assetType; }
-
-
 		std::vector<AssetDependency> GetDependencies() const { return m_dependencies; }
-
-		void AddDependency(AssetType type, int guid)
-		{
-			m_dependencies.push_back(AssetDependency(type, guid));
-		}
+		void AddDependency(AssetType type, int guid) { m_dependencies.push_back(AssetDependency(type, guid)); }
 	protected:
-
+		int m_guid;
 		std::string m_name;
 		std::string m_path;
 		AssetType m_assetType;
-
+		std::string m_assetPath;
 	private:
 		std::vector<AssetDependency> m_dependencies;
 	};

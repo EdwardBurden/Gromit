@@ -4,6 +4,7 @@
   "name": "Test",
   "entities": [
     {
+      "instance": 47647,
       "guid": 1,
       "overrides": [
         {
@@ -19,6 +20,21 @@
           "componentID": 1,
           "componentType": "MeshRenderer",
           "material": 123332
+        }
+      ]
+    },
+    {
+      "instance": 5553,
+      "guid": 1,
+      "overrides": [
+        {
+          "componentID": 0,
+          "componentType": "Transform",
+          "position": {
+            "x": 1,
+            "y": 2,
+            "z": 0
+          }
         }
       ]
     }

@@ -1,7 +1,7 @@
 #pragma once
 #include "RenderAPIs/Material.h"
-#include "AssetManagement/MaterialAsset.h"
-#include "AssetManagement/ShaderAsset.h"
+#include "AssetManagement/Material/MaterialAsset.h"
+#include "AssetManagement/Shader/ShaderAsset.h"
 #include "Math/Math.h""
 
 

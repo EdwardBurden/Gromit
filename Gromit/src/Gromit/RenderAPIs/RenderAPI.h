@@ -10,9 +10,9 @@
 #include "RenderAPIs/Window.h"
 #include "RenderAPIs/Material.h"
 #include "Math/Math.h"
-#include "../AssetManagement/ShaderAsset.h"
-#include "../AssetManagement/TextureAsset.h" //todo
-#include "../AssetManagement/MaterialAsset.h" //todo
+#include "AssetManagement/Shader/ShaderAsset.h"
+#include "AssetManagement/Texture/TextureAsset.h" //todo
+#include "AssetManagement/Material/MaterialAsset.h" //todo
 
 namespace Gromit
 {

@@ -3,11 +3,9 @@
 #include "EventSystem/EventSystem.h"
 #include "Logging/Logging.h"
 #include "WindowManager.h"
-#include "AssetManagement/AssetManager.h"
 #include "Render/Render.h"
 #include "ServiceLocator.h"
 #include "FrameTime.h"
-#include "AssetManagement/MaterialAsset.h"
 
 namespace Gromit 
 {

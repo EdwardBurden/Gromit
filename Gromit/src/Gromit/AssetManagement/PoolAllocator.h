@@ -21,7 +21,7 @@ namespace Gromit
 	public:
 		PoolAllocator()
 		{
-			GL_INFO("Pool created for Type:{0}, Size:{1}, Capacity {2}", typeid(T).name(), sizeof(T), Capacity);
+			//GL_INFO("Pool created for Type:{0}, Size:{1}, Capacity {2}", typeid(T).name(), sizeof(T), Capacity);
 			for (size_t i = 0; i < Capacity - 1; i++)
 			{
 				m_pool[i].nextChunk = &m_pool[i + 1];

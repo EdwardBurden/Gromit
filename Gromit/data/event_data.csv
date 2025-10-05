@@ -1,4 +1,0 @@
-Enum,Inherits,IsAbstract,arg1Type,arg1name,arg2Type,arg2Value
-MouseEvent,Event,true,,,,
-MouseClickEvent,MouseEvent,false,int,mouseButton,,
-MouseMoveEvent,MouseEvent,false,int,x,int,y

@@ -1,4 +1,8 @@
 #pragma once
+#include "AssetManagement/AssetManager.h" // only in cpp!
+#include "Core.h"
+#include "ServiceLocator.h"
+
 
 namespace Gromit
 {
@@ -10,10 +14,23 @@ namespace Gromit
 	struct EntityInstance
 	{
 		int m_instanceID; // can use this to cache agaianst render objects so its not recreated every frame
+		//EntityInstance(EntityAsset* entity) : m_asset(entity)
+		//{
+		
+	//	}
+
+
+
+		static EntityInstance* CreateInstance(int guid);
+		static EntityInstance* CreateInstance(std::string name);
+		static void DeleteInstance(EntityInstance* instance);
+
+	private:
+		//EntityAsset* m_asset; // shared pointer todo
 	};
 
 
-	class SceneManager
+	class GROMIT_API SceneManager : public IEngineService
 	{
 	public:
 		std::unique_ptr<SceneInstance> LoadScene(std::string sceneName); //Loads a scene at root(implied) and all entities required
