@@ -78,11 +78,12 @@ static HANDLER_CLASS s_##HANDLER_CLASS
 
 		static void RegisterHandler(AssetType type, IAssetHandler* handler)
 		{
-			s_handlerMap[type] = handler; //todo check already exists before adding
+			GetRegistry()[type] = handler; //todo check already exists before adding
 		}
 
 
-		AssetDatabase() {};
+		AssetDatabase() {
+		};
 
 		AssetType FindAssetType(int guid)
 		{
@@ -101,22 +102,28 @@ static HANDLER_CLASS s_##HANDLER_CLASS
 
 		Asset* LoadAsset(int guid, AssetType type)
 		{
-			auto it = s_handlerMap.find(type);
-			if (it != s_handlerMap.end())
+			auto it = GetRegistry().find(type);
+			if (it != GetRegistry().end())
 				return it->second->LoadAsset(m_assetRegistry, guid);
 			return nullptr;
 		}
 
 		void LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data)
 		{
-			auto it = s_handlerMap.find(type);
-			if (it != s_handlerMap.end())
+			auto it = GetRegistry().find(type);
+			if (it != GetRegistry().end())
 				it->second->LoadMetadata(m_assetRegistry, guid, name, data);
 		}
 
 
 	private:
 		std::unordered_map<int, AssetRecord*> m_assetRegistry;
-		static inline std::unordered_map<AssetType, IAssetHandler*> s_handlerMap;
+		//static inline std::unordered_map<AssetType, IAssetHandler*> s_handlerMap;
+
+		static inline std::unordered_map<AssetType, IAssetHandler*>& GetRegistry()
+		{
+			static std::unordered_map<AssetType, IAssetHandler*> registry;
+			return registry; // guaranteed initialized on first use
+		}
 	};
 }

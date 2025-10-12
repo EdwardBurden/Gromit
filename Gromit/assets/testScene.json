@@ -2,6 +2,7 @@
   "guid": 5,
   "type": "Scene",
   "name": "Test",
+  "path": "",
   "entities": [
     {
       "instance": 47647,

@@ -1,6 +1,5 @@
 #pragma once
 #include "AssetManagement/Asset.h"
-#include "Math/Math.h"
 
 namespace Gromit
 {
@@ -25,23 +24,6 @@ namespace Gromit
 		const virtual std::vector<AssetDependency>& GetDependencies() const { return {}; }
 		int m_id;
 		ComponentType m_componentType;
-	};
-
-	struct TransformAsset : public ComponentAsset
-	{
-	public:
-		TransformAsset(int id, ComponentType type, nlohmann::json data);
-		glm::vec3 m_position; //may need to convert manually
-		glm::vec3 m_rotation; //may need to convert manually
-	};
-
-	struct MeshRendererAsset : public ComponentAsset
-	{
-	public:
-		MeshRendererAsset(int id, ComponentType type, nlohmann::json data);
-		const std::vector<AssetDependency>& GetDependencies() const override;
-		int m_mesh;
-		int m_material;
 	};
 
 	struct EntityMetaData : public MetaData

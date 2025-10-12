@@ -4,6 +4,28 @@
 
 namespace Gromit
 {
+
+	void TransformComponentInstance::ApplyProperty(const std::string& name, const ComponentProperty& value) 
+	{
+		if (name == "position" && std::holds_alternative<glm::vec3>(value))
+		{
+			m_position = std::get<glm::vec3>(value);
+			return;
+		}
+
+		if (name == "rotation" && std::holds_alternative<glm::vec3>(value))
+		{
+			m_rotation = std::get<glm::vec3>(value);
+			return;
+		}
+	}
+
+	void MeshRendererComponentInstance::ApplyProperty(const std::string& name, const ComponentProperty& value)
+	{
+
+	}
+
+
 	std::unique_ptr<SceneInstance> SceneManager::LoadScene(std::string sceneName)
 	{
 		//SceneAsset* asset = ServiceLocator::GetService<AssetManager>()->LoadAsset<SceneAsset>(sceneName);

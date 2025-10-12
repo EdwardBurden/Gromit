@@ -1,36 +1,10 @@
 #include "AssetManagement/Entity/EntityAsset.h"
+#include "AssetManagement/Entity/TransformAsset.h"
+#include "AssetManagement/Entity/MeshRendererAsset.h"
 #include "AssetManagement/AssetDatabase.h"
 
 namespace Gromit
 {
-	TransformAsset::TransformAsset(int id, ComponentType type, nlohmann::json data) : ComponentAsset(id, type)
-	{
-		auto position = data["position"];
-		position.at("x").get_to(m_position.x);
-		position.at("y").get_to(m_position.y);
-		position.at("z").get_to(m_position.z);
-
-		auto rotation = data["rotation"];
-		rotation.at("x").get_to(m_rotation.x);
-		rotation.at("y").get_to(m_rotation.y);
-		rotation.at("z").get_to(m_rotation.z);
-	}
-
-	MeshRendererAsset::MeshRendererAsset(int id, ComponentType type, nlohmann::json data) : ComponentAsset(id, type)
-	{
-		data.at("mesh").get_to(m_mesh);
-		data.at("material").get_to(m_material);
-	}
-
-	const std::vector<AssetDependency>& MeshRendererAsset::GetDependencies() const
-	{
-		return
-		{
-			{ AssetType::Mesh, m_mesh },
-			{ AssetType::Material, m_material }
-		};
-	}
-
 	EntityMetaData::EntityMetaData(int guid, std::string assetPath, nlohmann::json data) : MetaData(guid, assetPath, data)
 	{
 		m_components.clear();
@@ -69,4 +43,5 @@ namespace Gromit
 			}
 		}
 	}
+	REGISTER_ASSET_HANDLER(EntityAssetHandler, AssetType::Entity, EntityAsset, EntityMetaData, 8);
 }

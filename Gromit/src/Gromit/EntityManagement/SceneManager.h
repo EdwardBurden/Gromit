@@ -1,8 +1,9 @@
 #pragma once
-#include "AssetManagement/AssetManager.h" // only in cpp!
+#include "Math/Math.h"
 #include "Core.h"
 #include "ServiceLocator.h"
-
+#include "AssetManagement/Entity/EntityAsset.h"
+#include "AssetManagement/Scene/SceneAsset.h"
 
 namespace Gromit
 {
@@ -11,14 +12,30 @@ namespace Gromit
 
 	};
 
+	struct ComponentInstance
+	{
+		virtual void ApplyProperty(const std::string& name, const ComponentProperty& value) = 0;
+	};
+	struct TransformComponentInstance : public ComponentInstance
+	{
+		void ApplyProperty(const std::string& name, const ComponentProperty& value) override;
+		glm::vec3 m_position;
+		glm::vec3 m_rotation;
+	};
+	struct MeshRendererComponentInstance : public ComponentInstance
+	{
+		void ApplyProperty(const std::string& name, const ComponentProperty& value) override;
+	};
+
+
 	struct EntityInstance
 	{
 		int m_instanceID; // can use this to cache agaianst render objects so its not recreated every frame
 		//EntityInstance(EntityAsset* entity) : m_asset(entity)
 		//{
-		
+		//create , apply override properties
 	//	}
-
+		
 
 
 		static EntityInstance* CreateInstance(int guid);
