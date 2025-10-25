@@ -12,6 +12,13 @@ namespace Gromit
 		SetAPI(RenderAPIType::OpenGL);
 		update = 0;
 		camera = new Camera(90, 1);
+
+		m_tempBuffer = Renderer::GetAPI()->CreateBufferLayout(
+			{
+				{ShaderDataType::Float3 , "position"},
+				{ShaderDataType::Float3 , "normal"},
+				{ShaderDataType::Float2 , "texCoords"}
+			});
 	}
 
 	void Renderer::OnShutDown()
@@ -34,20 +41,24 @@ namespace Gromit
 		}
 	}
 
-	void Renderer::AddDrawObject(RenderObject* obj)
-	{
-		tempRenderList.push_back(obj);
-	}
-
-	void Renderer::OnUpdate()
+	void Renderer::OnUpdate(const SceneInstance& sceneInstance)
 	{
 		// begin scene
-		for (auto obj : tempRenderList)
+		for (const auto& entity : sceneInstance.Entities)
 		{
-			RenderCommands::DrawRenderObject(obj, camera);
+			auto iterator = tempRenderList.find(entity->InstanceID);
+			if (iterator == tempRenderList.end())
+			{
+				//add new renderobject
+				const auto& base = entity->Components[ComponentType::MeshRenderer]; //TEMP assume one exists. //TODO make helper to get these later.
+				const auto& mesh = static_cast<MeshRendererComponentInstance*>(base);
+				//mesh.
+				tempRenderList[entity->InstanceID] = RenderCommands::CreateRenderObject(mesh->material, mesh->mesh, m_tempBuffer);
+			}
+			RenderCommands::DrawRenderObject(tempRenderList[entity->InstanceID], camera);
 		}
 		//end scene
 		update += 0.0005f;
-		tempRenderList.clear();
+		//tempRenderList.clear();
 	}
 }

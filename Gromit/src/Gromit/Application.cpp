@@ -19,6 +19,7 @@ namespace Gromit
 		ServiceLocator::RegisterService<WindowManager>();
 		ServiceLocator::RegisterService<AssetManager>();
 		ServiceLocator::RegisterService<EventSystem>();
+		ServiceLocator::RegisterService<SceneManager>();
 		ServiceLocator::StartUp();
 
 		//temp load test
@@ -28,12 +29,13 @@ namespace Gromit
 		//temp
 				///////////////TEMP PART
 
-		BufferLayout* layout = Renderer::GetAPI()->CreateBufferLayout(
+	/*	BufferLayout* layout = Renderer::GetAPI()->CreateBufferLayout(
 			{
 				{ShaderDataType::Float3 , "position"},
 				{ShaderDataType::Float3 , "normal"},
 				{ShaderDataType::Float2 , "texCoords"}
 			});
+			*/
 		const auto& manager = ServiceLocator::GetService<AssetManager>();
 		manager->IdentifyAssets("assets"); // would be core or example folders in future
 		//MeshAsset* mesh = manager->LoadAsset<MeshAsset>(32422333);
@@ -63,16 +65,17 @@ namespace Gromit
 
 	void Application::Run()
 	{
-		auto renderer = ServiceLocator::GetService<Renderer>();
-		renderer->AddDrawObject(testRender); //temp will be set from the scene/world manager
+	//	auto renderer = ServiceLocator::GetService<Renderer>();
+	//	renderer->AddDrawObject(testRender); //temp will be set from the scene/world manager
 
-		FrameTime::SetDelta();
-		ServiceLocator::GetService<WindowManager>()->OnUpdate();
+	//	FrameTime::SetDelta();
+		//ServiceLocator::GetService<WindowManager>()->OnUpdate();
 		//hack must fix
 		if (!m_isRunning)
 			return;
-		ServiceLocator::GetService<EventSystem>()->OnUpdate();
-		ServiceLocator::GetService<Renderer>()->OnUpdate();
+	//	ServiceLocator::GetService<EventSystem>()->OnUpdate();
+		const auto& sceneManger = ServiceLocator::GetService<SceneManager>();
+		ServiceLocator::GetService<Renderer>()->OnUpdate(*sceneManger->m_activeScene);
 		//ServiceLocator::Update();
 	}
 

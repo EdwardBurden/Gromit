@@ -5,6 +5,7 @@
 #include "RenderObject.h"
 #include "Camera.h"
 #include "Math/Math.h"
+#include "EntityManagement/SceneManager.h"
 
 namespace Gromit 
 {
@@ -26,7 +27,7 @@ namespace Gromit
 		//static void PreScene();
 		//static void Submit(VertexArray* va);
 		//static void PostScene();
-		void OnUpdate();
+		void OnUpdate(const SceneInstance& sceneInstance);
 		void AddDrawObject(RenderObject* obj);
 		void DrawRenderObject(RenderObject* obj, Camera* camera, float update);
 		void SetAPI(RenderAPIType renderApiType);
@@ -37,6 +38,7 @@ namespace Gromit
 		static RenderAPI* m_activeRender;
 		Camera* camera;
 		float update;
-		std::vector<RenderObject*> tempRenderList;
+		std::unordered_map<int, RenderObject*> tempRenderList;
+		BufferLayout* m_tempBuffer;
 	};
 }

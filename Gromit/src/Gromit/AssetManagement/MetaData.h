@@ -50,7 +50,7 @@ namespace Gromit
 		std::string GetName() const { return m_name; }
 		AssetType GetAssetType() const { return m_assetType; }
 		std::vector<AssetDependency> GetDependencies() const { return m_dependencies; }
-		void AddDependency(AssetType type, int guid) { m_dependencies.push_back(AssetDependency(type, guid)); }
+		inline void AddDependency(AssetType type, int guid) { m_dependencies.push_back(AssetDependency(type, guid)); }
 	protected:
 		int m_guid;
 		std::string m_name;

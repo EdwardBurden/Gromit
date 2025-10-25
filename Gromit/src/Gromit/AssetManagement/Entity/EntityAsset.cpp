@@ -20,7 +20,7 @@ namespace Gromit
 			{
 			case ComponentType::Transform:
 			{
-				std::unique_ptr<ComponentAsset> asset = std::make_unique<TransformAsset>(id, type, component);
+				std::unique_ptr<TransformAsset> asset = std::make_unique<TransformAsset>(id, type, component);
 				for (auto& dep : asset->GetDependencies())
 				{
 					AddDependency(dep.type, dep.guid);
@@ -30,7 +30,7 @@ namespace Gromit
 			}
 			case ComponentType::MeshRenderer:
 			{
-				std::unique_ptr<ComponentAsset> asset = std::make_unique<MeshRendererAsset>(id, type, component);
+				std::unique_ptr<MeshRendererAsset> asset = std::make_unique<MeshRendererAsset>(id, type, component);
 				for (auto& dep : asset->GetDependencies())
 				{
 					AddDependency(dep.type, dep.guid);

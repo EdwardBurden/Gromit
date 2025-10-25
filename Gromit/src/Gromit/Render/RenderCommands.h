@@ -13,7 +13,7 @@ namespace Gromit
 	class RenderCommands
 	{
 	public:
-		static RenderObject* CreateRenderObject(Context* context, MaterialAsset* material, MeshAsset* mesh, BufferLayout* layout);
+		static RenderObject* CreateRenderObject( MaterialAsset* material, MeshAsset* mesh, BufferLayout* layout);
 		static void DrawRenderObject(RenderObject* obj, Camera* camera);
 	};
 }

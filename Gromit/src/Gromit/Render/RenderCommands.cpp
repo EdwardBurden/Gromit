@@ -2,7 +2,7 @@
 
 namespace Gromit
 {
-	RenderObject* RenderCommands::CreateRenderObject(Context* context, MaterialAsset* material, MeshAsset* mesh, BufferLayout* layout)
+	RenderObject* RenderCommands::CreateRenderObject( MaterialAsset* material, MeshAsset* mesh, BufferLayout* layout)
 	{
 		std::vector<VertexArray*> vArrays;
 		auto materialGPU = Renderer::GetAPI()->CreateMaterial(material);
@@ -10,7 +10,7 @@ namespace Gromit
 		auto m_tempVB = Renderer::GetAPI()->CreateVertexBuffer(mesh->GetVertices(), mesh->GetVertexCount());
 		m_tempVB->SetLayout(layout);
 		auto m_tempIB = Renderer::GetAPI()->CreateIndexBuffer(mesh->GetIndices(), mesh->GetIndexCount());
-		for (Window* window : context->GetWindows())
+		for (Window* window : Context::SharedContext->GetWindows())
 		{
 			window->Activate();
 			auto va = Renderer::GetAPI()->CreateVertexArray();
@@ -21,7 +21,7 @@ namespace Gromit
 			va->Unbind();
 			vArrays.push_back(va);
 		}
-		return new RenderObject(materialGPU, vArrays, m_tempVB, m_tempIB, context);
+		return new RenderObject(materialGPU, vArrays, m_tempVB, m_tempIB, Context::SharedContext); // pos needed
 	}
 
 	void RenderCommands::DrawRenderObject(RenderObject* obj, Camera* camera) //todo pass in time plus other render params

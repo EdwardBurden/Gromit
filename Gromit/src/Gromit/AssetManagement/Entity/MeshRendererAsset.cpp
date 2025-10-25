@@ -8,7 +8,7 @@ namespace Gromit
 		data.at("material").get_to(m_material);
 	}
 
-	const std::vector<AssetDependency>& MeshRendererAsset::GetDependencies() const
+	const std::vector<AssetDependency> MeshRendererAsset::GetDependencies() const
 	{
 		return
 		{

@@ -3,17 +3,17 @@
 #include "Core.h"
 #include "ServiceLocator.h"
 #include "AssetManagement/Entity/EntityAsset.h"
+#include "AssetManagement/Mesh/MeshAsset.h"
+#include "AssetManagement/Material/MaterialAsset.h"
 #include "AssetManagement/Scene/SceneAsset.h"
+#include "AssetManagement/AssetManager.h"
 
 namespace Gromit
 {
-	struct SceneInstance
-	{
-
-	};
-
 	struct ComponentInstance
 	{
+		int ComponentID;
+		ComponentType ComponentType; //may not be required
 		virtual void ApplyProperty(const std::string& name, const ComponentProperty& value) = 0;
 	};
 	struct TransformComponentInstance : public ComponentInstance
@@ -25,42 +25,46 @@ namespace Gromit
 	struct MeshRendererComponentInstance : public ComponentInstance
 	{
 		void ApplyProperty(const std::string& name, const ComponentProperty& value) override;
+		MeshAsset* mesh;
+		MaterialAsset* material; //TODO HANDLE PROPERLY ONLY FOR TESTING
+
 	};
-
-
 	struct EntityInstance
 	{
-		int m_instanceID; // can use this to cache agaianst render objects so its not recreated every frame
-		//EntityInstance(EntityAsset* entity) : m_asset(entity)
-		//{
-		//create , apply override properties
-	//	}
-		
+		int InstanceID;
+		int GuiID;
 
 
-		static EntityInstance* CreateInstance(int guid);
-		static EntityInstance* CreateInstance(std::string name);
-		static void DeleteInstance(EntityInstance* instance);
+		std::unordered_map<ComponentType, ComponentInstance*> Components; //tmeporarily using type, limits to one component per entity.
+
+
+		//	static EntityInstance* CreateInstance(int guid);
+		//	static EntityInstance* CreateInstance(std::string name);
+		//	static void DeleteInstance(EntityInstance* instance);
 
 	private:
 		//EntityAsset* m_asset; // shared pointer todo
 	};
 
+	struct SceneInstance
+	{
+		std::vector<EntityInstance*> Entities;
+	};
+
+
+
+
 
 	class GROMIT_API SceneManager : public IEngineService
 	{
 	public:
-		std::unique_ptr<SceneInstance> LoadScene(std::string sceneName); //Loads a scene at root(implied) and all entities required
-		std::unique_ptr <EntityInstance> LoadEntity(std::string entityName);
+		void OnStartUp() override;
+		void OnShutDown() override;
+		void  LoadScene(int guid); //Loads a scene at root(implied) and all entities required
+		EntityInstance* LoadEntity(const EntityReference& entityRef);
 
-		inline void Update() 
-		{
-		// call the renderer and pass through the list of entities to render.
-
-		}
-
-		static std::unique_ptr<SceneInstance> m_activeScene;
-		static std::vector<std::unique_ptr <EntityInstance>> m_activeEntites;
+		static SceneInstance* m_activeScene;
+		//static std::vector<std::unique_ptr <EntityInstance>> m_activeEntites;
 
 	};
 }

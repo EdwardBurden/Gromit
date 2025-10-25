@@ -16,9 +16,9 @@ namespace Gromit
 	TextureAsset::TextureAsset(TextureMetaData* metaData) : Asset(metaData)
 	{
 		stbi_set_flip_vertically_on_load(true);
-		m_data = stbi_load(metaData->m_assetPath.c_str(), &m_width, &m_height, &m_nrChannels, 0); //todo channel from metadata
+		m_data = stbi_load(metaData->GetAssetPath().c_str(), &m_width, &m_height, &m_nrChannels, 0); //todo channel from metadata
 		if (!m_data)
-			throw std::runtime_error("Failed to load texture: " + metaData->m_assetPath);
+			throw std::runtime_error("Failed to load texture: " + metaData->GetAssetPath());
 	}
 
 

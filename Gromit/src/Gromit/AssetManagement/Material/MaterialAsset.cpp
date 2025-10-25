@@ -25,4 +25,6 @@ namespace Gromit
 			AddDependency(AssetType::Texture, id);
 		}
 	}
+
+	REGISTER_ASSET_HANDLER(MaterialAssetHandler, AssetType::Material, MaterialAsset, MaterialMetaData, 8);
 }

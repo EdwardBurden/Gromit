@@ -21,7 +21,9 @@ namespace Gromit
 		ComponentAsset(int id, ComponentType type) : m_id(id), m_componentType(type) {}
 		virtual ~ComponentAsset() = default;
 		const int GetID() const { return m_id; }
-		const virtual std::vector<AssetDependency>& GetDependencies() const { return {}; }
+		const ComponentType GetComponentType() const { return m_componentType; }
+		const virtual std::vector<AssetDependency> GetDependencies() const { return {}; }
+	private:
 		int m_id;
 		ComponentType m_componentType;
 	};
@@ -30,12 +32,14 @@ namespace Gromit
 	{
 	public:
 		EntityMetaData(int guid, std::string assetPath, nlohmann::json data);
-	private:
+
 		std::unordered_map<int, std::unique_ptr<ComponentAsset>> m_components; //todo make better pointers
 	};
 
 	struct EntityAsset : public Asset
 	{
-		EntityAsset(EntityMetaData* metaData) : Asset(metaData)	{}
+		EntityAsset(EntityMetaData* metaData) : Asset(metaData) {}
+
+		inline const std::unordered_map<int, std::unique_ptr<ComponentAsset>>& GetComponents() const { return this->GetMeta<EntityMetaData>()->m_components; }
 	};
 }

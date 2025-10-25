@@ -14,7 +14,6 @@ namespace Gromit
 	struct TextureMetaData : public MetaData
 	{
 	public:
-		std::string m_assetPath;
 		int m_width;
 		int m_height;
 		TextureFormat m_format;

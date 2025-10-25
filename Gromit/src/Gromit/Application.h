@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "EntityManagement/SceneManager.h"
 #include "EventSystem/EventSystem.h"
 #include "Logging/Logging.h"
 #include "WindowManager.h"

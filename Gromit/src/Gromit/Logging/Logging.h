@@ -9,13 +9,7 @@ namespace Gromit
 	class GROMIT_API Logging : public IEngineService
 	{
 	public:
-		Logging() 
-		{
-			std::cout << "Logging Constructor" << std::endl;
-			s_logger = spdlog::stdout_color_mt("console");
-		}
-
-
+		Logging();
 		void OnStartUp() override;
 		void OnShutDown() override;
 		bool OnUpdate();
