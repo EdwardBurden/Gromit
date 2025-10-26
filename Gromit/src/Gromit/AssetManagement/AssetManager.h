@@ -22,6 +22,7 @@ namespace Gromit
 		}
 
 		void IdentifyAssets(std::string directory);
+		void ClearIdentifiedAsset(std::string directory);
 		//void LoadAsset(int guid);
 		void OnStartUp() override;
 		void OnShutDown() override;
@@ -30,15 +31,17 @@ namespace Gromit
 
 
 		template<typename T>
-		T* LoadAsset(int guid)
+		std::shared_ptr<T> LoadAsset(int guid)
 		{
-			Asset* ptr = LoadAsset(guid);
-			return 	static_cast<T*>(ptr); //todo add checks
+			std::shared_ptr<Asset> ptr = LoadAsset(guid);
+			return std::static_pointer_cast<T>(ptr);
+		//	return 	static_cast<T*>(ptr);
 		}
 
-
+		void UnLoadAsset(int guid);
 	private:
-		Asset* LoadAsset(int guid);
+		std::shared_ptr<Asset> LoadAsset(int guid);
+		//void UnLoadAsset(int guid);
 
 		AssetDatabase db;
 		std::string pathTemp;

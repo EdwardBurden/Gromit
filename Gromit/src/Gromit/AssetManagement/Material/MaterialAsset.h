@@ -14,7 +14,7 @@ namespace Gromit
 	struct MaterialAsset : public Asset
 	{
 	public:
-		MaterialAsset(MaterialMetaData* metaData) : Asset(metaData) {}
+		MaterialAsset(std::shared_ptr<MaterialMetaData> metaData) : Asset(metaData) {}
 		const std::vector<int>& GetShaderIds() const { return GetMeta<MaterialMetaData>()->m_shaderIds; }
 		const std::vector<int>& GetTextureIds() const { return GetMeta<MaterialMetaData>()->m_textureIds; }
 	};

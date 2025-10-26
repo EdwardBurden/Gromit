@@ -7,7 +7,7 @@ namespace Gromit::OpenGL
 	class OpenGL_Texture : public Texture
 	{
 	public:
-		OpenGL_Texture(const TextureAsset& asset);
+		OpenGL_Texture(const std::shared_ptr<TextureAsset>& asset);
 		~OpenGL_Texture();
 		void Bind() override;
 		void Unbind() override;

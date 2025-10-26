@@ -2,7 +2,7 @@
 
 namespace Gromit
 {
-	RenderObject* RenderCommands::CreateRenderObject( MaterialAsset* material, MeshAsset* mesh, BufferLayout* layout)
+	RenderObject* RenderCommands::CreateRenderObject(std::shared_ptr<MaterialAsset> material, std::shared_ptr<MeshAsset>  mesh, BufferLayout* layout)
 	{
 		std::vector<VertexArray*> vArrays;
 		auto materialGPU = Renderer::GetAPI()->CreateMaterial(material);
@@ -31,7 +31,7 @@ namespace Gromit
 		{
 			if (window == nullptr)
 				continue;
-			window->PreUpdate();
+			window->PreUpdate(); //tod move out 
 			obj->m_material->Bind();
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, obj->m_position);

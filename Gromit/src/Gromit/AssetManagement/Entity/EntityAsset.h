@@ -38,7 +38,7 @@ namespace Gromit
 
 	struct EntityAsset : public Asset
 	{
-		EntityAsset(EntityMetaData* metaData) : Asset(metaData) {}
+		EntityAsset(std::shared_ptr<EntityMetaData> metaData) : Asset(metaData) {}
 
 		inline const std::unordered_map<int, std::unique_ptr<ComponentAsset>>& GetComponents() const { return this->GetMeta<EntityMetaData>()->m_components; }
 	};

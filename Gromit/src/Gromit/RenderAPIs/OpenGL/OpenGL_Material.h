@@ -14,14 +14,12 @@ namespace Gromit::OpenGL
 	private:
 		unsigned int ShaderProgramId;
 	public:
-		OpenGL_Material(MaterialAsset* materialAsset);
+		OpenGL_Material(const std::shared_ptr<MaterialAsset>& materialAsset);
 		~OpenGL_Material();
 		void Bind() override;
 		void Unbind() override;
 		void SetUniform(std::string name, glm::mat4 matrix) override;
 	private:
-		void Construct(MaterialAsset* materialAsset);
-
 		std::vector<int> shaders;
 		std::vector<int> textures;
 	};

@@ -13,7 +13,7 @@ namespace Gromit::OpenGL
 		unsigned int ShaderProgramId; //public get
 
 	public:
-		OpenGL_Shader(ShaderAsset* vert);
+		OpenGL_Shader(const std::shared_ptr<ShaderAsset>& shader);
 		~OpenGL_Shader();
 		unsigned int GetShaderId() const { return ShaderProgramId; }
 	private:

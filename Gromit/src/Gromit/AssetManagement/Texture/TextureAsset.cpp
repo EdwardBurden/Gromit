@@ -1,6 +1,7 @@
 #include "AssetManagement/Texture/TextureAsset.h"
 #include "AssetManagement/AssetDatabase.h"
 
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 namespace Gromit
 {
@@ -13,7 +14,7 @@ namespace Gromit
 	}
 
 
-	TextureAsset::TextureAsset(TextureMetaData* metaData) : Asset(metaData)
+	TextureAsset::TextureAsset(std::shared_ptr<TextureMetaData> metaData) : Asset(metaData)
 	{
 		stbi_set_flip_vertically_on_load(true);
 		m_data = stbi_load(metaData->GetAssetPath().c_str(), &m_width, &m_height, &m_nrChannels, 0); //todo channel from metadata

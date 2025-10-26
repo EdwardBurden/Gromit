@@ -23,7 +23,7 @@ namespace Gromit
 
 	struct ShaderAsset : public Asset
 	{
-		ShaderAsset(ShaderMetaData* metaData);
+		ShaderAsset(std::shared_ptr<ShaderMetaData> metaData);
 		const ShaderType GetShaderType() const { return GetMeta<ShaderMetaData>()->m_shaderType; }
 		const char* GetSource() const { return m_source; }
 	private:

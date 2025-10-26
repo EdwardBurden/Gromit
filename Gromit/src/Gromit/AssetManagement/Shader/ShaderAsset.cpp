@@ -8,7 +8,7 @@ namespace Gromit
 		data.at("shaderType").get_to(m_shaderType);
 	}
 
-	ShaderAsset::ShaderAsset(ShaderMetaData* metaData) : Asset(metaData)
+	ShaderAsset::ShaderAsset(std::shared_ptr<ShaderMetaData> metaData) : Asset(metaData)
 	{
 		std::ifstream vertexFile(metaData->GetAssetPath());
 		std::stringstream stringStream;

@@ -7,6 +7,7 @@
 #include "AssetManagement/Material/MaterialAsset.h"
 #include "AssetManagement/Scene/SceneAsset.h"
 #include "AssetManagement/AssetManager.h"
+#include <memory>
 
 namespace Gromit
 {
@@ -25,15 +26,15 @@ namespace Gromit
 	struct MeshRendererComponentInstance : public ComponentInstance
 	{
 		void ApplyProperty(const std::string& name, const ComponentProperty& value) override;
-		MeshAsset* mesh;
-		MaterialAsset* material; //TODO HANDLE PROPERLY ONLY FOR TESTING
+		std::shared_ptr<MeshAsset> mesh;
+		std::shared_ptr<MaterialAsset> material; //TODO HANDLE PROPERLY ONLY FOR TESTING
 
 	};
 	struct EntityInstance
 	{
 		int InstanceID;
 		int GuiID;
-
+		std::shared_ptr<EntityAsset> AssetRef; // TODO this might be weak ptr in future.
 
 		std::unordered_map<ComponentType, ComponentInstance*> Components; //tmeporarily using type, limits to one component per entity.
 
@@ -61,6 +62,7 @@ namespace Gromit
 		void OnStartUp() override;
 		void OnShutDown() override;
 		void  LoadScene(int guid); //Loads a scene at root(implied) and all entities required
+		void  UnLoadScene(int guid); 
 		EntityInstance* LoadEntity(const EntityReference& entityRef);
 
 		static SceneInstance* m_activeScene;

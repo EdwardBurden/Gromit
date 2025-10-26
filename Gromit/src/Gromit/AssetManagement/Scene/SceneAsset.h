@@ -39,6 +39,7 @@ namespace Gromit
 
 	struct SceneAsset : public Asset
 	{
+		SceneAsset(std::shared_ptr<SceneMetaData> metaData) : Asset(metaData) {}
 		const std::vector<EntityReference*> GetEntities() const { return  this->GetMeta<SceneMetaData>()->m_entities; }
 	};
 }

@@ -29,6 +29,6 @@ namespace Gromit
 		int m_nrChannels;
 		unsigned char* m_data; // todo improve
 
-		TextureAsset(TextureMetaData* metaData);
+		TextureAsset(std::shared_ptr<TextureMetaData> metaData);
 	};
 }

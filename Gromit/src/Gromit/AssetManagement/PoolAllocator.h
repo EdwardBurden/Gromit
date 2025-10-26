@@ -1,8 +1,6 @@
-//maybe move later
 #pragma once
 
 #include "Logging/Logging.h"
-
 #include <iostream>
 #include <typeinfo>
 
@@ -28,6 +26,7 @@ namespace Gromit
 			}
 			m_pool[Capacity - 1].nextChunk = nullptr;
 			m_freePointer = &m_pool[0];
+			std::cout << "Pool Created, Capacity: " << Capacity << " Element Size: " << sizeof(T) << "\n";
 		}
 
 		~PoolAllocator()
@@ -37,6 +36,7 @@ namespace Gromit
 				T* asset = reinterpret_cast<T*>(&m_pool[i]);
 				//asset->~T(); todo
 			}
+
 		}
 
 		template<typename... Args>
@@ -61,14 +61,8 @@ namespace Gromit
 			m_freePointer = chunk;
 		}
 
-
 	private:
-
 		Chunk<T> m_pool[Capacity];
 		Chunk<T>* m_freePointer;
-
 	};
-
-
-
 }

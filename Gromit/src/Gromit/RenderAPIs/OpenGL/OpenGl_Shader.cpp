@@ -4,7 +4,7 @@
 namespace Gromit::OpenGL
 {
 	//todo make shaderprogram which takes list of shaderassets, and here only compile one shader
-	OpenGL_Shader::OpenGL_Shader(ShaderAsset* shader)
+	OpenGL_Shader::OpenGL_Shader(const std::shared_ptr<ShaderAsset>& shader)
 	{
 		GLenum type = NULL;
 		switch (shader->GetShaderType())

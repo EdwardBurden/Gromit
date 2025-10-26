@@ -8,18 +8,18 @@
 #pragma once
 #include "AssetManagement/AssetRecord.h"
 #include "AssetManagement/PoolAllocator.h"
-#include "Logging/Logging.h"
 #include <json.hpp>
 #include <memory>
+#include <unordered_map>
 
 namespace Gromit
 {
-	class  IAssetHandler
+	class IAssetHandler
 	{
 	public:
-		virtual ~IAssetHandler() = default;
-		virtual void LoadMetadata(std::unordered_map<int, AssetRecord*>&, int guid, const std::string&, const nlohmann::json&) = 0;
-		virtual Asset* LoadAsset(std::unordered_map<int, AssetRecord*>&, int guid) = 0;
+		virtual void LoadMetadata(std::unordered_map<int, AssetRecord>& registry, int guid, const std::string&, const nlohmann::json&) = 0;
+		virtual std::shared_ptr<Asset> LoadAsset(std::unordered_map<int, AssetRecord>& registry, int guid) = 0;
+		virtual void UnLoadAsset(std::unordered_map<int, AssetRecord>& registry, int guid) = 0;
 	};
 
 
@@ -27,34 +27,58 @@ namespace Gromit
 	class AssetHandler : public IAssetHandler
 	{
 	public:
-		void LoadMetadata(std::unordered_map<int, AssetRecord*>& registry, int guid, const std::string& name, const nlohmann::json& data) override
+		void LoadMetadata(std::unordered_map<int, AssetRecord>& registry, int guid, const std::string& name, const nlohmann::json& data) override
 		{
 			if (!registry.contains(guid))
 			{
-				TMeta* meta = m_metaPool.Allocate(guid, name, data);	
-				AssetRecord* record = new AssetRecord(meta);
-				registry[guid] = record;
+				TMeta* meta = m_metaPool.Allocate(guid, name, data);
+				auto ptr = std::shared_ptr<TMeta>(meta, [this](TMeta* a)
+					{
+						m_metaPool.Free(a); // return to pool
+					});
+
+				registry.emplace(guid, AssetRecord(ptr)); //set if permanant here from parameters
 				std::cout << "Loaded metadata: " << meta->GetName() << "\n";
 			}
 		}
 
-		Asset* LoadAsset(std::unordered_map<int, AssetRecord*>& registry, int guid) override
+		std::shared_ptr<Asset> LoadAsset(std::unordered_map<int, AssetRecord>& registry, int guid) override
 		{
 			auto it = registry.find(guid);
 			if (it == registry.end())
 				return nullptr;
 
-			AssetRecord* record = it->second;
-			if (!record->asset)
+			AssetRecord& record = it->second;
+			if (!record.m_asset)
 			{
-				TMeta* meta = static_cast<TMeta*>(record->metaData);
+				std::shared_ptr<TMeta> meta = std::static_pointer_cast<TMeta>(record.m_metaData);
+				//	TMeta* meta = static_cast<TMeta*>(record.m_metaData);
 				TAsset* asset = m_assetPool.Allocate(meta);
-				record->asset = asset;
+				record.m_asset = std::shared_ptr<TAsset>(asset, [this](TAsset* a)
+					{
+						m_assetPool.Free(a); // return to pool
+					});
 			}
 
-			record->refCount++;
-			return record->asset;
+			return record.m_asset;
 		}
+
+		void UnLoadAsset(std::unordered_map<int, AssetRecord>& registry, int guid) override
+		{
+			auto it = registry.find(guid);
+			if (it == registry.end())
+				return;
+
+			AssetRecord& record = it->second;
+			if (!record.m_asset)
+				return;
+
+			if (!record.m_permanent && record.m_asset.use_count() == 1)
+			{
+				record.m_asset.reset();
+			}
+		}
+
 
 	private:
 
@@ -62,68 +86,27 @@ namespace Gromit
 		PoolAllocator<TAsset, Poolsize> m_assetPool;
 	};
 
+	class AssetDatabase
+	{
+	public:
+		AssetDatabase() = default;
+		static void RegisterHandler(AssetType type, IAssetHandler* handler);
+		AssetType FindAssetType(int guid);
+		std::vector<AssetDependency> GetDependencies(int guid);
+		std::shared_ptr<Asset> LoadAsset(int guid, AssetType type);
+		void UnloadAsset(int guid, AssetType type);
+		void LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data);
+	private:
+		std::unordered_map<int, AssetRecord> m_assetRegistry;
+		static std::unordered_map<AssetType, IAssetHandler*>& GetHandlerRegistry();
+	};
+
 
 #define REGISTER_ASSET_HANDLER(HANDLER_CLASS, TYPE, ASSET, META, POOL_SIZE) \
 class HANDLER_CLASS : public AssetHandler<ASSET, META, POOL_SIZE> \
 { \
 public: \
-    HANDLER_CLASS() { AssetDatabase::RegisterHandler(TYPE,this); } \
+    HANDLER_CLASS() { AssetDatabase::RegisterHandler(TYPE, this); } \
 }; \
 static HANDLER_CLASS s_##HANDLER_CLASS
-
-
-	class AssetDatabase
-	{
-	public:
-
-		static void RegisterHandler(AssetType type, IAssetHandler* handler)
-		{
-			GetRegistry()[type] = handler; //todo check already exists before adding
-		}
-
-
-		AssetDatabase() {
-		};
-
-		AssetType FindAssetType(int guid)
-		{
-			if (!m_assetRegistry.contains(guid))
-			{
-				//error 
-				return AssetType::None;
-			}
-			return m_assetRegistry[guid]->metaData->GetAssetType();
-		}
-
-		std::vector<AssetDependency> GetDependencies(int guid)
-		{
-			return m_assetRegistry[guid]->metaData->GetDependencies();
-		}
-
-		Asset* LoadAsset(int guid, AssetType type)
-		{
-			auto it = GetRegistry().find(type);
-			if (it != GetRegistry().end())
-				return it->second->LoadAsset(m_assetRegistry, guid);
-			return nullptr;
-		}
-
-		void LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data)
-		{
-			auto it = GetRegistry().find(type);
-			if (it != GetRegistry().end())
-				it->second->LoadMetadata(m_assetRegistry, guid, name, data);
-		}
-
-
-	private:
-		std::unordered_map<int, AssetRecord*> m_assetRegistry;
-		//static inline std::unordered_map<AssetType, IAssetHandler*> s_handlerMap;
-
-		static inline std::unordered_map<AssetType, IAssetHandler*>& GetRegistry()
-		{
-			static std::unordered_map<AssetType, IAssetHandler*> registry;
-			return registry; // guaranteed initialized on first use
-		}
-	};
 }

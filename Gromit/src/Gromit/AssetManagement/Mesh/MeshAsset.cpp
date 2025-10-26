@@ -14,7 +14,7 @@ namespace Gromit
 		data.at("importSetting").get_to(m_importSetting);
 	}
 
-	MeshAsset::MeshAsset(MeshMetaData* metaData) : Asset(metaData)
+	MeshAsset::MeshAsset(std::shared_ptr<MeshMetaData> metaData) : Asset(metaData)
 	{
 		//can move some into cuistom import
 		Assimp::Importer importer;

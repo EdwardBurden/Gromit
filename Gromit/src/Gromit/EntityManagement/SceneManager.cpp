@@ -6,7 +6,7 @@
 
 namespace Gromit
 {
-
+	void UnLoadEntity(EntityInstance& entity);
 	SceneInstance* SceneManager::m_activeScene;
 
 	void SceneManager::OnStartUp()
@@ -54,22 +54,28 @@ namespace Gromit
 
 	}
 
+	void SceneManager::UnLoadScene(int guid)
+	{
+		for (auto& entity : m_activeScene->Entities)
+		{
+			UnLoadEntity(*entity);
+			delete entity;
+		}
+		delete m_activeScene;
+		//get entites in scene.. call unload on them, should unload there components, dependancies etc.
+			//unload form assetmanager to 
+	}
 
 	void SceneManager::LoadScene(int guid)
 	{
 		//int guid = 5;
-		SceneAsset* asset = ServiceLocator::GetService<AssetManager>()->LoadAsset<SceneAsset>(guid);
+		auto sceneAsset = ServiceLocator::GetService<AssetManager>()->LoadAsset<SceneAsset>(guid);
 		m_activeScene = new SceneInstance();
 		m_activeScene->Entities.clear();
-		for (auto& entity : asset->GetEntities())
+		for (auto& entity : sceneAsset->GetEntities())
 		{
 			// TODO OPTOMISE BY FINDING ANY OBJECT IN THE SCENE WITH SAME GUID AND MAKING COPY ? 
 			const auto& entityInstance = LoadEntity(*entity);	// go to load method
-
-
-
-
-
 			m_activeScene->Entities.push_back(entityInstance);
 		}
 		//}
@@ -78,14 +84,25 @@ namespace Gromit
 		//		Load each entity and apply overrides to entityinstance
 
 	}
-
-	EntityInstance* SceneManager::LoadEntity(const EntityReference& entityRef)
+	
+	void UnLoadEntity(EntityInstance& entity)
 	{
 		const auto& assetManager = ServiceLocator::GetService<AssetManager>();
-		EntityAsset* asset = assetManager->LoadAsset<EntityAsset>(entityRef.Guid);
+		//unload each component first then
+		entity.AssetRef.reset();
+		assetManager->UnLoadAsset(entity.GuiID);
+
+	}
+
+	EntityInstance* SceneManager::LoadEntity(const EntityReference& entityRef) 
+	{
+		const auto& assetManager = ServiceLocator::GetService<AssetManager>();
 		EntityInstance* entity = new EntityInstance();
+		entity->GuiID = entityRef.Guid;
+		entity->InstanceID = entityRef.Instance;
 		entity->Components.clear();
-		for (auto& [key, component] : asset->GetComponents())
+		entity->AssetRef = assetManager->LoadAsset<EntityAsset>(entityRef.Guid);
+		for (auto& [key, component] : entity->AssetRef->GetComponents())
 		{
 			switch (component.get()->GetComponentType())
 			{

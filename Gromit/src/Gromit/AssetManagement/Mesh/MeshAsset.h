@@ -14,7 +14,7 @@ namespace Gromit
 	struct MeshAsset : public Asset
 	{
 	public:
-		MeshAsset(MeshMetaData* metaData);
+		MeshAsset(std::shared_ptr<MeshMetaData> metaData);
 		const Vertex* GetVertices() const { return m_vertices; }
 		const size_t GetVertexCount() const { return m_verticesSize; }
 		const unsigned int* GetIndices() const { return m_indices; }

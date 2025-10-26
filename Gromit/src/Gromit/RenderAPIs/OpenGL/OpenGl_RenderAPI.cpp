@@ -46,14 +46,14 @@ namespace Gromit::OpenGL
 		return newWindow;
 	}
 
-	Material* OpenGL_RenderAPI::CreateMaterial(MaterialAsset* asset)
+	Material* OpenGL_RenderAPI::CreateMaterial(std::shared_ptr<MaterialAsset> asset)
 	{
 		const auto& manager = ServiceLocator::GetService<AssetManager>();
 		auto shaderIds = asset->GetShaderIds();
 		std::vector<Shader*> shaders;
 		for (size_t i = 0; i < shaderIds.size(); i++)
 		{
-			ShaderAsset* shader = manager->LoadAsset<ShaderAsset>(shaderIds[i]);
+			std::shared_ptr<ShaderAsset> shader = manager->LoadAsset<ShaderAsset>(shaderIds[i]);
 			CreateShader(shader);
 		}
 
@@ -61,7 +61,7 @@ namespace Gromit::OpenGL
 		std::vector<Texture*> textures;
 		for (size_t i = 0; i < textureIds.size(); i++)
 		{
-			TextureAsset* texture = manager->LoadAsset<TextureAsset>(textureIds[i]);
+			std::shared_ptr<TextureAsset> texture = manager->LoadAsset<TextureAsset>(textureIds[i]);
 			CreateTexture(texture);
 		}
 
@@ -69,7 +69,7 @@ namespace Gromit::OpenGL
 		return new OpenGL_Material(asset);
 	}
 
-	Shader* OpenGL_RenderAPI::CreateShader(ShaderAsset* shaderAsset)
+	Shader* OpenGL_RenderAPI::CreateShader(std::shared_ptr<ShaderAsset> shaderAsset)
 	{
 		int guid = shaderAsset->GetGuid();
 		if (ResourceRegistry::Shaders.contains(guid))
@@ -82,7 +82,7 @@ namespace Gromit::OpenGL
 		return shader;
 	}
 
-	Texture* OpenGL_RenderAPI::CreateTexture(TextureAsset* textureAsset)
+	Texture* OpenGL_RenderAPI::CreateTexture(std::shared_ptr<TextureAsset> textureAsset)
 	{
 		int guid = textureAsset->GetGuid();
 		if (ResourceRegistry::Shaders.contains(guid))
@@ -90,7 +90,7 @@ namespace Gromit::OpenGL
 			return ResourceRegistry::Textures[guid];
 		}
 
-		OpenGL_Texture* texture = new OpenGL_Texture(*textureAsset);
+		OpenGL_Texture* texture = new OpenGL_Texture(textureAsset);
 		ResourceRegistry::Textures[guid] = texture;
 		return texture;
 	}

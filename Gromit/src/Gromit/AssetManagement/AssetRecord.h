@@ -1,19 +1,20 @@
 #pragma once
 #include "AssetManagement/Asset.h"
 #include "AssetManagement/MetaData.h"
+#include <iostream>
+#include <memory>
 
 namespace Gromit
 {
 	struct AssetRecord
 	{
-		MetaData* metaData;
-		Asset* asset = nullptr;
-		int refCount = 0;
-		bool permanent = false;
+		std::shared_ptr<MetaData> m_metaData;
+		std::shared_ptr<Asset> m_asset;
+		bool m_permanent = false;
 
-		AssetRecord(MetaData* meta)
+		AssetRecord() = default;
+		AssetRecord(std::shared_ptr<MetaData> meta)	: m_metaData(std::move(meta)) 
 		{
-			metaData = meta;
 		}
 	};
 }

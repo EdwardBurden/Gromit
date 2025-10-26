@@ -3,7 +3,7 @@
 
 namespace Gromit::OpenGL
 {
-	OpenGL_Texture::OpenGL_Texture(const TextureAsset& asset)
+	OpenGL_Texture::OpenGL_Texture(const std::shared_ptr< TextureAsset>& asset)
 	{
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glGenTextures(1, &TextureId);
@@ -14,7 +14,7 @@ namespace Gromit::OpenGL
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		//todo format convert
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, asset.m_width, asset.m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, static_cast<const void*>(asset.m_data.get()));
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, asset.m_width, asset.m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, asset.m_data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, asset->m_width, asset->m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, asset->m_data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 

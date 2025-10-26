@@ -1,10 +1,6 @@
 #include "AssetManager.h"
 #include "AssetManagement/AssetManagement.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
-
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 namespace Gromit
@@ -56,8 +52,19 @@ namespace Gromit
 
 	}
 
+	void AssetManager::ClearIdentifiedAsset(std::string directory)
+	{
+		// find metadat loaded in this directory and uinload the meat + asset.
+	}
+
+	void AssetManager::UnLoadAsset(int guid)
+	{
+		AssetType type = db.FindAssetType(guid);
+		db.UnloadAsset(guid, type);
+	}
+
 	//todo will be need ot be template
-	Asset* AssetManager::LoadAsset(int guid)
+	std::shared_ptr<Asset> AssetManager::LoadAsset(int guid)
 	{
 		AssetType type = db.FindAssetType(guid);
 		std::vector<AssetDependency> dependencies = db.GetDependencies(guid);
@@ -67,6 +74,6 @@ namespace Gromit
 			LoadAsset(depencency.guid);
 		}
 
-	return 	db.LoadAsset(guid, type);
+		return db.LoadAsset(guid, type);
 	}
 }

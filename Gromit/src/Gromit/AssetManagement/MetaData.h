@@ -44,7 +44,7 @@ namespace Gromit
 			data.at("type").get_to(m_assetType);
 			m_assetPath = assetPath + m_path;
 		}
-
+		virtual ~MetaData() = default;
 		int GetGUID() const { return m_guid; }
 		std::string GetAssetPath() const { return m_assetPath; }
 		std::string GetName() const { return m_name; }
