@@ -15,7 +15,6 @@ namespace Gromit {
 	public:
 		MouseClickEvent(int _button) : button(_button) {}
 		EVENT_TYPE_DEFINE(MouseClickEvent);
-	private:
 		int button;
 	};
 

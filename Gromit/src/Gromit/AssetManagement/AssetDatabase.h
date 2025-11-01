@@ -18,6 +18,7 @@ namespace Gromit
 	{
 	public:
 		virtual void LoadMetadata(std::unordered_map<int, AssetRecord>& registry, int guid, const std::string&, const nlohmann::json&) = 0;
+		virtual void UnloadMetaData(std::unordered_map<int, AssetRecord>& registry, int guid) = 0;
 		virtual std::shared_ptr<Asset> LoadAsset(std::unordered_map<int, AssetRecord>& registry, int guid) = 0;
 		virtual void UnLoadAsset(std::unordered_map<int, AssetRecord>& registry, int guid) = 0;
 	};
@@ -27,18 +28,36 @@ namespace Gromit
 	class AssetHandler : public IAssetHandler
 	{
 	public:
-		void LoadMetadata(std::unordered_map<int, AssetRecord>& registry, int guid, const std::string& name, const nlohmann::json& data) override
+		void LoadMetadata(std::unordered_map<int, AssetRecord>& registry, int guid, const std::string& path, const nlohmann::json& data) override
 		{
 			if (!registry.contains(guid))
 			{
-				TMeta* meta = m_metaPool.Allocate(guid, name, data);
+				TMeta* meta = m_metaPool.Allocate(guid, path, data);
+				std::cout << "Allocated MetaData: " << meta->GetName() << "\n";
 				auto ptr = std::shared_ptr<TMeta>(meta, [this](TMeta* a)
 					{
+						std::cout << "MetaData Freed: " << a->GetName() << "\n";
 						m_metaPool.Free(a); // return to pool
 					});
-
 				registry.emplace(guid, AssetRecord(ptr)); //set if permanant here from parameters
-				std::cout << "Loaded metadata: " << meta->GetName() << "\n";
+
+			}
+			std::cout << "Loaded Called for metadata guid: " << guid << "\n";
+		}
+
+		virtual void UnloadMetaData(std::unordered_map<int, AssetRecord>& registry, int guid) override
+		{
+			auto it = registry.find(guid);
+			if (it == registry.end())
+				return;
+
+			AssetRecord& record = it->second;
+			if (!record.m_metaData)
+				return;
+
+			if (!record.m_permanent && record.m_metaData.use_count() == 1)
+			{
+				record.m_metaData.reset();
 			}
 		}
 
@@ -52,14 +71,15 @@ namespace Gromit
 			if (!record.m_asset)
 			{
 				std::shared_ptr<TMeta> meta = std::static_pointer_cast<TMeta>(record.m_metaData);
-				//	TMeta* meta = static_cast<TMeta*>(record.m_metaData);
 				TAsset* asset = m_assetPool.Allocate(meta);
+				std::cout << "Allocated Asset: " << meta->GetName() << "\n";
 				record.m_asset = std::shared_ptr<TAsset>(asset, [this](TAsset* a)
 					{
+						std::cout << "Asset Freed: " << a->GetMeta<TMeta>()->GetName() << "\n";
 						m_assetPool.Free(a); // return to pool
 					});
 			}
-
+			std::cout << "Load Called for Asset: " << record.m_metaData->GetName() << "\n";
 			return record.m_asset;
 		}
 
@@ -73,13 +93,12 @@ namespace Gromit
 			if (!record.m_asset)
 				return;
 
+			std::cout << "Refs for Asset: " << record.m_metaData->GetName() << " = " << record.m_asset.use_count() << "\n";
 			if (!record.m_permanent && record.m_asset.use_count() == 1)
 			{
 				record.m_asset.reset();
 			}
 		}
-
-
 	private:
 
 		PoolAllocator<TMeta, Poolsize> m_metaPool;
@@ -93,9 +112,11 @@ namespace Gromit
 		static void RegisterHandler(AssetType type, IAssetHandler* handler);
 		AssetType FindAssetType(int guid);
 		std::vector<AssetDependency> GetDependencies(int guid);
+		void LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data);
+		void UnLoadMetadata(int guid, AssetType type);
 		std::shared_ptr<Asset> LoadAsset(int guid, AssetType type);
 		void UnloadAsset(int guid, AssetType type);
-		void LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data);
+
 	private:
 		std::unordered_map<int, AssetRecord> m_assetRegistry;
 		static std::unordered_map<AssetType, IAssetHandler*>& GetHandlerRegistry();

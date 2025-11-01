@@ -1,0 +1,14 @@
+{
+  "guid": 13759610,
+  "type": "Material",
+  "name": "Rock Material",
+  "path": "",
+  "shaders": [
+    { "guid": 545 },
+    { "guid": 123434 }
+  ],
+  "textures": [
+    { "guid": 26590585 },
+    { "guid": 9035347 }
+  ]
+}

@@ -54,13 +54,23 @@ namespace Gromit
 
 	void AssetManager::ClearIdentifiedAsset(std::string directory)
 	{
+
+
+
 		// find metadat loaded in this directory and uinload the meat + asset.
 	}
 
 	void AssetManager::UnLoadAsset(int guid)
 	{
 		AssetType type = db.FindAssetType(guid);
+		std::vector<AssetDependency> dependencies = db.GetDependencies(guid);
 		db.UnloadAsset(guid, type);
+		//then if its been unloaded 
+		for (auto& depencency : dependencies)
+		{
+			UnLoadAsset(depencency.guid);
+		}
+
 	}
 
 	//todo will be need ot be template

@@ -61,6 +61,8 @@ namespace Gromit
 			UnLoadEntity(*entity);
 			delete entity;
 		}
+		ServiceLocator::GetService<AssetManager>()->UnLoadAsset(guid);
+
 		delete m_activeScene;
 		//get entites in scene.. call unload on them, should unload there components, dependancies etc.
 			//unload form assetmanager to 
@@ -84,17 +86,47 @@ namespace Gromit
 		//		Load each entity and apply overrides to entityinstance
 
 	}
-	
+
 	void UnLoadEntity(EntityInstance& entity)
 	{
 		const auto& assetManager = ServiceLocator::GetService<AssetManager>();
+		for (auto& comp : entity.Components)
+		{
+			switch (comp.first)
+			{
+			case ComponentType::Transform:
+			{
+				break;
+			}
+
+			case ComponentType::MeshRenderer:
+			{
+				auto meshInasstance = static_cast<MeshRendererComponentInstance*>(comp.second.get());
+				int meshID = meshInasstance->mesh->GetGuid();
+				meshInasstance->mesh.reset();
+				assetManager->UnLoadAsset(meshID);
+
+				int materialID = meshInasstance->material->GetGuid();
+				meshInasstance->material.reset();
+				assetManager->UnLoadAsset(materialID);
+		
+				//meshInasstance->mesh
+				break;
+			}
+			default:
+				break;
+			}
+		}
+
+
+
 		//unload each component first then
 		entity.AssetRef.reset();
 		assetManager->UnLoadAsset(entity.GuiID);
 
 	}
 
-	EntityInstance* SceneManager::LoadEntity(const EntityReference& entityRef) 
+	EntityInstance* SceneManager::LoadEntity(const EntityReference& entityRef)
 	{
 		const auto& assetManager = ServiceLocator::GetService<AssetManager>();
 		EntityInstance* entity = new EntityInstance();
@@ -108,7 +140,7 @@ namespace Gromit
 			{
 			case ComponentType::Transform:
 			{
-				TransformComponentInstance* transformComponentInstance = new TransformComponentInstance();
+				std::unique_ptr<TransformComponentInstance> transformComponentInstance = std::make_unique<TransformComponentInstance>();
 				const auto& transformAsset = static_cast<TransformAsset*>(component.get());
 				transformComponentInstance->m_position = transformAsset->m_position;
 				transformComponentInstance->m_rotation = transformAsset->m_rotation;
@@ -124,12 +156,12 @@ namespace Gromit
 						transformComponentInstance->ApplyProperty(overridepropertyName, overrideproperty);
 					}
 				}
-				entity->Components[transformComponentInstance->ComponentType] = transformComponentInstance;
+				entity->Components.emplace(transformComponentInstance->ComponentType, std::move(transformComponentInstance));
 				break;
 			}
 			case ComponentType::MeshRenderer:
 			{
-				MeshRendererComponentInstance* meshComponentInstance = new MeshRendererComponentInstance();
+				std::unique_ptr<MeshRendererComponentInstance> meshComponentInstance = std::make_unique<MeshRendererComponentInstance>();
 				const auto& meshAsset = static_cast<MeshRendererAsset*>(component.get());
 				meshComponentInstance->mesh = assetManager->LoadAsset<MeshAsset>(meshAsset->m_mesh);
 				meshComponentInstance->material = assetManager->LoadAsset<MaterialAsset>(meshAsset->m_material);
@@ -146,7 +178,7 @@ namespace Gromit
 						meshComponentInstance->ApplyProperty(overridepropertyName, overrideproperty);
 					}
 				}
-				entity->Components[meshComponentInstance->ComponentType] = meshComponentInstance;
+				entity->Components.emplace(meshComponentInstance->ComponentType, std::move(meshComponentInstance));
 				break;
 			}
 			default:

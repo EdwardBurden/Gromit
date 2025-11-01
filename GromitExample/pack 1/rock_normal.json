@@ -1,0 +1,10 @@
+{
+  "guid": 9035347,
+  "type": "Texture",
+  "name": "Rocks Normal Texture",
+  "path": "/rock_normal.jpg",
+  "width": 256,
+  "height": 256,
+  "format": "RGB",
+  "generateMipMaps": true
+}

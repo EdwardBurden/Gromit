@@ -17,15 +17,20 @@ namespace Gromit
 		return m_assetRegistry[guid].m_metaData->GetAssetType();
 	}
 
-	void AssetDatabase::UnloadAsset(int guid, AssetType type)
+	void AssetDatabase::LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data)
 	{
 		auto it = GetHandlerRegistry().find(type);
-		if (it == GetHandlerRegistry().end())
-			return;
-
-
-		it->second->UnLoadAsset(m_assetRegistry, guid);
+		if (it != GetHandlerRegistry().end())
+			it->second->LoadMetadata(m_assetRegistry, guid, name, data);
 	}
+
+	void AssetDatabase::UnLoadMetadata(int guid, AssetType type)
+	{
+		auto it = GetHandlerRegistry().find(type);
+		if (it != GetHandlerRegistry().end())
+			it->second->UnloadMetaData(m_assetRegistry, guid);
+	}
+
 
 	std::shared_ptr<Asset> AssetDatabase::LoadAsset(int guid, AssetType type)
 	{
@@ -36,12 +41,19 @@ namespace Gromit
 		return it->second->LoadAsset(m_assetRegistry, guid);
 	}
 
-	void AssetDatabase::LoadMetadata(int guid, AssetType type, const std::string& name, const nlohmann::json& data)
+	void AssetDatabase::UnloadAsset(int guid, AssetType type)
 	{
 		auto it = GetHandlerRegistry().find(type);
-		if (it != GetHandlerRegistry().end())
-			it->second->LoadMetadata(m_assetRegistry, guid, name, data);
+		if (it == GetHandlerRegistry().end())
+			return;
+
+
+		it->second->UnLoadAsset(m_assetRegistry, guid);
 	}
+
+
+
+
 
 	std::unordered_map<AssetType, IAssetHandler*>& AssetDatabase::GetHandlerRegistry()
 	{

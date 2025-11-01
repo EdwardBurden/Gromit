@@ -36,7 +36,7 @@ namespace Gromit
 		int GuiID;
 		std::shared_ptr<EntityAsset> AssetRef; // TODO this might be weak ptr in future.
 
-		std::unordered_map<ComponentType, ComponentInstance*> Components; //tmeporarily using type, limits to one component per entity.
+		std::unordered_map<ComponentType, std::unique_ptr<ComponentInstance>> Components; //tmeporarily using type, limits to one component per entity.
 
 
 		//	static EntityInstance* CreateInstance(int guid);

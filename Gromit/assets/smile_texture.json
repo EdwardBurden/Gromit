@@ -1,10 +1,10 @@
 {
   "guid": 345455675675,
   "type": "Texture",
-  "name": "test256",
-  "path": "/test256.png",
+  "name": "Smile_Texture",
+  "path": "/smile.png",
   "width": 256,
   "height": 256,
-  "format": "RED",
+  "format": "RGB",
   "generateMipMaps": true
 }

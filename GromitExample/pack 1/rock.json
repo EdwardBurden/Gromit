@@ -1,0 +1,10 @@
+{
+  "guid": 26590585,
+  "type": "Texture",
+  "name": "Rocks Texture",
+  "path": "/rock.jpg",
+  "width": 256,
+  "height": 256,
+  "format": "RGB",
+  "generateMipMaps": true
+}

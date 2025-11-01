@@ -51,7 +51,7 @@ namespace Gromit
 			{
 				//add new renderobject
 				const auto& base = entity->Components[ComponentType::MeshRenderer]; //TEMP assume one exists. //TODO make helper to get these later.
-				const auto& mesh = static_cast<MeshRendererComponentInstance*>(base);
+				const auto& mesh = static_cast<MeshRendererComponentInstance*>(base.get());
 				//mesh.
 				tempRenderList[entity->InstanceID] = RenderCommands::CreateRenderObject(mesh->material, mesh->mesh, m_tempBuffer);
 			}

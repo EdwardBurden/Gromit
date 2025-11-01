@@ -36,8 +36,7 @@ namespace Gromit
 				{ShaderDataType::Float2 , "texCoords"}
 			});
 			*/
-		const auto& manager = ServiceLocator::GetService<AssetManager>();
-		manager->IdentifyAssets("assets"); // would be core or example folders in future
+		//const auto& manager = ServiceLocator::GetService<AssetManager>();
 		//MeshAsset* mesh = manager->LoadAsset<MeshAsset>(32422333);
 		//MaterialAsset* material = manager->LoadAsset<MaterialAsset>(999);
 		//ShaderAsset* frag = manager->LoadAsset<ShaderAsset>(123434);

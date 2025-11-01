@@ -11,7 +11,7 @@ namespace Gromit::OpenGL
 		~OpenGL_Texture();
 		void Bind() override;
 		void Unbind() override;
-
+		unsigned int ConvertFormat(TextureFormat format);
 	private:
 		unsigned int TextureId;
 	};

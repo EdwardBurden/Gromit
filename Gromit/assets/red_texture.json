@@ -1,8 +1,8 @@
 {
 	"guid": 5095384,
 	"type": "Texture",
-	"name": "Test1",
-	"path": "/Test1.png",
+	"name": "Red_Texture",
+	"path": "/red.png",
 	"width": 128,
 	"height": 128,
 	"format": "RED",

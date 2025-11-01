@@ -1,7 +1,7 @@
 {
   "guid": 123332,
   "type": "Material",
-  "name": "testMat1",
+  "name": "Smile_Test_Material",
   "path": "",
   "shaders": [
     { "guid": 545 },
