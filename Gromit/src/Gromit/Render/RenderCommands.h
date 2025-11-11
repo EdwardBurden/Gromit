@@ -1,19 +1,16 @@
 #pragma once
-
-#include "AssetManagement/Mesh/MeshAsset.h"
-#include "AssetManagement/Material/MaterialAsset.h"
-#include "RenderAPIs/RenderAPIs.h"
-#include "Render/Render.h"
-#include "ServiceLocator.h"
 #include "Render/RenderObject.h"
-#include "FrameTime.h"
+#include "EntityManagement/ComponentInstance.h"
+#include "Camera.h"
+#include "Renderer.h"
 
 namespace Gromit
 {
 	class RenderCommands
 	{
 	public:
-		static RenderObject* CreateRenderObject(std::shared_ptr< MaterialAsset> material, std::shared_ptr< MeshAsset> mesh, BufferLayout* layout);
-		static void DrawRenderObject(RenderObject* obj, Camera* camera);
+
+		static std::unique_ptr<RenderObject> CreateRenderObject(const MeshRendererComponentInstance& meshInstance);
+		static void DrawRenderObject(const RenderObject& renderObject, const TransformComponentInstance& transform, Camera* camera);
 	};
 }

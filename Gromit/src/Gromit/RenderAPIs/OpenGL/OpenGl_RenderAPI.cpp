@@ -46,7 +46,7 @@ namespace Gromit::OpenGL
 		return newWindow;
 	}
 
-	Material* OpenGL_RenderAPI::CreateMaterial(std::shared_ptr<MaterialAsset> asset)
+	Material* OpenGL_RenderAPI::CreateMaterial(const std::shared_ptr<MaterialAsset>& asset)
 	{
 		const auto& manager = ServiceLocator::GetService<AssetManager>();
 		auto shaderIds = asset->GetShaderIds();
@@ -69,7 +69,7 @@ namespace Gromit::OpenGL
 		return new OpenGL_Material(asset);
 	}
 
-	Shader* OpenGL_RenderAPI::CreateShader(std::shared_ptr<ShaderAsset> shaderAsset)
+	Shader* OpenGL_RenderAPI::CreateShader(const std::shared_ptr<ShaderAsset>& shaderAsset)
 	{
 		int guid = shaderAsset->GetGuid();
 		if (ResourceRegistry::Shaders.contains(guid))
@@ -110,7 +110,7 @@ namespace Gromit::OpenGL
 		return new OpenGL_VertexArray();
 	}
 
-	BufferLayout* OpenGL_RenderAPI::CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init)
+	BufferLayout* OpenGL_RenderAPI::CreateBufferLayout(const std::vector<Gromit::BufferLayoutElement>& init)
 	{
 		return new OpenGL_BufferLayout(init);
 	}

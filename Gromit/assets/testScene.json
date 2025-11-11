@@ -12,9 +12,9 @@
           "componentID": 0,
           "componentType": "Transform",
           "position": {
-            "x": 1,
-            "y": 2,
-            "z": 23
+            "x": 3,
+            "y": 0,
+            "z": -15
           }
         },
         {
@@ -32,9 +32,9 @@
           "componentID": 0,
           "componentType": "Transform",
           "position": {
-            "x": 1,
-            "y": 2,
-            "z": 0
+            "x": -3,
+            "y": 0,
+            "z": -15
           }
         }
       ]

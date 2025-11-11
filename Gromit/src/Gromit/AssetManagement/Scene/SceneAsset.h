@@ -2,12 +2,9 @@
 #include "AssetManagement/Asset.h"
 #include "AssetManagement/Entity/EntityAsset.h"
 #include <variant>
-#include "Math/Math.h"
 
 namespace Gromit
 {
-	using ComponentProperty = std::variant<int, float, bool, std::string, glm::vec3>;
-
 	struct SceneEntityOverride
 	{
 		SceneEntityOverride(int id, ComponentType type) : ComponentID(id), ComponentType(type) {}

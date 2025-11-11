@@ -8,7 +8,7 @@ namespace Gromit::OpenGL
 	class OpenGL_BufferLayout : public BufferLayout
 	{
 	public:
-		OpenGL_BufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) : m_data(init)
+		OpenGL_BufferLayout(const std::vector<BufferLayoutElement>& init) : m_data(init)
 		{
 			SetStride();
 		}

@@ -23,7 +23,7 @@ void ExampleApplication::StartUp()
 	//TO Load our local Asset Pack 
 	Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene(5); //-> will also load the asset,camera etc and handle rendering
 	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene(10);
-	Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(5);
+	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(5);
 	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(10);
 }
 

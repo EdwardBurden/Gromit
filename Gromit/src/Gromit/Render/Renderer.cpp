@@ -1,6 +1,8 @@
 #include "Renderer.h"
 #include "../RenderAPIs/OpenGL/OpenGL_RenderAPI.h"
 #include "RenderCommands.h"
+#include "Math/Math.h"
+#include "AssetManagement/AssetManager.h"
 
 namespace Gromit
 {
@@ -12,13 +14,6 @@ namespace Gromit
 		SetAPI(RenderAPIType::OpenGL);
 		update = 0;
 		camera = new Camera(90, 1);
-
-		m_tempBuffer = Renderer::GetAPI()->CreateBufferLayout(
-			{
-				{ShaderDataType::Float3 , "position"},
-				{ShaderDataType::Float3 , "normal"},
-				{ShaderDataType::Float2 , "texCoords"}
-			});
 	}
 
 	void Renderer::OnShutDown()
@@ -44,21 +39,35 @@ namespace Gromit
 	void Renderer::OnUpdate(const SceneInstance& sceneInstance)
 	{
 		// begin scene
+		//tempo
+
+		Window* window = Context::SharedContext->GetWindows()[0];
+		window->Activate();
+
+
+
 		for (const auto& entity : sceneInstance.Entities)
 		{
 			auto iterator = tempRenderList.find(entity->InstanceID);
 			if (iterator == tempRenderList.end())
 			{
-				//add new renderobject
-				const auto& base = entity->Components[ComponentType::MeshRenderer]; //TEMP assume one exists. //TODO make helper to get these later.
-				const auto& mesh = static_cast<MeshRendererComponentInstance*>(base.get());
-				//mesh.
-				tempRenderList[entity->InstanceID] = RenderCommands::CreateRenderObject(mesh->material, mesh->mesh, m_tempBuffer);
+				MeshRendererComponentInstance* meshComponent = entity->GetComponent<MeshRendererComponentInstance>(ComponentType::MeshRenderer);
+				tempRenderList.emplace(entity->InstanceID, std::move( RenderCommands::CreateRenderObject(*meshComponent))); //maybe have transform here? unsure
 			}
-			RenderCommands::DrawRenderObject(tempRenderList[entity->InstanceID], camera);
 		}
+
+		window->PreUpdate();
+		for (const auto& entity : sceneInstance.Entities)
+		{
+			TransformComponentInstance* transform = entity->GetComponent<TransformComponentInstance>(ComponentType::Transform);
+			RenderCommands::DrawRenderObject(*tempRenderList[entity->InstanceID].get(), *transform, camera);
+		}
+		window->PostUpdate();
+
+
+
 		//end scene
 		update += 0.0005f;
-		//tempRenderList.clear();
+		//tempRenderList.clear(); //to test
 	}
 }

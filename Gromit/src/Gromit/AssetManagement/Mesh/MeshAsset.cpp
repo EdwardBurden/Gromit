@@ -12,6 +12,12 @@ namespace Gromit
 	MeshMetaData::MeshMetaData(int guid, std::string assetPath, nlohmann::json data) : MetaData(guid, assetPath, data)
 	{
 		data.at("importSetting").get_to(m_importSetting);
+		m_layout.clear();
+		for (const auto& layoutElement : data["layout"])
+		{
+			auto dataType =	layoutElement.begin().value().get<ShaderDataType>();
+			m_layout.emplace(layoutElement.begin().key(), dataType);
+		}
 	}
 
 	MeshAsset::MeshAsset(std::shared_ptr<MeshMetaData> metaData) : Asset(metaData)
@@ -44,8 +50,15 @@ namespace Gromit
 			unsigned int meshIndex = child->mMeshes[i];
 			aiMesh* mesh = scene->mMeshes[meshIndex];
 			ProcessMesh(mesh, m_vertices, m_verticesSize, m_indices, m_indicesSize);
-		}	
+		}
 		m_transformMatrix = ConvertMatrixToGLMFormat(root->mTransformation);
+
+		m_bufferLayout.clear();
+		for (const auto& [key, value] : metaData->m_layout)
+		{
+			BufferLayoutElement e = BufferLayoutElement(value, key.c_str());
+			m_bufferLayout.push_back(e);
+		}
 	}
 
 	void ProcessMesh(aiMesh* mesh, Vertex* vertices, size_t& verticesSize, unsigned int* indices, size_t& indicesSize)

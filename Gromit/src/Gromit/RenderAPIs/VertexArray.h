@@ -12,6 +12,7 @@ namespace Gromit
 		virtual void Unbind() = 0;
 		virtual void SetVertexBuffer(VertexBuffer* vertexBuffer) = 0;
 		virtual void SetIndexBuffer(IndexBuffer* indexBuffer) = 0;
+		virtual void Draw() = 0;
 	private:
 
 	};

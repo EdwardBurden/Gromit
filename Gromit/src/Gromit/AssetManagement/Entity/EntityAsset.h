@@ -1,5 +1,7 @@
 #pragma once
 #include "AssetManagement/Asset.h"
+#include <variant>
+#include "Math/Math.h"
 
 namespace Gromit
 {
@@ -14,6 +16,8 @@ namespace Gromit
 			{ComponentType::Transform, "Transform"},
 			{ComponentType::MeshRenderer , "MeshRenderer"}
 		});
+
+	using ComponentProperty = std::variant<int, float, bool, std::string, glm::vec3>;
 
 	struct ComponentAsset
 	{

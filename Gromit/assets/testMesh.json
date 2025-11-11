@@ -3,5 +3,10 @@
   "type": "Mesh",
   "name": "Test_Cube_1",
   "path": "/untitled.obj",
-  "importSetting": 8
+  "importSetting": 8,
+  "layout": [
+    { "position": "Float3" },
+    { "normal": "Float3" },
+    { "texCoords": "Float2" }
+  ]
 }

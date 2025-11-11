@@ -21,12 +21,12 @@ namespace Gromit::OpenGL
 		void TerminateWindows() override;
 
 		Window* CreateWindow(int x, int y, int width, int height, const char* title) override;
-		Material* CreateMaterial(std::shared_ptr<MaterialAsset> material) override;
-		Shader* CreateShader(std::shared_ptr<ShaderAsset> shader) override;
+		Material* CreateMaterial(const std::shared_ptr<MaterialAsset>& material) override;
+		Shader* CreateShader(const std::shared_ptr<ShaderAsset>& shader) override;
 		VertexBuffer* CreateVertexBuffer(const Vertex* vertices, unsigned int size) override;
 		IndexBuffer* CreateIndexBuffer(const unsigned int* indices, unsigned int size) override;
 		VertexArray* CreateVertexArray() override;
-		BufferLayout* CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) override;
+		BufferLayout* CreateBufferLayout(const std::vector<BufferLayoutElement>& init) override;
 		Context* CreateContext() override;
 		Texture* CreateTexture(std::shared_ptr<TextureAsset> textureAsset) override;
 		void DrawIndexes(int count) override;

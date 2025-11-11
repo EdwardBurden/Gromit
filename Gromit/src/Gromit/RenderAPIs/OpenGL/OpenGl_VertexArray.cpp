@@ -12,6 +12,7 @@ namespace Gromit::OpenGL
 	OpenGL_VertexArray::~OpenGL_VertexArray()
 	{
 		glDeleteVertexArrays(1, &VertexArrayId);
+		//todo clean up index and vertex pointers
 	}
 
 	void OpenGL_VertexArray::Bind()
@@ -26,17 +27,24 @@ namespace Gromit::OpenGL
 	
 	void OpenGL_VertexArray::SetVertexBuffer(VertexBuffer* vertexBuffer)
 	{
-		Bind();
-		vertexBuffer->Bind();
-		auto layout = vertexBuffer->GetLayout();
-		layout->SetAttributes();
 		m_vertexBuffer = vertexBuffer;
+		Bind();
+		m_vertexBuffer->Bind();
+		auto layout = m_vertexBuffer->GetLayout();
+		layout->SetAttributes();
+		
 	}
 	
 	void OpenGL_VertexArray::SetIndexBuffer(IndexBuffer* indexBuffer)
-	{
-		Bind();
-		indexBuffer->Bind();
+	{	
 		m_indexBuffer = indexBuffer;
+		Bind();
+		m_indexBuffer->Bind();
+	
 	}
+
+	void OpenGL_VertexArray::Draw() 
+	{
+		glDrawElements(GL_TRIANGLES, m_indexBuffer->Count(), GL_UNSIGNED_INT, 0);
+	};
 }

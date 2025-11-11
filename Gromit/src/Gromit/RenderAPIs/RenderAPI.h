@@ -23,12 +23,12 @@ namespace Gromit
 		virtual void TerminateWindows() = 0;
 
 		virtual Window* CreateWindow(int x, int y, int width, int height, const char* title) = 0;
-		virtual Material* CreateMaterial(std::shared_ptr<MaterialAsset> material) = 0;
-		virtual Shader* CreateShader(std::shared_ptr<ShaderAsset> shader) = 0;
+		virtual Material* CreateMaterial(const std::shared_ptr<MaterialAsset>& material) = 0;
+		virtual Shader* CreateShader(const std::shared_ptr<ShaderAsset>& shader) = 0;
 		virtual VertexBuffer* CreateVertexBuffer(const Vertex* vertices, unsigned int size) = 0;;
 		virtual IndexBuffer* CreateIndexBuffer(const unsigned int* indices, unsigned int size) = 0;
 		virtual VertexArray* CreateVertexArray() = 0;
-		virtual BufferLayout* CreateBufferLayout(std::initializer_list<Gromit::BufferLayoutElement> init) = 0;
+		virtual BufferLayout* CreateBufferLayout(const std::vector<BufferLayoutElement>& init) = 0;
 		virtual Context* CreateContext() = 0;
 		virtual Texture* CreateTexture(std::shared_ptr<TextureAsset> textureAsset) = 0;
 		virtual void DrawIndexes(int count) =0;
