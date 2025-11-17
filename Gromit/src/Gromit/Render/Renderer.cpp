@@ -36,7 +36,7 @@ namespace Gromit
 		}
 	}
 
-	void Renderer::OnUpdate(const SceneInstance& sceneInstance)
+	void Renderer::OnUpdate(const SceneInstance* sceneInstance)
 	{
 		// begin scene
 		//tempo
@@ -44,27 +44,30 @@ namespace Gromit
 		Window* window = Context::SharedContext->GetWindows()[0];
 		window->Activate();
 
+		if (sceneInstance != nullptr) {
 
-
-		for (const auto& entity : sceneInstance.Entities)
-		{
-			auto iterator = tempRenderList.find(entity->InstanceID);
-			if (iterator == tempRenderList.end())
+			for (const auto& entity : sceneInstance->Entities)
 			{
-				MeshRendererComponentInstance* meshComponent = entity->GetComponent<MeshRendererComponentInstance>(ComponentType::MeshRenderer);
-				tempRenderList.emplace(entity->InstanceID, std::move( RenderCommands::CreateRenderObject(*meshComponent))); //maybe have transform here? unsure
+				auto iterator = tempRenderList.find(entity->InstanceID);
+				if (iterator == tempRenderList.end())
+				{
+					MeshRendererComponentInstance* meshComponent = entity->GetComponent<MeshRendererComponentInstance>(ComponentType::MeshRenderer);
+					tempRenderList.emplace(entity->InstanceID, std::move(RenderCommands::CreateRenderObject(*meshComponent))); //maybe have transform here? unsure
+				}
 			}
 		}
 
-		window->PreUpdate();
-		for (const auto& entity : sceneInstance.Entities)
-		{
-			TransformComponentInstance* transform = entity->GetComponent<TransformComponentInstance>(ComponentType::Transform);
-			RenderCommands::DrawRenderObject(*tempRenderList[entity->InstanceID].get(), *transform, camera);
-		}
-		window->PostUpdate();
+			window->PreUpdate();
+			if (sceneInstance != nullptr) {
+				for (const auto& entity : sceneInstance->Entities)
+				{
+					TransformComponentInstance* transform = entity->GetComponent<TransformComponentInstance>(ComponentType::Transform);
+					RenderCommands::DrawRenderObject(*tempRenderList[entity->InstanceID].get(), *transform, camera);
+				}
+			}
+			window->PostUpdate();
 
-
+	
 
 		//end scene
 		update += 0.0005f;

@@ -74,7 +74,7 @@ namespace Gromit
 			return;
 		ServiceLocator::GetService<EventSystem>()->OnUpdate();
 		const auto& sceneManger = ServiceLocator::GetService<SceneManager>();
-		ServiceLocator::GetService<Renderer>()->OnUpdate(*sceneManger->m_activeScene);
+		ServiceLocator::GetService<Renderer>()->OnUpdate(sceneManger->m_activeScene);
 		//ServiceLocator::Update();
 	}
 

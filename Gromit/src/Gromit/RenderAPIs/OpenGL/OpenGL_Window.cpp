@@ -129,8 +129,9 @@ namespace Gromit {
 
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		{
-			if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-				TRIG_EVENT(MouseClickEvent, 1);
+			//button == GLFW_MOUSE_BUTTON_RIGHT && 
+			if (action == GLFW_PRESS)
+				TRIG_EVENT(MouseClickEvent, button);
 		}
 	}
 }

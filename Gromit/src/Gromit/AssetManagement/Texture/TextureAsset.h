@@ -9,7 +9,11 @@ namespace Gromit
 		RGB = 1,
 		RGBA = 2
 	};
-	NLOHMANN_JSON_SERIALIZE_ENUM(TextureFormat, { {TextureFormat::RED, "RED"} }); //TODO need to use this later
+	NLOHMANN_JSON_SERIALIZE_ENUM(TextureFormat, { 
+		{TextureFormat::RED, "RED"},
+		{TextureFormat::RGB, "RGB"},
+		{ TextureFormat::RGBA, "RGBA" }
+		});
 
 	struct TextureMetaData : public MetaData
 	{

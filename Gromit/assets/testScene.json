@@ -14,13 +14,13 @@
           "position": {
             "x": 3,
             "y": 0,
-            "z": -15
+            "z": -10
           }
         },
         {
           "componentID": 1,
           "componentType": "MeshRenderer",
-          "material": 123332
+          "material": 999
         }
       ]
     },
@@ -34,7 +34,7 @@
           "position": {
             "x": -3,
             "y": 0,
-            "z": -15
+            "z": -10
           }
         }
       ]

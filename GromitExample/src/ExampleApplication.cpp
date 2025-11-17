@@ -21,7 +21,7 @@ void ExampleApplication::StartUp()
 	Gromit::ServiceLocator::GetService<Gromit::AssetManager>()->IdentifyAssets("assets"); // would be core or example folders in future
 	Gromit::ServiceLocator::GetService<Gromit::AssetManager>()->IdentifyAssets("pack 1");
 	//TO Load our local Asset Pack 
-	Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene(5); //-> will also load the asset,camera etc and handle rendering
+	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene(5); //-> will also load the asset,camera etc and handle rendering
 	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene(10);
 	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(5);
 	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(10);
@@ -43,10 +43,14 @@ bool ExampleApplication::DoSomethingMouse(Gromit::MouseClickEvent& event)
 {
 	if (event.button == 0) 
 	{
-	//load/unload
+		Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(5);
+	}
+	if (event.button == 1)
+	{
+		Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->LoadScene(5);
 	}
 	GL_INFO("Call Back Fired for Mouse Event");
-	Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(5);
+	//Gromit::ServiceLocator::GetService<Gromit::SceneManager>()->UnLoadScene(5);
 	//auto w = Gromit::ServiceLocator::GetService<Gromit::WindowManager>(); //wrap in macro
 	//w->CreateWindow(900, 100, 300, 300, "EXE");
 	return false;

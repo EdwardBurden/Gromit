@@ -26,7 +26,7 @@ namespace Gromit
 		//static void PreScene();
 		//static void Submit(VertexArray* va);
 		//static void PostScene();
-		void OnUpdate(const SceneInstance& sceneInstance);
+		void OnUpdate(const SceneInstance* sceneInstance);
 		void SetAPI(RenderAPIType renderApiType);
 		static  RenderAPI* GetAPI() { return m_activeRender; }
 		void OnStartUp() override;
