@@ -44,8 +44,10 @@ namespace Gromit
                     m_pool[i].inUse = false;
                 }
             }
-
-            DebugPrint();
+            std::cout << "Pool Deleted for Type: " << typeid(T).name()
+                << ", Capacity: " << Capacity
+                << ", Element Size: " << sizeof(T) << "\n";
+           // DebugPrint();
         }
 
         template<typename... Args>
@@ -62,7 +64,7 @@ namespace Gromit
             asset = new (asset) T(std::forward<Args>(args)...);
             m_freePointer = m_freePointer->nextChunk;
             chunk->inUse = true;
-            DebugPrint();
+            //DebugPrint();
             return asset;
         }
 
@@ -76,7 +78,7 @@ namespace Gromit
             chunk->nextChunk = m_freePointer; // push to free list
             m_freePointer = chunk;
             chunk->inUse = false;
-            DebugPrint();
+           // DebugPrint();
         }
 
         void DebugPrint() const

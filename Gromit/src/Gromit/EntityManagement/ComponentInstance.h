@@ -28,7 +28,7 @@ namespace Gromit
 			auto iterator = overrides.find(key);
 			if (iterator != entityRef.Overrides.end())
 			{
-				for (const auto& [propertyName, propertyValue] : iterator->second->Properties)
+				for (const auto& [propertyName, propertyValue] : iterator->second.Properties)
 				{
 					instance->ApplyProperty(propertyName, propertyValue);
 				}

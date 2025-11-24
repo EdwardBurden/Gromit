@@ -2,131 +2,137 @@
 #include "../../AssetManagement/AssetManager.h"
 #include "ResourceRegistry.h"
 
-namespace Gromit::OpenGL
-{
-	void OnErrorCallback(int error, const char* description);
 
-	void OpenGL_RenderAPI::InitWindows()
-	{
-		auto result = glfwInit();
-		if (result)
-		{
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-			glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_NONE);
-			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-			glfwSetErrorCallback(OnErrorCallback);
-			GL_INFO("GLFW Init Success");
-		}
-		else
-		{
-			GL_ERROR("Failed to Init GLFW");
-		}
-		return;
-	}
+namespace Gromit {
 
-	void OpenGL_RenderAPI::TerminateWindows()
-	{
-		glfwTerminate();
-		GL_INFO("GLFW Release Success");
-	}
+	extern Context* SharedContext;
 
-	Window* OpenGL_RenderAPI::CreateWindow(int x, int y, int width, int height, const char* title)
+	namespace OpenGL
 	{
-		auto badCode = static_cast<OpenGL_Context*>(Context::SharedContext);
-		OpenGL_Window* wPtr = badCode->GetShared();
-		GLFWwindow* window = nullptr;
-		if (wPtr != nullptr)
+		void OnErrorCallback(int error, const char* description);
+		//extern Gromit::Context* GSharedContext;
+		void OpenGL_RenderAPI::InitWindows()
 		{
-			window = wPtr->m_window;
+			auto result = glfwInit();
+			if (result)
+			{
+				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+				glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_NONE);
+				glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+				glfwSetErrorCallback(OnErrorCallback);
+				GL_INFO("GLFW Init Success");
+			}
+			else
+			{
+				GL_ERROR("Failed to Init GLFW");
+			}
+			return;
 		}
 
-		auto newWindow = new OpenGL_Window(x, y, width, height, title, window);
-		badCode->AddWindow(newWindow);
-		return newWindow;
-	}
-
-	Material* OpenGL_RenderAPI::CreateMaterial(const std::shared_ptr<MaterialAsset>& asset)
-	{
-		const auto& manager = ServiceLocator::GetService<AssetManager>();
-		auto shaderIds = asset->GetShaderIds();
-		std::vector<Shader*> shaders;
-		for (size_t i = 0; i < shaderIds.size(); i++)
+		void OpenGL_RenderAPI::TerminateWindows()
 		{
-			std::shared_ptr<ShaderAsset> shader = manager->LoadAsset<ShaderAsset>(shaderIds[i]);
-			CreateShader(shader);
+			glfwTerminate();
+			GL_INFO("GLFW Release Success");
 		}
 
-		auto textureIds = asset->GetTextureIds();
-		std::vector<Texture*> textures;
-		for (size_t i = 0; i < textureIds.size(); i++)
+		Window* OpenGL_RenderAPI::CreateWindow(int x, int y, int width, int height, const char* title)
 		{
-			std::shared_ptr<TextureAsset> texture = manager->LoadAsset<TextureAsset>(textureIds[i]);
-			CreateTexture(texture);
+			auto badCode = static_cast<OpenGL_Context*>(SharedContext);
+			OpenGL_Window* wPtr = badCode->GetShared();
+			GLFWwindow* window = nullptr;
+			if (wPtr != nullptr)
+			{
+				window = wPtr->m_window;
+			}
+
+			auto newWindow = new OpenGL_Window(x, y, width, height, title, window);
+			badCode->AddWindow(newWindow);
+			return newWindow;
 		}
 
-		//AND ALSO MAKE THE CreateTexture too
-		return new OpenGL_Material(asset);
-	}
-
-	Shader* OpenGL_RenderAPI::CreateShader(const std::shared_ptr<ShaderAsset>& shaderAsset)
-	{
-		int guid = shaderAsset->GetGuid();
-		if (ResourceRegistry::Shaders.contains(guid))
+		Material* OpenGL_RenderAPI::CreateMaterial(const std::shared_ptr<MaterialAsset>& asset)
 		{
-			return ResourceRegistry::Shaders[guid];
+			const auto& manager = ServiceLocator::GetService<AssetManager>();
+			auto shaderIds = asset->GetShaderIds();
+			std::vector<Shader*> shaders;
+			for (size_t i = 0; i < shaderIds.size(); i++)
+			{
+				std::shared_ptr<ShaderAsset> shader = manager->LoadAsset<ShaderAsset>(shaderIds[i]);
+				CreateShader(shader);
+			}
+
+			auto textureIds = asset->GetTextureIds();
+			std::vector<Texture*> textures;
+			for (size_t i = 0; i < textureIds.size(); i++)
+			{
+				std::shared_ptr<TextureAsset> texture = manager->LoadAsset<TextureAsset>(textureIds[i]);
+				CreateTexture(texture);
+			}
+
+			//AND ALSO MAKE THE CreateTexture too
+			return new OpenGL_Material(asset);
 		}
 
-		OpenGL_Shader* shader = new OpenGL_Shader(shaderAsset);
-		ResourceRegistry::Shaders[guid] = shader;
-		return shader;
-	}
-
-	Texture* OpenGL_RenderAPI::CreateTexture(std::shared_ptr<TextureAsset> textureAsset)
-	{
-		int guid = textureAsset->GetGuid();
-		if (ResourceRegistry::Shaders.contains(guid))
+		Shader* OpenGL_RenderAPI::CreateShader(const std::shared_ptr<ShaderAsset>& shaderAsset)
 		{
-			return ResourceRegistry::Textures[guid];
+			int guid = shaderAsset->GetGuid();
+			if (ResourceRegistry::Shaders.contains(guid))
+			{
+				return ResourceRegistry::Shaders[guid];
+			}
+
+			OpenGL_Shader* shader = new OpenGL_Shader(shaderAsset);
+			ResourceRegistry::Shaders[guid] = shader;
+			return shader;
 		}
 
-		OpenGL_Texture* texture = new OpenGL_Texture(textureAsset);
-		ResourceRegistry::Textures[guid] = texture;
-		return texture;
-	}
+		Texture* OpenGL_RenderAPI::CreateTexture(std::shared_ptr<TextureAsset> textureAsset)
+		{
+			int guid = textureAsset->GetGuid();
+			if (ResourceRegistry::Shaders.contains(guid))
+			{
+				return ResourceRegistry::Textures[guid];
+			}
 
-	VertexBuffer* OpenGL_RenderAPI::CreateVertexBuffer(const Vertex* vertices, unsigned int size)
-	{
-		return new OpenGL_VertexBuffer(vertices, size);
-	}
+			OpenGL_Texture* texture = new OpenGL_Texture(textureAsset);
+			ResourceRegistry::Textures[guid] = texture;
+			return texture;
+		}
 
-	IndexBuffer* OpenGL_RenderAPI::CreateIndexBuffer(const unsigned int* indices, unsigned int size)
-	{
-		return new OpenGL_IndexBuffer(indices, size);
-	}
+		VertexBuffer* OpenGL_RenderAPI::CreateVertexBuffer(const Vertex* vertices, unsigned int size)
+		{
+			return new OpenGL_VertexBuffer(vertices, size);
+		}
 
-	VertexArray* OpenGL_RenderAPI::CreateVertexArray()
-	{
-		return new OpenGL_VertexArray();
-	}
+		IndexBuffer* OpenGL_RenderAPI::CreateIndexBuffer(const unsigned int* indices, unsigned int size)
+		{
+			return new OpenGL_IndexBuffer(indices, size);
+		}
 
-	BufferLayout* OpenGL_RenderAPI::CreateBufferLayout(const std::vector<Gromit::BufferLayoutElement>& init)
-	{
-		return new OpenGL_BufferLayout(init);
-	}
+		VertexArray* OpenGL_RenderAPI::CreateVertexArray()
+		{
+			return new OpenGL_VertexArray();
+		}
 
-	Context* OpenGL_RenderAPI::CreateContext()
-	{
-		return new OpenGL_Context();
-	}
+		BufferLayout* OpenGL_RenderAPI::CreateBufferLayout(const std::vector<Gromit::BufferLayoutElement>& init)
+		{
+			return new OpenGL_BufferLayout(init);
+		}
 
-	void OpenGL_RenderAPI::DrawIndexes(int count)
-	{
-		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
-	}
+		Context* OpenGL_RenderAPI::CreateContext()
+		{
+			return new OpenGL_Context();
+		}
 
-	void OnErrorCallback(int error, const char* description)
-	{
-		GL_ERROR(error + description);
+		void OpenGL_RenderAPI::DrawIndexes(int count)
+		{
+			glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
+		}
+
+		void OnErrorCallback(int error, const char* description)
+		{
+			GL_ERROR(error + description);
+		}
 	}
 }

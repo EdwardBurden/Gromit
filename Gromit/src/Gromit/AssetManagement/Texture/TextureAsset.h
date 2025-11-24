@@ -20,6 +20,7 @@ namespace Gromit
 	public:
 		int m_width;
 		int m_height;
+		int m_channels;
 		TextureFormat m_format;
 		bool m_generateMipMaps;
 
@@ -34,5 +35,6 @@ namespace Gromit
 		unsigned char* m_data; // todo improve
 
 		TextureAsset(std::shared_ptr<TextureMetaData> metaData);
+		~TextureAsset();
 	};
 }

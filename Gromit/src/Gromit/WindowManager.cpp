@@ -11,6 +11,12 @@ namespace Gromit
 
 	void WindowManager::OnShutDown()
 	{
+		for (int i = m_windows.size() - 1; i >= 0; --i)
+		{
+			delete m_windows[i];
+			m_windows.erase(m_windows.begin() + i);
+		}
+
 		auto renderer = ServiceLocator::GetService<Renderer>();
 		auto api = renderer->GetAPI();
 		api->TerminateWindows();

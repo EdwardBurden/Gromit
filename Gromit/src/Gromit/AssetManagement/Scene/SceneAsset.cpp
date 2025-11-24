@@ -13,13 +13,13 @@ namespace Gromit
 			auto entity = entities[i];
 			int instance = entity.at("instance");
 			int guid = entity.at("guid");
-			EntityReference* e = new EntityReference(guid, instance);
-			e->Overrides.clear();
+			EntityReference e(guid, instance);
+			e.Overrides.clear();
 			for (auto& overrideJson : entity["overrides"])
 			{
 				int componentID = overrideJson["componentID"];
 				ComponentType componentType = overrideJson["componentType"];
-				auto overrideObj = new SceneEntityOverride(componentID, componentType);
+				SceneEntityOverride overrideObj(componentID, componentType);
 
 				for (auto& [key, value] : overrideJson.items())
 				{
@@ -30,31 +30,40 @@ namespace Gromit
 							value["y"].get<float>(),
 							value["z"].get<float>()
 						);
-						overrideObj->Properties[key] = vec;
+						overrideObj.Properties[key] = vec;
 					}
 					else if (value.is_number_integer())
 					{
-						overrideObj->Properties[key] = value.get<int>();
+						overrideObj.Properties[key] = value.get<int>();
 					}
 					else if (value.is_number_float())
 					{
-						overrideObj->Properties[key] = value.get<float>();
+						overrideObj.Properties[key] = value.get<float>();
 					}
 					else if (value.is_boolean())
 					{
-						overrideObj->Properties[key] = value.get<bool>();
+						overrideObj.Properties[key] = value.get<bool>();
 					}
 					else if (value.is_string())
 					{
-						overrideObj->Properties[key] = value.get<std::string>();
+						overrideObj.Properties[key] = value.get<std::string>();
 					}
 
 				}
 
-				e->Overrides[componentID] = overrideObj;
+				e.Overrides[componentID] = overrideObj;
 			}
 			m_entities.push_back(e);
 		}
+	}
+
+	SceneMetaData::~SceneMetaData()
+	{
+		/*for (auto& entity : m_entities)
+		{
+			entity.Overrides.clear();
+		}
+		m_entities.clear();*/
 	}
 
 

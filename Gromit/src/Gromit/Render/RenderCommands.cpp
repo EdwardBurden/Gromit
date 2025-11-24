@@ -16,7 +16,7 @@ namespace Gromit
 		vertexArray->SetIndexBuffer(indexBuffer);
 		material->Bind();
 		vertexArray->Unbind();
-		return std::make_unique<RenderObject>(material, vertexArray, Context::SharedContext);
+		return std::make_unique<RenderObject>(material, vertexArray);
 	}
 
 	void RenderCommands::DrawRenderObject(const RenderObject& renderObject, const TransformComponentInstance& transform, Camera* camera) //todo pass in time plus other render params

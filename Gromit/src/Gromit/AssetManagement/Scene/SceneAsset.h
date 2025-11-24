@@ -7,6 +7,7 @@ namespace Gromit
 {
 	struct SceneEntityOverride
 	{
+		SceneEntityOverride() = default;
 		SceneEntityOverride(int id, ComponentType type) : ComponentID(id), ComponentType(type) {}
 
 		int ComponentID;
@@ -21,8 +22,8 @@ namespace Gromit
 		EntityReference(int guid, int instance) : Guid(guid), Instance(instance) {}
 		int Guid;
 		int Instance;
-		const std::unordered_map<int, SceneEntityOverride*>& GetOverrides() const { return Overrides; }
-		std::unordered_map<int, SceneEntityOverride*> Overrides; //component id
+		const std::unordered_map<int, SceneEntityOverride>& GetOverrides() const { return Overrides; }
+		std::unordered_map<int, SceneEntityOverride> Overrides; //component id
 	};
 
 
@@ -30,13 +31,13 @@ namespace Gromit
 	{
 	public:
 		SceneMetaData(int guid, std::string assetPath, nlohmann::json data);
-
-		std::vector<EntityReference*> m_entities;
+		~SceneMetaData() override;
+		std::vector<EntityReference> m_entities;
 	};
 
 	struct SceneAsset : public Asset
 	{
 		SceneAsset(std::shared_ptr<SceneMetaData> metaData) : Asset(metaData) {}
-		const std::vector<EntityReference*> GetEntities() const { return  this->GetMeta<SceneMetaData>()->m_entities; }
+		const std::vector<EntityReference> GetEntities() const { return  this->GetMeta<SceneMetaData>()->m_entities; }
 	};
 }

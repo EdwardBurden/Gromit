@@ -28,7 +28,7 @@ namespace Gromit
 		//static void PostScene();
 		void OnUpdate(const SceneInstance* sceneInstance);
 		void SetAPI(RenderAPIType renderApiType);
-		static  RenderAPI* GetAPI() { return m_activeRender; }
+		static RenderAPI* GetAPI() { return m_activeRender; }
 		void OnStartUp() override;
 		void OnShutDown() override;
 	private:

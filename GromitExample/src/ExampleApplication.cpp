@@ -8,7 +8,6 @@ Gromit::Application* Gromit::CreateApplication()
 void ExampleApplication::StartUp()
 {
 	Application::StartUp();
-
 #ifdef _DEBUG
 	GL_INFO("Debug build");
 #else

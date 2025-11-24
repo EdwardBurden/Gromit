@@ -36,7 +36,7 @@ namespace Gromit
 		m_activeScene->Entities.clear();
 		for (auto& entity : sceneAsset->GetEntities())
 		{
-			const auto& entityInstance = EntityInstance::Create(*entity);
+			const auto& entityInstance = EntityInstance::Create(entity);
 			m_activeScene->Entities.push_back(entityInstance);
 		}
 	}

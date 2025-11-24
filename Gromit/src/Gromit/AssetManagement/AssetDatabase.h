@@ -7,7 +7,7 @@
 
 #pragma once
 #include "AssetManagement/AssetRecord.h"
-#include "AssetManagement/PoolAllocator.h"
+#include "Core/PoolAllocator.h"
 #include <json.hpp>
 #include <memory>
 #include <unordered_map>

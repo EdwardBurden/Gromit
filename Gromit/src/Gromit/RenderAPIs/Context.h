@@ -6,7 +6,8 @@ namespace Gromit
 	class Context
 	{
 	public: 
-		static inline Context* SharedContext = nullptr;
+		Context() = default;
+		virtual ~Context() = default;
 		// needs list of windows set to this context
 		virtual std::vector<Window*> GetWindows() = 0;
 	};

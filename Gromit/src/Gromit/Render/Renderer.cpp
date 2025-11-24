@@ -6,7 +6,7 @@
 
 namespace Gromit
 {
-
+	extern Context* SharedContext;
 	RenderAPI* Renderer::m_activeRender;
 
 	void Renderer::OnStartUp()
@@ -18,7 +18,8 @@ namespace Gromit
 
 	void Renderer::OnShutDown()
 	{
-
+		delete camera;
+		delete m_activeRender;
 	}
 
 	void Renderer::SetAPI(RenderAPIType renderApiType)
@@ -41,7 +42,7 @@ namespace Gromit
 		// begin scene
 		//tempo
 
-		Window* window = Context::SharedContext->GetWindows()[0];
+		Window* window = SharedContext->GetWindows()[0];
 		window->Activate();
 
 		if (sceneInstance != nullptr) {

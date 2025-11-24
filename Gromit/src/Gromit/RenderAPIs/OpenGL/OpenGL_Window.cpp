@@ -87,6 +87,7 @@ namespace Gromit {
 
 		void OpenGL_Window::Close() {
 			glfwSetWindowShouldClose(m_window, GL_TRUE);
+			delete m_window;
 		}
 
 		void WindowResize(GLFWwindow* window, int width, int height) {
