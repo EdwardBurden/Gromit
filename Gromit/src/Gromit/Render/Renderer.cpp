@@ -3,11 +3,13 @@
 #include "RenderCommands.h"
 #include "Math/Math.h"
 #include "AssetManagement/AssetManager.h"
+#include "Core/LinearAllocator.h"
 
 namespace Gromit
 {
 	extern Context* SharedContext;
 	RenderAPI* Renderer::m_activeRender;
+	LinearAllocator gpuAllocator;
 
 	void Renderer::OnStartUp()
 	{
@@ -58,20 +60,22 @@ namespace Gromit
 			}
 		}
 
-			window->PreUpdate();
-			if (sceneInstance != nullptr) {
-				for (const auto& entity : sceneInstance->Entities)
-				{
-					TransformComponentInstance* transform = entity->GetComponent<TransformComponentInstance>(ComponentType::Transform);
-					RenderCommands::DrawRenderObject(*tempRenderList[entity->InstanceID].get(), *transform, camera);
-				}
+		window->PreUpdate();
+		
+		if (sceneInstance != nullptr) {
+			for (const auto& entity : sceneInstance->Entities)
+			{
+				TransformComponentInstance* transform = entity->GetComponent<TransformComponentInstance>(ComponentType::Transform);
+				RenderCommands::DrawRenderObject(*tempRenderList[entity->InstanceID].get(), *transform, camera);
 			}
-			window->PostUpdate();
+		}
+		window->PostUpdate();
 
-	
+
 
 		//end scene
 		update += 0.0005f;
+		//gpuAllocator.Free();
 		//tempRenderList.clear(); //to test
 	}
 }

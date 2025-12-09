@@ -7,28 +7,7 @@ namespace Gromit
 {
 	const size_t TextureAllocationSize = 32 * 1024 * 1024;
 	LinearAllocator textureAllocator;
-
 	Context* SharedContext = nullptr;
-	struct TestData
-	{
-		uint16_t first;
-		uint32_t second;
-		char third;
-	};
-
-	struct BestData
-	{
-		char third;
-		uint16_t first;
-		uint32_t second;
-	};
-
-	struct Breaker {
-		char a;         // 1 byte
-		__m128 simd;    // 16 bytes, 16-byte aligned
-	};
-
-
 	bool Application::m_isRunning = true;
 
 	bool Application::IsRunning()
@@ -50,19 +29,19 @@ namespace Gromit
 
 
 		SharedContext = Renderer::GetAPI()->CreateContext(); //temp
-		//auto w = ServiceLocator::GetService<WindowManager>();
-		//w->CreateWindow(100, 100, 400, 400, "DLL Test1");
+		auto w = ServiceLocator::GetService<WindowManager>();
+		w->CreateWindow(100, 100, 400, 400, "DLL Test1");
 	}
 
 	void Application::Run()
 	{
-		m_isRunning = false;
-		return;
+		//m_isRunning = false;
 		auto renderer = ServiceLocator::GetService<Renderer>();
 		//	renderer->AddDrawObject(testRender); //temp will be set from the scene/world manager
 
 		FrameTime::SetDelta();
-		ServiceLocator::GetService<WindowManager>()->OnUpdate(); // use the update
+		ServiceLocator::GetService<WindowManager>()->OnUpdate(); 
+		ServiceLocator::GetService<EventSystem>()->OnUpdate();// use the update
 		//hack must fix
 		if (!m_isRunning)
 			return;
@@ -71,7 +50,6 @@ namespace Gromit
 		ServiceLocator::GetService<Renderer>()->OnUpdate(sceneManger->m_activeScene);
 		//ServiceLocator::Update();
 		//m_isRunning = false;
-
 	}
 
 	void Application::ShutDown()

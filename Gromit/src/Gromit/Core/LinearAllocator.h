@@ -9,9 +9,6 @@ namespace Gromit
 		size_t length;
 		size_t offset;
 		size_t alignedOffset;
-		//start
-		//top
-		//info on size
 
 		~LinearAllocator()
 		{
@@ -31,14 +28,7 @@ namespace Gromit
 			size_t size = sizeof(T);
 			size_t align = alignof(T);
 
-			uintptr_t currentAddress = (uintptr_t)(buffer + offset);
-			uintptr_t alignedAddress = (currentAddress + align - 1) & ~(align - 1);
-			size_t padding = alignedAddress - currentAddress;
-
-			offset += padding;
-			void* ptr = buffer + offset;
-			std::memset(ptr, 'A', size);
-			offset += size;
+			void* ptr = AllocateBytes(size, align);
 			return (T*)ptr;
 		}
 
@@ -55,9 +45,15 @@ namespace Gromit
 			}
 			offset += padding;
 			void* ptr = buffer + offset;
-			std::memset(ptr, 'A', size);
+			std::memset(ptr, 'A', size); //wrap in debug
 			offset += size;
 			return ptr;
+		}
+
+		void Free() 
+		{
+			offset = 0;
+			std::memset(buffer, 'D', length);
 		}
 	};
 }
