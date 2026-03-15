@@ -13,6 +13,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 add_subdirectory(Gromit)
 add_subdirectory(GromitExample)
 add_subdirectory(GromitPackager)
+add_subdirectory(ThreadPool)
 
 install(TARGETS Gromit
     RUNTIME DESTINATION .      # .exe, .dll on Windows
