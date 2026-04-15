@@ -4,13 +4,15 @@
 #include <vector>
 #include <forward_list>
 #include <functional>
-
+#include <memory>
+#include <queue>
+#include <type_traits>
 
 //concurrency
 #include <thread>
 #include <mutex>
 #include <atomic>
-#include <queue>
+
 #include <condition_variable>
 #include <future>
 
@@ -41,10 +43,11 @@ public:
 	void Stop();
 	~WorkerThread();
 
-private:
+//private:
 	ThreadPool* m_pool;
 	std::thread m_thread;
 	int m_index;
+	bool m_isActive;
 	//std::string m_debugOutput;
 };
 
@@ -52,14 +55,38 @@ class ThreadPool
 {
 public:
 	ThreadPool(size_t size);
+	ThreadPool(const ThreadPool&) = delete;
+	ThreadPool& operator=(const ThreadPool&) = delete;
+	ThreadPool(ThreadPool&&) = delete;
+	ThreadPool& operator=(ThreadPool&&) = delete;
 	void Expand(size_t size);
 	void Shrink(size_t size);
-	void EnqueueTask(std::function<void()> task);
+	//void EnqueueTask(std::function<void()> task);
+
+	template<typename F, typename... Args>
+	auto EnqueueTaskPromise(F&& f, Args&&... args)
+	{
+		using returnType = std::invoke_result_t<F, Args...>;
+		std::packaged_task<returnType()> task(std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+		std::shared_ptr<std::packaged_task<returnType()>> pointer = std::make_shared<std::packaged_task<returnType()>>(std::move(task));
+		std::future<returnType> future = pointer->get_future();
+		{
+			std::unique_lock<std::mutex> lock(m_queueLock);
+			m_tasks.emplace([pointer]()
+				{
+					(*pointer)();
+				});
+		}
+		m_condition.notify_one();
+		return future;
+	}
+	//std::promise<int> EnqueueTask(std::function<void()> task, int param1, int param2);
 	~ThreadPool();
 	bool HasTasks();
+	bool AreAnyThreadActive();
 
 	//private:
-	std::vector<WorkerThread> m_workers;
+	std::vector<std::unique_ptr<WorkerThread>> m_workers;
 	std::queue<std::function<void()>> m_tasks;
 	size_t m_size;
 	std::mutex m_queueLock;
@@ -80,6 +107,7 @@ WorkerThread::WorkerThread(ThreadPool* pool, int index)
 	m_pool = pool;
 	m_index = index;
 	m_thread = std::thread(&WorkerThread::Run, this);
+	m_isActive = false;
 	print("Custom Constructor WorkerThread");
 }
 
@@ -131,7 +159,9 @@ void WorkerThread::Run()
 			currentTask = std::move(m_pool->m_tasks.front());
 			m_pool->m_tasks.pop();
 		}
+		m_isActive = true;
 		currentTask();
+		m_isActive = false;
 	}
 }
 
@@ -151,7 +181,7 @@ ThreadPool::ThreadPool(size_t size)
 	m_workers.reserve(size);
 	for (size_t i = 0; i < size; i++)
 	{
-		m_workers.emplace_back(this, i);
+		m_workers.emplace_back(std::make_unique<WorkerThread>(this, i));
 	}
 }
 
@@ -162,18 +192,23 @@ void ThreadPool::Expand(size_t size)
 	m_workers.reserve(m_size);
 	for (size_t i = 0; i < size; i++)
 	{
-		m_workers.emplace_back(this, i);
+		m_workers.emplace_back(std::make_unique<WorkerThread>(this, i));
 	}
 }
 
 void ThreadPool::Shrink(size_t size)
 {
+	//todo need to remove and delete manually the new workers.
+	return;
+
+
 	print("Shrink ThreadPool");
 	if (m_size - size <= 0)
 	{
 		throw std::invalid_argument("Error size is too small");
 	}
 	m_size -= size;
+
 	m_workers.resize(m_size);
 }
 
@@ -194,11 +229,24 @@ bool ThreadPool::HasTasks()
 	return m_tasks.size() > 0;
 }
 
-void ThreadPool::EnqueueTask(std::function<void()> task)  //todo make it a promise return type
+bool ThreadPool::AreAnyThreadActive() 
+{
+	bool flag = false;
+	for (auto& worker : m_workers)
+	{
+		if(worker->m_isActive)
+		{
+			return true;
+		}
+	}
+	return flag;
+}
+
+/*void ThreadPool::EnqueueTask(std::function<void()> task)  //todo make it a promise return type
 {
 	{
 		std::unique_lock<std::mutex> lock(m_queueLock);
 		m_tasks.emplace(std::move(task));
 	}
 	m_condition.notify_one();
-}
+}*/

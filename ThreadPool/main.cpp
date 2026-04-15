@@ -43,6 +43,14 @@ public:
 		print("exiting floor");
 		return  (int)d;
 	}
+
+	inline int Special(double d)
+	{
+		print("executing Special");
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		print("exiting Special");
+		return  (int)d;
+	}
 private:
 
 };
@@ -61,20 +69,27 @@ int main()
 	ExampleClass c;
 	ThreadPool pool(10);
 	std::future<int> results[10];
+	std::future<int> future = pool.EnqueueTaskPromise(&ExampleClass::Special, &c, 5);
 
-	for (size_t i = 0; i < 50; i++)
+	for (size_t i = 0; i < 5; i++)
 	{
-		pool.EnqueueTask([] {f1(55); });
+		auto future = pool.EnqueueTaskPromise([] {f1(55); });
+		future.get();
 	}
-	for (size_t i = 0; i < 100; i++)
+	for (size_t i = 0; i < 10; i++)
 	{
-		pool.EnqueueTask([&c, i] {	return c.Floor(i);	});
+		auto future = pool.EnqueueTaskPromise([&c, i] {	return c.Floor(i);	});
 	}
-	////pool.Expand(7);
-	//pool.Shrink(9);
-	//pool.Expand(3);
-	while (pool.HasTasks())
+
+
+	pool.Expand(7);
+	pool.Shrink(9);
+	pool.Expand(3);
+	while (pool.HasTasks() || pool.AreAnyThreadActive())
 	{
+
 	}
+	auto waiting = future.get();
+	std::cout << waiting;
 	return 0;
 }
