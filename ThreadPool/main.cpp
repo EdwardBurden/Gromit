@@ -17,17 +17,27 @@
 #include "ThreadPool.h"
 
 
-//GOAL:
-// Create a testing suite of different "tasks" that could be made randomly pushed onto a thread pool,
-// the pool should queue up the tasks and then process them in a way were old threads are reused till the queue of work is done.
-// A visual of what is happening should show pools active, updated per frame on  aseperate thread. 
-// Each thread hsould display its id, work progress, if its waiting for resources to unlock etc.
 
-void f1(int n)
+void print(const char* string)
 {
-	print("executing f1");
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	print("exiting f1");
+	std::lock_guard lock(consoleMutex);
+///	printf("Thread_%i ", std::this_thread::get_id());
+	printf(string);
+	printf("\n");
+}
+
+std::uint64_t HeavyWork(std::uint64_t iterations)
+{
+	//print("HeavyWork Start");
+	volatile std::uint64_t value = 0;
+
+	for (std::uint64_t i = 0; i < iterations; ++i)
+	{
+		value += (i * 2654435761ULL) ^ (value >> 3);
+		value ^= (value << 7);
+	}
+	//print("HeavyWork End");
+	return value;
 }
 
 class  ExampleClass
@@ -36,20 +46,12 @@ public:
 	ExampleClass();
 	~ExampleClass();
 
-	inline int Floor(double d)
+	std::uint64_t Fibonacci(std::uint64_t n)
 	{
-		print("executing floor");
-		std::this_thread::sleep_for(std::chrono::seconds((long)d));
-		print("exiting floor");
-		return  (int)d;
-	}
+		if (n <= 1)
+			return n;
+		return Fibonacci(n - 1) + Fibonacci(n - 2);
 
-	inline int Special(double d)
-	{
-		print("executing Special");
-		std::this_thread::sleep_for(std::chrono::seconds(2));
-		print("exiting Special");
-		return  (int)d;
 	}
 private:
 
@@ -64,32 +66,43 @@ ExampleClass::~ExampleClass()
 }
 
 
+#include <random>
+
+int RandomInt(int min, int max)
+{
+	static std::random_device rd;
+	static std::mt19937 rng(rd());
+	std::uniform_int_distribution<int> dist(min, max);
+	return dist(rng);
+}
+
 int main()
 {
 	ExampleClass c;
-	ThreadPool pool(10);
-	std::future<int> results[10];
-	std::future<int> future = pool.EnqueueTaskPromise(&ExampleClass::Special, &c, 5);
+	ThreadPool pool(4);
+	//std::future<std::uint64_t> future = pool.EnqueueTask(&ExampleClass::Fibonacci, &c, 5);
 
-	for (size_t i = 0; i < 5; i++)
+	/*for (size_t i = 0; i < 100; i++)
 	{
-		auto future = pool.EnqueueTaskPromise([] {f1(55); });
-		future.get();
-	}
-	for (size_t i = 0; i < 10; i++)
+		std::future<std::uint64_t> future = pool.EnqueueTask([] {return HeavyWork(10000); });
+	}*/
+	for (size_t i = 0; i < 100; i++)
 	{
-		auto future = pool.EnqueueTaskPromise([&c, i] {	return c.Floor(i);	});
+		int value = RandomInt(40, 50);
+		auto future = pool.EnqueueTask([&c, i, value]
+			{
+				//print("Fibonacci Start");
+				auto returnValue =  c.Fibonacci(value);
+				//print("Fibonacci End");
+				return returnValue;
+			});
 	}
 
-
-	pool.Expand(7);
-	pool.Shrink(9);
-	pool.Expand(3);
-	while (pool.HasTasks() || pool.AreAnyThreadActive())
+	while (pool.HasTasks() || pool.ThreadsActive())
 	{
-
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 	}
-	auto waiting = future.get();
-	std::cout << waiting;
+	//auto waiting = future.get();
+	//std::cout << waiting;
 	return 0;
 }

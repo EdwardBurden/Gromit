@@ -7,6 +7,7 @@
 #include <memory>
 #include <queue>
 #include <type_traits>
+#include <algorithm>
 
 //concurrency
 #include <thread>
@@ -15,19 +16,9 @@
 
 #include <condition_variable>
 #include <future>
-
-class ThreadPool;
-
 std::mutex consoleMutex;
 
-void print(const char* string)
-{
-	std::lock_guard lock(consoleMutex);
-	printf("Thread_%i ", std::this_thread::get_id());
-	printf(string);
-	printf("\n");
-}
-
+class ThreadPool;
 class WorkerThread
 {
 public:
@@ -42,13 +33,13 @@ public:
 	void Run();
 	void Stop();
 	~WorkerThread();
+	bool IsActive() const { return m_isActive; }
 
-//private:
+private:
 	ThreadPool* m_pool;
 	std::thread m_thread;
 	int m_index;
-	bool m_isActive;
-	//std::string m_debugOutput;
+	std::atomic<bool> m_isActive;
 };
 
 class ThreadPool
@@ -59,12 +50,9 @@ public:
 	ThreadPool& operator=(const ThreadPool&) = delete;
 	ThreadPool(ThreadPool&&) = delete;
 	ThreadPool& operator=(ThreadPool&&) = delete;
-	void Expand(size_t size);
-	void Shrink(size_t size);
-	//void EnqueueTask(std::function<void()> task);
 
 	template<typename F, typename... Args>
-	auto EnqueueTaskPromise(F&& f, Args&&... args)
+	auto EnqueueTask(F&& f, Args&&... args)
 	{
 		using returnType = std::invoke_result_t<F, Args...>;
 		std::packaged_task<returnType()> task(std::bind(std::forward<F>(f), std::forward<Args>(args)...));
@@ -80,12 +68,15 @@ public:
 		m_condition.notify_one();
 		return future;
 	}
-	//std::promise<int> EnqueueTask(std::function<void()> task, int param1, int param2);
 	~ThreadPool();
 	bool HasTasks();
-	bool AreAnyThreadActive();
+	bool ThreadsActive();
+	bool StopFlagActive() const { return m_stopFlag; }
+	std::condition_variable& GetRunCondition() { return m_condition; }
+	std::mutex& GetQueueLock() { return m_queueLock; }
+	std::queue<std::function<void()>>& GetTasks() { return m_tasks; }
 
-	//private:
+private:
 	std::vector<std::unique_ptr<WorkerThread>> m_workers;
 	std::queue<std::function<void()>> m_tasks;
 	size_t m_size;
@@ -98,7 +89,6 @@ public:
 
 WorkerThread::WorkerThread()
 {
-	print("Default Constructor WorkerThread");
 	m_pool = nullptr;
 }
 
@@ -108,12 +98,10 @@ WorkerThread::WorkerThread(ThreadPool* pool, int index)
 	m_index = index;
 	m_thread = std::thread(&WorkerThread::Run, this);
 	m_isActive = false;
-	print("Custom Constructor WorkerThread");
 }
 
 WorkerThread::WorkerThread(WorkerThread&& other)
 {
-	print("Move Constructor WorkerThread");
 	m_thread = std::move(other.m_thread);
 	m_pool = other.m_pool;
 	m_index = other.m_index;
@@ -121,7 +109,6 @@ WorkerThread::WorkerThread(WorkerThread&& other)
 
 WorkerThread& WorkerThread::operator=(WorkerThread&& other)
 {
-	print("Move Operator WorkerThread");
 	if (this == &other)
 		return *this;
 
@@ -134,7 +121,6 @@ WorkerThread& WorkerThread::operator=(WorkerThread&& other)
 
 WorkerThread::~WorkerThread()
 {
-	print("Destructor WorkerThread");
 	if (m_thread.joinable())
 		m_thread.join();
 }
@@ -145,22 +131,32 @@ void WorkerThread::Run()
 	{
 		std::function<void()> currentTask;
 		{
-			std::unique_lock<std::mutex> lock(m_pool->m_queueLock);
-			m_pool->m_condition.wait(lock, [this]
+			std::unique_lock<std::mutex> lock(m_pool->GetQueueLock());
+			m_pool->GetRunCondition().wait(lock, [this]
 				{
-					auto condtionPassed = !m_pool->m_tasks.empty() || m_pool->m_stopFlag;
+					auto condtionPassed = !m_pool->GetTasks().empty() || m_pool->StopFlagActive();
 					return condtionPassed;
 				});
-			if (m_pool->m_stopFlag)
+			if (m_pool->StopFlagActive())
 			{
 				return;
 			}
 
-			currentTask = std::move(m_pool->m_tasks.front());
-			m_pool->m_tasks.pop();
+			currentTask = std::move(m_pool->GetTasks().front());
+			m_pool->GetTasks().pop();
 		}
-		m_isActive = true;
-		currentTask();
+		m_isActive = true; 
+		{
+			std::lock_guard lock(consoleMutex);
+			printf("%i Start", m_index);
+			printf("\n");
+		}
+		currentTask(); 
+		{
+			std::lock_guard lock(consoleMutex);
+			printf("%i End", m_index);
+			printf("\n");
+		}
 		m_isActive = false;
 	}
 }
@@ -175,7 +171,8 @@ void WorkerThread::Stop()
 
 ThreadPool::ThreadPool(size_t size)
 {
-	print("Custom Constructor ThreadPool");
+	unsigned int max = std::thread::hardware_concurrency();
+	size = std::clamp((int)size, 1, (int)max);
 	m_size = size;
 	m_stopFlag = false;
 	m_workers.reserve(size);
@@ -185,36 +182,8 @@ ThreadPool::ThreadPool(size_t size)
 	}
 }
 
-void ThreadPool::Expand(size_t size)
-{
-	print("Expand ThreadPool");
-	m_size += size;
-	m_workers.reserve(m_size);
-	for (size_t i = 0; i < size; i++)
-	{
-		m_workers.emplace_back(std::make_unique<WorkerThread>(this, i));
-	}
-}
-
-void ThreadPool::Shrink(size_t size)
-{
-	//todo need to remove and delete manually the new workers.
-	return;
-
-
-	print("Shrink ThreadPool");
-	if (m_size - size <= 0)
-	{
-		throw std::invalid_argument("Error size is too small");
-	}
-	m_size -= size;
-
-	m_workers.resize(m_size);
-}
-
 ThreadPool::~ThreadPool()
 {
-	print("Destructor ThreadPool");
 	{
 		std::unique_lock<std::mutex> lock(m_queueLock);
 		m_stopFlag = true;
@@ -229,24 +198,15 @@ bool ThreadPool::HasTasks()
 	return m_tasks.size() > 0;
 }
 
-bool ThreadPool::AreAnyThreadActive() 
+bool ThreadPool::ThreadsActive()
 {
 	bool flag = false;
 	for (auto& worker : m_workers)
 	{
-		if(worker->m_isActive)
+		if (worker->IsActive())
 		{
 			return true;
 		}
 	}
 	return flag;
 }
-
-/*void ThreadPool::EnqueueTask(std::function<void()> task)  //todo make it a promise return type
-{
-	{
-		std::unique_lock<std::mutex> lock(m_queueLock);
-		m_tasks.emplace(std::move(task));
-	}
-	m_condition.notify_one();
-}*/
